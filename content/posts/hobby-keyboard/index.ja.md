@@ -68,23 +68,23 @@ robaについては、こちらの動画で詳しく紹介されています。
 
 ## 2 準備
 
+{{< image src="preparation.jpeg" width="800px" height="600px" caption="準備" >}}
 
 ## 3 はんだ付け
 
-
-## 4 組み立て
-
-
-## 5 動作確認
-
-{< image src="preparation.jpeg" width="800px" height="600px" caption="準備" >}}
 {{< image src="diord.jpeg" width="800px" height="600px" caption="ダイオードの準備" >}}
 {{< image src="diord-2.jpeg" width="800px" height="600px" caption="ダイオードのはんだ付け" >}}
 {{< image src="key-socket.jpeg" width="800px" height="600px" caption="キーソケットのはんだ付け" >}}
 {{< image src="micon.jpeg" width="800px" height="600px" caption="マイコンのはんだ付け" >}}
 {{< image src="cleaner.jpeg" width="800px" height="600px" caption="フラックスクリーナーで掃除" >}}
 {{< image src="sensor.jpeg" width="800px" height="600px" caption="トラックボール用のセンサーと水平ロータリーエンコーダの作成" >}}
+
+## 4 組み立て
+
 {{< image src="frame.jpeg" width="800px" height="600px" caption="フレームの組み立て" >}}
+
+## 5 動作確認
+
 {{< image src="xiable.png" width="800px" height="600px" caption="Xiao BLEをブートローダーモードで起動" >}}
 {{< image src="xiaoble_write.png" width="800px" height="600px" caption="ファームウェアの書き込み１" >}}
 {{< image src="xiaoble_write2.png" width="800px" height="600px" caption="ファームウェアの書き込み２" >}}
