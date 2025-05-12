@@ -116,7 +116,7 @@ robaについては、こちらの動画で詳しく紹介されています。
 どうやら、基盤側をしっかり温めることでこれは解決するようです。
 
 マイコンは左右に複数はんだ付けする部分がありますが、これを一つミスると複数のキーが動かなくなります。
-[ここ]に詳細なマッピングが紹介されているので、トラブルシュートに利用させてもらいました。
+[こちら](https://note.com/pooh_polo/n/n386f7c9355bc)で詳細なマッピングが紹介されているので、トラブルシュートに利用させてもらいました。
 
 {{< image src="micon.jpeg" width="800px" height="600px" caption="マイコンのはんだ付け" >}}
 
@@ -134,9 +134,18 @@ robaについては、こちらの動画で詳しく紹介されています。
 
 ## 4 組み立て
 
+ビルドガイドに沿って組み立てを行いました。
+無駄な手戻りが発生するので、組み立てを行う前にテスターで通電確認をしておくことをおすすめします。
+
 {{< image src="frame.jpeg" width="800px" height="600px" caption="フレームの組み立て" >}}
 
+
 ## 5 動作確認
+
+最後に動作確認を行います。
+
+まずは、マイコンにファームウェアを書き込んでいきます。
+リセットボタンを2度押すとXiaoBLEがブートローダーモードで起動します。
 
 {{< image src="xiable.png" width="800px" height="600px" caption="Xiao BLEをブートローダーモードで起動" >}}
 {{< image src="xiaoble_write.png" width="800px" height="600px" caption="ファームウェアの書き込み１" >}}
@@ -152,4 +161,4 @@ robaについては、こちらの動画で詳しく紹介されています。
 [3] [分離式＆トラックボール搭載 自作キーボード Keyball39 制作工程 まとめ](https://www.youtube.com/watch?v=MsvfFNaBjTs)\
 [4] [自作キーボード作ってみた Keyball44編 | Keyball44 : Custom Mechanical Keyboard Build](https://www.youtube.com/watch?v=XyoEP3h4iB8)\
 [5] [【永久保存版】はんだ付けのやり方を解説します【はんだづけの原理, DIP部品, 表面実装】【イチケン電子基礎シリーズ】RX-802AS](https://www.youtube.com/watch?v=dQ7AUjb1tkA)
-
+[6] [roBaの組み立てで動作不良？パターン別チェックポイントを解説](https://note.com/pooh_polo/n/n386f7c9355bc)
