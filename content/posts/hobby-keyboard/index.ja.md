@@ -143,16 +143,36 @@ robaについては、こちらの動画で詳しく紹介されています。
 ## 5 動作確認
 
 最後に動作確認を行います。
+Windowsが手元にないためLinuxに接続をしていきます。
 
 まずは、マイコンにファームウェアを書き込んでいきます。
-リセットボタンを2度押すとXiaoBLEがブートローダーモードで起動します。
+USB-TypeCを接続し、リセットボタンを2度押すとXiaoBLEがブートローダーモードで起動します。
+"/"に出力されるログを確認すると、下記のような記載がありPCがデバイスを認識していることがわかります。
 
 {{< image src="xiable.png" width="800px" height="600px" caption="Xiao BLEをブートローダーモードで起動" >}}
+
+適当なフォルダにマウントを行った上でビルドガイドに従ってファームウェアを書き込みます。
+左右両方に対して同様の作業をします。
+
 {{< image src="xiaoble_write.png" width="800px" height="600px" caption="ファームウェアの書き込み１" >}}
 {{< image src="xiaoble_write2.png" width="800px" height="600px" caption="ファームウェアの書き込み２" >}}
+
+無事に書き込みが終わりました。
+
+続いて、Bluetooth接続をしていきます。
+(GUIがよく分からずCLIで接続しています。)
+
 {{< image src="bluetoothctl.png" width="800px" height="600px" caption="Bluetooth接続１" >}}
 {{< image src="bluetoothctl-2.png" width="800px" height="600px" caption="Bluetooth接続２" >}}
 
+無事接続できました。
+
+僕はここで初めて1／4程度のキーが反応していないことが分かり、フレームを外しはんだ付けをし直すことになりました。
+
+## 6 感想
+### 6.1　自作の感想
+
+### 6.2 robaの感想
 
 ## 参考
 
