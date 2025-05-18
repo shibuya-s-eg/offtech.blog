@@ -384,8 +384,18 @@ Dockerイメージのレイヤの特徴は以下です。
 
 実際にイメージを見てみましょう。
 
+"myapp/hoge.txt"を持ったイメージをビルドしてみます。
+
 {{< image src="docker-build.png" width="800px" height="600px" caption="" >}}
+
+[○/4]となっている部分がレイヤーを表しています。
+各レイヤーはDockerfileの各行と一致していることが分かります。
+また、レイヤー2では"CASHED"という文字がありキャッシュが利用されていることも分かります。
+
 {{< image src="docker-inspect.png" width="800px" height="600px" caption="" >}}
+
+
+
 {{< image src="image-content.png" width="800px" height="600px" caption="" >}}
 {{< image src="image-content-2.png" width="800px" height="600px" caption="" >}}
 {{< image src="image-content-3.png" width="800px" height="600px" caption="" >}}
