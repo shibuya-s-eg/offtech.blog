@@ -384,7 +384,10 @@ Dockerイメージのレイヤの特徴は以下です。
 
 実際にイメージを見てみましょう。
 
-"myapp/hoge.txt"を持ったイメージをビルドしてみます。
+今回は下記Dockerfileをもとにイメージをビルドしていきます。
+"myapp/hoge.txt"を持ったイメージをビルドしています。
+{{< image src="dockerfile.png" width="800px" height="600px" caption="" >}}
+
 
 {{< image src="docker-build.png" width="800px" height="600px" caption="" >}}
 
@@ -396,15 +399,61 @@ Dockerイメージのレイヤの特徴は以下です。
 
 
 
+docker inspectコマンドを利用して、イメージを見てみましょう。
+イメージ自身はIdをもっており、sha256のハッシュ値となっていることが分かります。
+Config: Labelsにはイメージの名前が記載されています。(タグの値がこれなのでしょうか)
+RootFSには複数のLayerが記載されていることが分かります。
+
+それではイメージをローカルにファイルとして落として展開してみましょう。
+
+
 {{< image src="image-content.png" width="800px" height="600px" caption="" >}}
+
+イメージを展開するとLayerが入ったフォルダとindex.json、manifest.jsonなどが現れます。
+これは、OCI標準のイメージレイアウトのようです。
+
+
+{{< admonition tip "ローカルリポジトリの実態" >}}
+dockerが管理する情報は/var/lib/dockerにあります。
+{{< image src="local-1.png" width="800px" height="600px" caption="ローカルのDockerの情報" >}}
+
+ローカルのイメージは/var/lib/docker/image/overlay2/imagedb/にあります。
+{{< image src="local-2.png" width="800px" height="600px" caption="ローカルイメージ" >}}
+{{< /admonition >}}
+
+
+各ファイルを見ていきましょう。
 {{< image src="image-content-2.png" width="800px" height="600px" caption="" >}}
+
+イメージの名前の他にmediaTypeでイメージの規格か何かを示しています。
+また、platformでCPUアーキテクチャを指定する場合もあるようです。
+
 {{< image src="image-content-3.png" width="800px" height="600px" caption="" >}}
+
+manifest.jsonにLayerのハッシュが記載されており、blobs/sha256にLayerの実体が配置されています。
+
+では、manifest.jsonに記載されている順に各レイヤを展開してみましょう。
+まずは、ひとつめのLayerです。
+
 {{< image src="image-content-4.png" width="800px" height="600px" caption="" >}}
+
+一般的なLinuxのファイル構造の一部が現れました。
+とはいえ、/etc以外はほとんど何もない状態です。
+
 {{< image src="image-content-5.png" width="800px" height="600px" caption="" >}}
+
+2つ目のLayerでは、/tmpや/var/lib/apt/listsも追加されました。
+
 {{< image src="image-content-6.png" width="800px" height="600px" caption="" >}}
+
+3つ目のLayerでは、さらに/etcが足されました。
+
 {{< image src="image-content-7.png" width="800px" height="600px" caption="" >}}
 
+4つ目のLayerでは、DockerfilenでCOPYを記載したhoge.txtが含まれていました。
 
+これらから分かるように各LayerはDockerfileに記載した各行と対応していることが分かります。
+本説の最初に話したとおり、コンテナイメージは読み取り専用のLayerを重ねねているのです。
 
 ### 2.3　最小化
 
@@ -432,19 +481,22 @@ Dockerイメージのレイヤの特徴は以下です。
 
 ### 3.1　イメージ管理
 
-pullしたときの通信。
+pullし
+SUPPLEMENT
+             This is same "as man -f"たときの通信。
 どこに保存されるのか。
 
-Dockerfileとビルドしたときのレイヤー
+Dockerfileとビルドしたと
+SUPPLEMENT
+             THIS is same as "man -k"きのレイヤー
 
 ### 3.2　コンテナプロセス
+
 
 コンテナ実行時のプロセス
 cgroupだったり
 
 ## 4　コンテナセキュリティ
-
-### 4.1　capability
 
 管理者権限を与えずに、最小権限の原則に則り、動作に必要な権限のみを与えるやつです。
 以下は「Linuxのアクセス制御を完全に理解する」からの抜粋です。
