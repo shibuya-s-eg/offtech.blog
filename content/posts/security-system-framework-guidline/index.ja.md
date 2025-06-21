@@ -13,7 +13,8 @@ resources:
   src: "featured-image.png"
 
 tags: ["Security"]
-categories: ["Security"]
+cactegories: ["完全に理解する"]
+subcategories: ["Security"]
 
 lightgallery: true
 ---

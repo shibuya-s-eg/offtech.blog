@@ -13,7 +13,8 @@ resources:
   src: "featured-image.png"
 
 tags: ["Others"]
-categories: ["Others"]
+categories: ["完全に理解する"]
+subcategories: ["Others"]
 
 lightgallery: true
 ---

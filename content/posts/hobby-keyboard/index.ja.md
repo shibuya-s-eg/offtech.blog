@@ -13,7 +13,8 @@ resources:
   src: "featured-image.png"
 
 tags: ["Hobby"]
-categories: ["Hobby"]
+categories: ["趣味"]
+subcategories: ["Keyboard"]
 
 lightgallery: true
 ---

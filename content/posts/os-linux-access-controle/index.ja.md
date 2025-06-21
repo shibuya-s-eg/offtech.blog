@@ -13,7 +13,8 @@ resources:
   src: "featured-image.png"
 
 tags: ["OS"]
-categories: ["OS"]
+categories: ["完全に理解する"]
+subcategories: ["OS"]
 
 lightgallery: true
 ---

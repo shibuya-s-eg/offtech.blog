@@ -13,7 +13,8 @@ resources:
   src: "featured-image.png"
 
 tags: ["Database, Storage"]
-categories: ["Database, Storage"]
+categories: ["完全に理解する"]
+subcategories: ["Database, Storage"]
 
 lightgallery: true
 ---

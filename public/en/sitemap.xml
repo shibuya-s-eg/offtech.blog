@@ -38,6 +38,15 @@
                     hreflang="en"
                     href="http://localhost:1313/junior-engineers-learning-journal/en/categories/documentation/"
                     /></url><url>
+            <loc>http://localhost:1313/junior-engineers-learning-journal/en/subcategories/</loc><changefreq>weekly</changefreq><priority>0.5</priority><xhtml:link
+                        rel="alternate"
+                        hreflang="ja"
+                        href="http://localhost:1313/junior-engineers-learning-journal/subcategories/"
+                        /><xhtml:link
+                    rel="alternate"
+                    hreflang="en"
+                    href="http://localhost:1313/junior-engineers-learning-journal/en/subcategories/"
+                    /></url><url>
             <loc>http://localhost:1313/junior-engineers-learning-journal/en/tags/</loc><changefreq>weekly</changefreq><priority>0.5</priority><xhtml:link
                         rel="alternate"
                         hreflang="ja"
