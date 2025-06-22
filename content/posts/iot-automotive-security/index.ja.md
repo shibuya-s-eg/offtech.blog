@@ -12,8 +12,8 @@ resources:
 - name: "featured-image"
   src: "featured-image.png"
 
-tags: ["Network"]
-categories: ["完全に理解する"]
+tags: ["IoT"]
+categories: ["Understand-Everything"]
 subcategories: ["IoT"]
 
 lightgallery: true

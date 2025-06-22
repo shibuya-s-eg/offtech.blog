@@ -13,7 +13,7 @@ resources:
   src: "featured-image.png"
 
 tags: ["Virtualization"]
-categories: ["完全に理解する"]
+categories: ["Understand-Everything"]
 subcategories: ["Virtualization"]
 
 lightgallery: true

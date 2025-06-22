@@ -13,7 +13,7 @@ resources:
   src: "featured-image.png"
 
 tags: ["Application"]
-categories: ["完全に理解する"]
+categories: ["Understand-Everything"]
 subcategories: ["Application"]
 
 lightgallery: true

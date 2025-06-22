@@ -13,7 +13,7 @@ resources:
   src: "featured-image.png"
 
 tags: ["Markdown", "HTML"]
-categories: ["完全に理解する"]
+categories: ["Understand-Everything"]
 subcategories: ["Markdown"]
 
 lightgallery: true

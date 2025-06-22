@@ -13,7 +13,7 @@ resources:
   src: "featured-image.png"
 
 tags: ["Network"]
-categories: ["完全理解"]
+categories: ["Understand-Everything"]
 subcategories: ["Network"]
 
 lightgallery: true

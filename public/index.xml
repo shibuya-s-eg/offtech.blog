@@ -31,6 +31,14 @@
     <description><![CDATA[こんにちは、しぶやです。 今回はDNSを完全に理解していきます。 本記事では、Linuxをベースに説明を行いますが、本質的な部分はWindows]]></description>
 </item>
 <item>
+    <title>2025年6月</title>
+    <link>http://localhost:1313/junior-engineers-learning-journal/202506/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/junior-engineers-learning-journal/202506/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 hoge 1.1 hoge 参考 [1]]]></description>
+</item>
+<item>
     <title>ACLを完全に理解する</title>
     <link>http://localhost:1313/junior-engineers-learning-journal/network-acl/</link>
     <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
@@ -77,14 +85,6 @@
     <author>しぶや</author>
     <guid>http://localhost:1313/junior-engineers-learning-journal/network-hsrp/</guid>
     <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに 1.1 HSRPとは何か Cisco独自のファーストホップ冗長化プロトコルである]]></description>
-</item>
-<item>
-    <title>HTTPを完全に理解する</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/application-http/</link>
-    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
-    <author>しぶや</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/application-http/</guid>
-    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 hoge 1.1 hoge 参考 [1]]]></description>
 </item>
 </channel>
 </rss>
