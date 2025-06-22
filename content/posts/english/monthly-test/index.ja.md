@@ -1,12 +1,12 @@
 ---
 weight: 4
-title: "2025年6月"
+title: "月次スピーキングテスト"
 date: 2025-04-13T00:00:00+09:00
 lastmod: 2025-04-13T00:00:00+09:00
 draft: true
 author: "しぶや"
 authorLink: "https://github.com/shibuya-s-eg"
-description: "2025年6月 英語道"
+description: "月次スピーキングテスト"
 images: []
 resources:
 - name: "featured-image"
@@ -14,7 +14,7 @@ resources:
 
 tags: ["English"]
 categories: ["English"]
-subcategories: ["Daily"]
+subcategories: ["Monthly"]
 
 lightgallery: true
 ---
@@ -27,7 +27,7 @@ Todo:
 
 
 こんにちは、しぶやです。
-今回はを完全に理解していきます。
+本記事では月次の英語スピーキングテストの進捗を記録していきます。
 
 
 ## TL;DR
