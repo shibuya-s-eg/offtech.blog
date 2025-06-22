@@ -534,7 +534,27 @@ nginxっぽいものある？
 
 ### 3.2　コンテナプロセス
 
+<<<<<<< HEAD
 それでは、実際にコンテナを起動してみます。
+=======
+-それでは、実際にコンテナを起動してみます。
+
+-docker runの画像
+-
+-ネームスペースやCgroupを見てみましょう。
+-docker inspect --format '{{.State.Pid}}' test-container
+-ls -l /proc/12345/ns/
+-readlink /proc/12345/ns/{pid,net,uts,mnt,ipc,user}
+-
+-cat /proc/12345/cgroup
+-cd /sys/fs/cgroup/
+-find . -name "*test-container*"  # または docker-<ID>
+-cat memory.max
+-cat cpu.max
+-
+-マウントも
+-cat /proc/12345/mountinfo
+>>>>>>> 1860bee (2025062100)
 
 docker runの画像
 
@@ -551,6 +571,7 @@ cat cpu.max
 
 マウントも
 cat /proc/12345/mountinfo
+
 
 ## 4　コンテナセキュリティ
 
