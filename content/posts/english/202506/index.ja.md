@@ -36,11 +36,18 @@ Todo:
 *
 *
 
-## 1　hoge
+## 1　2025年6月
 
-### 1.1　hoge
+### 1.1 24日
 
+- What were you doing just now?\
+さっきまで何してたの？
+- Today is my first day on Native Camp.\
+今日はNative Camp初日です。
+- What do you recommend as a good way to learn English?\
+おすすめの英語学習法は？
 
+Note フリートーク
 
 ## 参考
 
