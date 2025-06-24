@@ -38,7 +38,7 @@ Todo:
 
 ## 1　2025年6月
 
-### 1.1　24日
+### 1.1　23日
 
 - What were you doing just now?\
 さっきまで何してたの？
@@ -53,6 +53,14 @@ Todo:
 
 ⇒ 後々分かったが、コインは予約時の値段であり、今すぐレッスンはコインの費用に関わらず無料であることが分かった。（分かりづらい。。）
 {{< /admonition >}}
+
+
+### 1.2　24日
+
+- It was crowded on the train.
+電車が混んでいた。
+- I was struggling to improve my English speaking skills.
+英会話の上達に伸び悩んでいた。
 
 ## 参考
 
