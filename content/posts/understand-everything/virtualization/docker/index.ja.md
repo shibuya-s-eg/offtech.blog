@@ -486,24 +486,28 @@ manifest.jsonにLayerのハッシュが記載されており、blobs/sha256にLa
 
 まずは、イメージをローカルリポジトリに持ってきます。
 
-docker pull の画像
+{{< image src="pull-nginx.png" width="800px" height="600px" caption="" >}}
 
 デフォルトのDocker Hubからイメージを取得しました。
 ログから分かる通り、イメージもレイヤーごとに取得しています。
 
-取得したイメージを確認してみましょう。
-
-docker imagesの確認
-docker inspect
-
 docker imagesコマンドにより、ローカルリポジトリに存在するイメージを一覧表示することができます。
 nginxイメージは何秒前に取得され、サイズはであることが分かります。
+
+取得したイメージを確認してみましょう。
+
+
+{{< image src="inspect-nginx.png" width="800px" height="600px" caption="" >}}
+
 
 docker inspectの結果では、イメージについてより詳細な情報が得られます。
 Nginxイメージはであることなどが分かります。
 
-tip
-pullしたときの通信。
+{{< admonition tip "docker pullを実行したときの通信" >}}
+
+{{< image src="docker-pull.png" width="800px" height="600px" caption="" >}}
+接続先は、"registry-1.docker.io" であった。
+{{< /admonition >}}
 
 nginxイメージをベースイメージとして、Dockerfileを書いていきましょう。
 
@@ -534,27 +538,23 @@ nginxっぽいものある？
 
 ### 3.2　コンテナプロセス
 
-<<<<<<< HEAD
 それでは、実際にコンテナを起動してみます。
-=======
--それでは、実際にコンテナを起動してみます。
 
--docker runの画像
--
--ネームスペースやCgroupを見てみましょう。
--docker inspect --format '{{.State.Pid}}' test-container
--ls -l /proc/12345/ns/
--readlink /proc/12345/ns/{pid,net,uts,mnt,ipc,user}
--
--cat /proc/12345/cgroup
--cd /sys/fs/cgroup/
--find . -name "*test-container*"  # または docker-<ID>
--cat memory.max
--cat cpu.max
--
--マウントも
--cat /proc/12345/mountinfo
->>>>>>> 1860bee (2025062100)
+docker runの画像
+
+ネームスペースやCgroupを見てみましょう。
+docker inspect --format '{{.State.Pid}}' test-container
+ls -l /proc/12345/ns/
+readlink /proc/12345/ns/{pid,net,uts,mnt,ipc,user}
+
+cat /proc/12345/cgroup
+cd /sys/fs/cgroup/
+find . -name "*test-container*"  # または docker-<ID>
+cat memory.max
+cat cpu.max
+
+マウントも
+cat /proc/12345/mountinfo
 
 docker runの画像
 

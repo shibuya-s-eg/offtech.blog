@@ -38,7 +38,7 @@ Todo:
 
 ## 1　2025年6月
 
-### 1.1 24日
+### 1.1　24日
 
 - What were you doing just now?\
 さっきまで何してたの？
