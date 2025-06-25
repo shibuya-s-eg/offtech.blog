@@ -57,14 +57,14 @@ Todo:
 
 ### 1.2　24日
 
-- It was crowded on the train.
+- It was crowded on the train.\
 電車が混んでいた。
-- I was struggling to improve my English speaking skills.
+- I was struggling to improve my English speaking skills.\
 英会話の上達に伸び悩んでいた。
 
 レッスンはいきなりさぼった。
 
-### 1.2　24日
+### 1.2　25日
 
 
 初めてレッスンを受けた。
@@ -74,6 +74,30 @@ Todo:
 途中、相手の音声が遠くなり聞きづらかったが、講師にもNativeCampにも総じて満足である。
 
 分からなかった表現を復習しよう。
+
+### 1.3　26日
+
+- Kanji are Chinese characters used in the Japanese writing system.\
+漢字は日本語の表記で使われる中国由来の文字です。
+- I’ll turn up the volume on my side.\
+こちらで音量を上げます。
+- It sounds like you’re far away.\
+あなたの声が遠いようです。
+- I stayed up late watching YouTube.\
+YouTubeを見ていて夜更かしした。
+- How do you say “牛乳パック” in English?\
+“牛乳パック” は英語でなんという？
+- Throw away a milk carton.\
+どちらも「牛乳パックを捨てる」
+- I’m glad you were my first teacher.\
+あなたが私の最初の先生でうれしいです
+- I want to become a computer geek.\
+コンピュータオタクになりたい。
+- I learned a lot.\
+たくさん学べました。
+- I had a great time.\
+楽しかったです
+
 
 
 
