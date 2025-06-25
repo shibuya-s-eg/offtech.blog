@@ -75,6 +75,14 @@ Todo:
 
 分からなかった表現を復習しよう。
 
+- Thank you for your lesson.\
+レッスンありがとうございます。
+- I learned a lot.\
+教えてくれてありがとうございます。すごく助かりました。
+- It was great talking to you.\
+お話できてよかったです。
+- I enjoyed the lesson today.\
+とても楽しかったです。
 
 
 ## 参考
