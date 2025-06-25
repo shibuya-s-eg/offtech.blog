@@ -97,7 +97,8 @@ YouTubeを見ていて夜更かしした。
 たくさん学べました。
 - I had a great time.\
 楽しかったです
-
+- I decided to focus on quantity over quality and practice speaking English as much as possible.\
+質より量を重視して、たくさん英会話することに決めた。
 
 
 
