@@ -103,6 +103,9 @@ YouTubeを見ていて夜更かしした。
 英語が話せると仕事ができるように見える。実際は仕事で英語を使う機会はないけどね。
 - Speaking English gives me more opportunities to talk with people from other countries. It’s fun to talk with people who have different backgrounds and roots.\
 英語が話せると海外の人と話す機会が増える。自分と異なるルーツを持つ人と話すのは楽しい。
+- When I listened to yesterday’s lesson again, I realized my grammar was all over the place
+昨日のレッスンを聞き直したら文法がめちゃくちゃだった。
+
 
 ## 参考
 
