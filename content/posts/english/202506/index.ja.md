@@ -57,14 +57,14 @@ Todo:
 
 ### 1.2　24日
 
-- It was crowded on the train.
+- It was crowded on the train.\
 電車が混んでいた。
-- I was struggling to improve my English speaking skills.
+- I was struggling to improve my English speaking skills.\
 英会話の上達に伸び悩んでいた。
 
 レッスンはいきなりさぼった。
 
-### 1.2　24日
+### 1.2　25日
 
 
 初めてレッスンを受けた。
@@ -83,6 +83,37 @@ Todo:
 お話できてよかったです。
 - I enjoyed the lesson today.\
 とても楽しかったです。
+
+### 1.3　26日
+
+- Kanji are Chinese characters used in the Japanese writing system.\
+漢字は日本語の表記で使われる中国由来の文字です。
+- I’ll turn up the volume on my side.\
+こちらで音量を上げます。
+- It sounds like you’re far away.\
+あなたの声が遠いようです。
+- I stayed up late watching YouTube.\
+YouTubeを見ていて夜更かしした。
+- How do you say “牛乳パック” in English?\
+“牛乳パック” は英語でなんという？
+- Throw away a milk carton.\
+どちらも「牛乳パックを捨てる」
+- I’m glad you were my first teacher.\
+あなたが私の最初の先生でうれしいです
+- I want to become a computer geek.\
+コンピュータオタクになりたい。
+- I learned a lot.\
+たくさん学べました。
+- I had a great time.\
+楽しかったです
+- I decided to focus on quantity over quality and practice speaking English as much as possible.\
+質より量を重視して、たくさん英会話することに決めた。
+- Speaking English makes you look competent at work. But in reality, I don’t actually use English for my job.\
+英語が話せると仕事ができるように見える。実際は仕事で英語を使う機会はないけどね。
+- Speaking English gives me more opportunities to talk with people from other countries. It’s fun to talk with people who have different backgrounds and roots.\
+英語が話せると海外の人と話す機会が増える。自分と異なるルーツを持つ人と話すのは楽しい。
+- When I listened to yesterday’s lesson again, I realized my grammar was all over the place
+昨日のレッスンを聞き直したら文法がめちゃくちゃだった。
 
 
 ## 参考
