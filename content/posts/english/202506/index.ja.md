@@ -99,8 +99,10 @@ YouTubeを見ていて夜更かしした。
 楽しかったです
 - I decided to focus on quantity over quality and practice speaking English as much as possible.\
 質より量を重視して、たくさん英会話することに決めた。
-
-
+- Speaking English makes you look competent at work. But in reality, I don’t actually use English for my job.\
+英語が話せると仕事ができるように見える。実際は仕事で英語を使う機会はないけどね。
+- Speaking English gives me more opportunities to talk with people from other countries. It’s fun to talk with people who have different backgrounds and roots.\
+英語が話せると海外の人と話す機会が増える。自分と異なるルーツを持つ人と話すのは楽しい。
 
 ## 参考
 
