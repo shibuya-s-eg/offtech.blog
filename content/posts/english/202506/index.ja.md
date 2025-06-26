@@ -120,12 +120,12 @@ YouTubeを見ていて夜更かしした。
 すらすら進むとそれはそれで意味がないので、これくらいが丁度良いのだろうか。。
 
 
-I rely on my friends when I’m going through tough times.\
-- つらいときは友達に頼っています。
-There has been a major shift in how people work since the pandemic.\
-- パンデミック以降、人々の働き方に大きな変化がありました.
-I’m currently seeking new opportunities to improve my English.
-- 今、英語を上達させる新しい機会を探しています
+- I rely on my friends when I’m going through tough times.\
+つらいときは友達に頼っています。
+- There has been a major shift in how people work since the pandemic.\
+パンデミック以降、人々の働き方に大きな変化がありました.
+- I’m currently seeking new opportunities to improve my English.
+今、英語を上達させる新しい機会を探しています
 - Learning English has become a necessity in today’s global society.\
 今日のグローバル社会では、英語を学ぶことは必要不可欠になっています
 - You can improve faster if you combine speaking practice with listening and reading.\
