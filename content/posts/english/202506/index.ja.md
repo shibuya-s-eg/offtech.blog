@@ -133,6 +133,10 @@ YouTubeを見ていて夜更かしした。
 - Do most of your students prepare in advance?
 予習をしてくる学生の方が多いですか？
 
+
+- I’m going to buy a drink from the vending machine.\
+近くの自動販売機で飲み物を買ってくる。
+
 ## 参考
 
 [1] []()
