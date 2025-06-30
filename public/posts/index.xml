@@ -50,7 +50,7 @@
     <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
     <author>しぶや</author>
     <guid>http://localhost:1313/junior-engineers-learning-journal/bfd/</guid>
-    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに 1.1 なぜBFDが必要なのか 1.2 高速な障害検出が重要なユースケース 2 BFDとは]]></description>
+    <description><![CDATA[こんにちは、しぶやです。 今回はBFD（Bidirectional Forwarding Detection）を完全に理解していきます。 TL;DR 1 はじめに 1.1 BFDとは BF]]></description>
 </item>
 <item>
     <title>BGPを完全に理解する</title>
@@ -58,7 +58,7 @@
     <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
     <author>しぶや</author>
     <guid>http://localhost:1313/junior-engineers-learning-journal/bgp/</guid>
-    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに なぜBGPを理解することが重要なのか BGPの基本的な役割と位置付け（AS]]></description>
+    <description><![CDATA[こんにちは、しぶやです。 今回はをBGP ( Border Gateway Protocol )を完全に理解していきます。 TL;DR 1 はじめに 2.1 BGPとは 2.2 BGPとIGPとの違い 2.3 AS（Auton]]></description>
 </item>
 <item>
     <title>CEFを完全に理解する</title>
