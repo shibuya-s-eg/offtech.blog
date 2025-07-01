@@ -159,6 +159,22 @@ YouTubeを見ていて夜更かしした。
 楽しかった。
 
 ### 1.2　2日
+
+- Do you have any question so far?\
+ここまでで質問はありますか？
+- No, not at the moment. Thank you.\
+今のところありません、ありがとうございます。
+- Everything’s clear so far.\
+ここまでで不明な点はありません。
+- I’m good for now, thanks.\
+今のところ大丈夫です、ありがとう。
+- Yes, I have a question about ～.\
+はい、～について質問があります。
+- Actually, I was wondering about ～.\
+実は、～について気になっていました。
+- Could you explain ～ a bit more?\
+～をもう少し詳しく説明していただけますか？
+
 ### 1.3　3日
 ### 1.4　4日
 ### 1.5　5日
