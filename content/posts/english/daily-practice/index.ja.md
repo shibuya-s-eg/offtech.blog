@@ -186,6 +186,8 @@ YouTubeを見ていて夜更かしした。
 
 - These brands are all under the same corporate umbrella.\
 これらのブランドはすべて同じ企業グループに属しています。
+- There’s no need to be frustrated\
+イライラしないで。
 
 ### 1.4　4日
 
