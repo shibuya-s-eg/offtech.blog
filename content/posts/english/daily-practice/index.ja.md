@@ -179,8 +179,17 @@ YouTubeを見ていて夜更かしした。
 - There is a carrot in the bottom right corner of the photo.\
 写真の右下ににんじんがある。
 
+初めて夜に英会話をやった。
+単語の発音が間違えていた際に訂正してくれる先生で非常に勉強になった。
+
 ### 1.3　3日
+
+- These brands are all under the same corporate umbrella.\
+これらのブランドはすべて同じ企業グループに属しています。
+
 ### 1.4　4日
+
+
 ### 1.5　5日
 ### 1.6　6日
 ### 1.7　7日
