@@ -174,6 +174,10 @@ YouTubeを見ていて夜更かしした。
 実は、～について気になっていました。
 - Could you explain ～ a bit more?\
 ～をもう少し詳しく説明していただけますか？
+- There is a carrot in the top left corner of the photo.\
+写真の左上ににんじんがある。
+- There is a carrot in the bottom right corner of the photo.\
+写真の右下ににんじんがある。
 
 ### 1.3　3日
 ### 1.4　4日
