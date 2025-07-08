@@ -193,6 +193,11 @@ YouTubeを見ていて夜更かしした。
 
 
 ### 1.5　5日
+
+- I reviewed this expression last time
+この表現を前回復習した。
+
+
 ### 1.6　6日
 ### 1.7　7日
 ### 1.8　8日
