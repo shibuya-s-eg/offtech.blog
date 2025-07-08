@@ -66,6 +66,8 @@ lightgallery: true
 ### 1.1　本記事の目的と対象読者
 
 ### 1.2　加速度的な成長
+https://whatfix.com/blog/learning-curve/
+
 
 ### 1.3　定義と定理
 
