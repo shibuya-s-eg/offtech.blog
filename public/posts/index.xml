@@ -21,6 +21,22 @@
     <description><![CDATA[こんにちは、しぶやです。 最近、キーボードの自作を始めたので、その様子を紹介したいと思います。 TL;DR キーボードを初めて自作しました。 初心者でも頑張]]></description>
 </item>
 <item>
+    <title>自宅鯖環境を構築する~概要編~</title>
+    <link>http://localhost:1313/junior-engineers-learning-journal/home-intro/</link>
+    <pubDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/junior-engineers-learning-journal/home-intro/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 最近、キーボードの自作を始めたので、その様子を紹介したいと思います。 TL;DR キーボードを初めて自作しました。 初心者でも頑張]]></description>
+</item>
+<item>
+    <title>自宅鯖環境を構築する~要件定義編~</title>
+    <link>http://localhost:1313/junior-engineers-learning-journal/home-requirement-definition/</link>
+    <pubDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/junior-engineers-learning-journal/home-requirement-definition/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 最近、キーボードの自作を始めたので、その様子を紹介したいと思います。 TL;DR キーボードを初めて自作しました。 初心者でも頑張]]></description>
+</item>
+<item>
     <title>DNSを完全に理解する</title>
     <link>http://localhost:1313/junior-engineers-learning-journal/dns/</link>
     <pubDate>Fri, 25 Apr 2025 00:00:00 &#43;0900</pubDate>
@@ -67,22 +83,6 @@
     <author>しぶや</author>
     <guid>http://localhost:1313/junior-engineers-learning-journal/cef/</guid>
     <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに 1.1 CEFとは何か CEF（Cisco Express Forwarding）の目的と誕生背]]></description>
-</item>
-<item>
-    <title>EIGRPを完全に理解する</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/eigrp/</link>
-    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
-    <author>しぶや</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/eigrp/</guid>
-    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに なぜEIGRPを理解することが重要なのか OSPFやRIPとの違いと位置づ]]></description>
-</item>
-<item>
-    <title>HSRPを完全に理解する</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/hsrp/</link>
-    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
-    <author>しぶや</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/hsrp/</guid>
-    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに 1.1 HSRPとは何か Cisco独自のファーストホップ冗長化プロトコルである]]></description>
 </item>
 </channel>
 </rss>
