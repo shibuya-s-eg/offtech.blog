@@ -194,7 +194,7 @@ YouTubeを見ていて夜更かしした。
 
 ### 1.5　5日
 
-- I reviewed this expression last time
+- I reviewed this expression last time.\
 この表現を前回復習した。
 
 
@@ -215,6 +215,14 @@ YouTubeを見ていて夜更かしした。
 ### 1.20　20日
 ### 1.21　21日
 ### 1.22　22日
+
+- Does Mr. Smith usually eat dinner alone?\
+スミスさんは普段一人で夕食をたべますか？
+- Yes, but not today. Today, he is eating dinner with his girlfriend.\
+はい、でも今日は違いました。今日、彼は彼女と夕食を食べました。
+- Be nice to your friends.\
+友達には優しくしなさい。
+
 ### 1.23　23日
 
 ## 参考
