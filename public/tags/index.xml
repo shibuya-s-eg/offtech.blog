@@ -1,87 +1,87 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Tags - Tags - junior-engineers-learning-journal</title>
-        <link>http://localhost:1313/junior-engineers-learning-journal/tags/</link>
-        <description>Tags - Tags - junior-engineers-learning-journal</description>
+        <title>Tags - Tags - offtech.blog</title>
+        <link>http://localhost:1313/offtech.blog/tags/</link>
+        <description>Tags - Tags - offtech.blog</description>
         <generator>Hugo -- gohugo.io</generator><language>ja</language><managingEditor>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</managingEditor>
-            <webMaster>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><atom:link href="http://localhost:1313/junior-engineers-learning-journal/tags/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><atom:link href="http://localhost:1313/offtech.blog/tags/" rel="self" type="application/rss+xml" /><item>
     <title>Hobby</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/tags/hobby/</link>
+    <link>http://localhost:1313/offtech.blog/tags/hobby/</link>
     <pubDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</pubDate>
     <author>shibuya.s.eg@gmail.com</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/tags/hobby/</guid>
+    <guid>http://localhost:1313/offtech.blog/tags/hobby/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
     <title>Virtualization</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/tags/virtualization/</link>
+    <link>http://localhost:1313/offtech.blog/tags/virtualization/</link>
     <pubDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</pubDate>
     <author>shibuya.s.eg@gmail.com</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/tags/virtualization/</guid>
+    <guid>http://localhost:1313/offtech.blog/tags/virtualization/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
     <title>Network</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/tags/network/</link>
+    <link>http://localhost:1313/offtech.blog/tags/network/</link>
     <pubDate>Fri, 25 Apr 2025 00:00:00 &#43;0900</pubDate>
     <author>shibuya.s.eg@gmail.com</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/tags/network/</guid>
+    <guid>http://localhost:1313/offtech.blog/tags/network/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
     <title>Application</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/tags/application/</link>
+    <link>http://localhost:1313/offtech.blog/tags/application/</link>
     <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
     <author>shibuya.s.eg@gmail.com</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/tags/application/</guid>
+    <guid>http://localhost:1313/offtech.blog/tags/application/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
     <title>English</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/tags/english/</link>
+    <link>http://localhost:1313/offtech.blog/tags/english/</link>
     <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
     <author>shibuya.s.eg@gmail.com</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/tags/english/</guid>
+    <guid>http://localhost:1313/offtech.blog/tags/english/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
     <title>IoT</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/tags/iot/</link>
+    <link>http://localhost:1313/offtech.blog/tags/iot/</link>
     <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
     <author>shibuya.s.eg@gmail.com</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/tags/iot/</guid>
+    <guid>http://localhost:1313/offtech.blog/tags/iot/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
     <title>Others</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/tags/others/</link>
+    <link>http://localhost:1313/offtech.blog/tags/others/</link>
     <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
     <author>shibuya.s.eg@gmail.com</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/tags/others/</guid>
+    <guid>http://localhost:1313/offtech.blog/tags/others/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
     <title>Security</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/tags/security/</link>
+    <link>http://localhost:1313/offtech.blog/tags/security/</link>
     <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
     <author>shibuya.s.eg@gmail.com</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/tags/security/</guid>
+    <guid>http://localhost:1313/offtech.blog/tags/security/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
     <title>OS</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/tags/os/</link>
+    <link>http://localhost:1313/offtech.blog/tags/os/</link>
     <pubDate>Thu, 20 Mar 2025 00:00:00 &#43;0900</pubDate>
     <author>shibuya.s.eg@gmail.com</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/tags/os/</guid>
+    <guid>http://localhost:1313/offtech.blog/tags/os/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
     <title>Database, Storage</title>
-    <link>http://localhost:1313/junior-engineers-learning-journal/tags/database-storage/</link>
+    <link>http://localhost:1313/offtech.blog/tags/database-storage/</link>
     <pubDate>Sun, 16 Mar 2025 00:00:00 &#43;0900</pubDate>
     <author>shibuya.s.eg@gmail.com</author>
-    <guid>http://localhost:1313/junior-engineers-learning-journal/tags/database-storage/</guid>
+    <guid>http://localhost:1313/offtech.blog/tags/database-storage/</guid>
     <description><![CDATA[]]></description>
 </item>
 </channel>

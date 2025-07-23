@@ -1,4 +1,4 @@
-baseURL = "https://shibuya-s-eg.github.io/junior-engineers-learning-journal/"
+baseURL = "https://shibuya-s-eg.github.io/offtech.blog/"
 
 # theme
 theme = "LoveIt"
@@ -6,7 +6,7 @@ theme = "LoveIt"
 #themesDir = "theme"
 
 # website title
-title = "junior-engineers-learning-journal"
+title = "offtech.blog"
 
 # determines default content language ["en", "zh-cn", "fr", "pl", ...]
 defaultContentLanguage = "ja"
@@ -78,7 +78,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   # site default theme ["auto", "light", "dark"]
   defaultTheme = "auto"
   # public git repo url only then enableGitInfo is true
-  gitRepo = "https://github.com/shibuya-s-eg/junior-engineers-learning-journal"
+  gitRepo = "https://github.com/shibuya-s-eg/offtech.blog"
   # which hash function used for SRI, when empty, no SRI is used
   # ["sha256", "sha384", "sha512", "md5"]
   fingerprint = ""
@@ -95,7 +95,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   [params.author]
     name = "shibuya.s.eg@gmail.com"
     email = "shibuya.s.eg@gmail.com"
-    link = "https://github.com/shibuya-s-eg/junior-engineers-learning-journal"
+    link = "https://github.com/shibuya-s-eg/offtech.blog"
 
   # Header config
   [params.header]
@@ -687,7 +687,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
         pre = "<i class='fab fa-github fa-fw' aria-hidden='true'></i>"
         post = ""
         name = ""
-        url = "https://github.com/shibuya-s-eg/junior-engineers-learning-journal"
+        url = "https://github.com/shibuya-s-eg/offtech.blog"
         title = "GitHub"
     [languages.ja.params]
       [languages.ja.params.search]
@@ -783,7 +783,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
         pre = "<i class='fab fa-github fa-fw' aria-hidden='true'></i>"
         post = ""
         name = ""
-        url = "https://github.com/shibuya-s-eg/junior-engineers-learning-journal"
+        url = "https://github.com/shibuya-s-eg/offtech.blog"
         title = "GitHub"
     [languages.en.params]
       [languages.en.params.search]
