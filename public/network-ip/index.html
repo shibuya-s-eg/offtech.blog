@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>IPを完全に理解する - offtech.blog</title><meta name="Description" content="IPを完全に理解する"><meta property="og:url" content="http://localhost:1313/offtech.blog/network-ip/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="IPを完全に理解する">
+  <meta property="og:description" content="IPを完全に理解する">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-13T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-22T13:54:21+09:00">
+    <meta property="article:tag" content="Network">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="IPを完全に理解する">
+  <meta name="twitter:description" content="IPを完全に理解する">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/network-ip/" /><link rel="prev" href="http://localhost:1313/offtech.blog/network-nat/" /><link rel="next" href="http://localhost:1313/offtech.blog/http/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "IPを完全に理解する",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/network-ip\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Network","wordcount":  618 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/network-ip\/","datePublished": "2025-04-13T00:00:00+09:00","dateModified": "2025-06-22T13:54:21+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "IPを完全に理解する"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/network-ip/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/network-ip/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">IPを完全に理解する</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-13">2025-04-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;618 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#1-はじめに">1 はじめに</a>
+      <ul>
+        <li><a href="#11-本記事の目的">1.1 本記事の目的</a></li>
+        <li><a href="#12-対象読者と前提知識">1.2 対象読者と前提知識</a></li>
+        <li><a href="#13-本記事の全体構成">1.3 本記事の全体構成</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-ipとは何か">2 IPとは何か</a>
+      <ul>
+        <li><a href="#21-ipの基本概念">2.1 IPの基本概念</a></li>
+        <li><a href="#22-osi参照モデルとの関係">2.2 OSI参照モデルとの関係</a></li>
+        <li><a href="#23-コネクションレスとベストエフォート">2.3 コネクションレスとベストエフォート</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-ipアドレスの構造と割り当て">3 IPアドレスの構造と割り当て</a>
+      <ul>
+        <li><a href="#31-ipv4アドレスの構造">3.1 IPv4アドレスの構造</a></li>
+        <li><a href="#32-ipv6アドレスの構造と違い">3.2 IPv6アドレスの構造と違い</a></li>
+        <li><a href="#33-プライベートipとグローバルip">3.3 プライベートIPとグローバルIP</a></li>
+        <li><a href="#34-ipアドレスの割り当て機関iana-rirなど">3.4 IPアドレスの割り当て機関（IANA, RIRなど）</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-ipヘッダの中身を徹底解説">4 IPヘッダの中身を徹底解説</a>
+      <ul>
+        <li><a href="#41-ipv4ヘッダの構造と各フィールド">4.1 IPv4ヘッダの構造と各フィールド</a></li>
+        <li><a href="#42-ipv6ヘッダとの比較と違い">4.2 IPv6ヘッダとの比較と違い</a></li>
+        <li><a href="#43-実際のパケットキャプチャ例">4.3 実際のパケットキャプチャ例</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-フラグメンテーションと再構成">5 フラグメンテーションと再構成</a>
+      <ul>
+        <li><a href="#51-フラグメンテーションの仕組み">5.1 フラグメンテーションの仕組み</a></li>
+        <li><a href="#52-再構成の流れと問題点">5.2 再構成の流れと問題点</a></li>
+        <li><a href="#53-mtuとdont-fragmentフラグ">5.3 MTUとDon&rsquo;t Fragmentフラグ</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-ルーティングとipの関係">6 ルーティングとIPの関係</a>
+      <ul>
+        <li><a href="#61-ipとルーティングの役割分担">6.1 IPとルーティングの役割分担</a></li>
+        <li><a href="#62-ipフォワーディングとルーティングテーブル">6.2 IPフォワーディングとルーティングテーブル</a></li>
+        <li><a href="#63-デフォルトゲートウェイと経路制御">6.3 デフォルトゲートウェイと経路制御</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-ipのセキュリティ上の考慮点">7 IPのセキュリティ上の考慮点</a>
+      <ul>
+        <li><a href="#71-ipスプーフィング">7.1 IPスプーフィング</a></li>
+        <li><a href="#72-フラグメンテーションを悪用した攻撃">7.2 フラグメンテーションを悪用した攻撃</a></li>
+        <li><a href="#73-icmpリダイレクト攻撃">7.3 ICMPリダイレクト攻撃</a></li>
+        <li><a href="#74-ipsecによる保護">7.4 IPsecによる保護</a></li>
+      </ul>
+    </li>
+    <li><a href="#8-ipの進化と限界">8 IPの進化と限界</a>
+      <ul>
+        <li><a href="#81-ipv4の限界とnatの登場">8.1 IPv4の限界とNATの登場</a></li>
+        <li><a href="#82-ipv6の特徴と導入状況">8.2 IPv6の特徴と導入状況</a></li>
+        <li><a href="#83-マルチキャストanycastユニキャスト">8.3 マルチキャスト・Anycast・ユニキャスト</a></li>
+      </ul>
+    </li>
+    <li><a href="#9-よくある誤解とfaq">9 よくある誤解とFAQ</a>
+      <ul>
+        <li><a href="#91-ipがホストを識別するの誤解">9.1 「IPがホストを識別する」の誤解</a></li>
+        <li><a href="#92-ipは信頼できる通信を提供するの誤解">9.2 「IPは信頼できる通信を提供する」の誤解</a></li>
+        <li><a href="#93-その他のよくある質問">9.3 その他のよくある質問</a></li>
+      </ul>
+    </li>
+    <li><a href="#10-まとめと参考資料">10 まとめと参考資料</a>
+      <ul>
+        <li><a href="#101-ipの本質と学びのポイント">10.1 IPの本質と学びのポイント</a></li>
+        <li><a href="#102-さらなる学習へのリンクとrfc資料">10.2 さらなる学習へのリンクとRFC資料</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+- TLDR
+
+-->
+<p>こんにちは、しぶやです。
+今回はを完全に理解していきます。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+<h2 id="1-はじめに">1 はじめに</h2>
+<h3 id="11-本記事の目的">1.1 本記事の目的</h3>
+<h3 id="12-対象読者と前提知識">1.2 対象読者と前提知識</h3>
+<h3 id="13-本記事の全体構成">1.3 本記事の全体構成</h3>
+<h2 id="2-ipとは何か">2 IPとは何か</h2>
+<h3 id="21-ipの基本概念">2.1 IPの基本概念</h3>
+<h3 id="22-osi参照モデルとの関係">2.2 OSI参照モデルとの関係</h3>
+<h3 id="23-コネクションレスとベストエフォート">2.3 コネクションレスとベストエフォート</h3>
+<h2 id="3-ipアドレスの構造と割り当て">3 IPアドレスの構造と割り当て</h2>
+<h3 id="31-ipv4アドレスの構造">3.1 IPv4アドレスの構造</h3>
+<h3 id="32-ipv6アドレスの構造と違い">3.2 IPv6アドレスの構造と違い</h3>
+<h3 id="33-プライベートipとグローバルip">3.3 プライベートIPとグローバルIP</h3>
+<h3 id="34-ipアドレスの割り当て機関iana-rirなど">3.4 IPアドレスの割り当て機関（IANA, RIRなど）</h3>
+<h2 id="4-ipヘッダの中身を徹底解説">4 IPヘッダの中身を徹底解説</h2>
+<h3 id="41-ipv4ヘッダの構造と各フィールド">4.1 IPv4ヘッダの構造と各フィールド</h3>
+<h3 id="42-ipv6ヘッダとの比較と違い">4.2 IPv6ヘッダとの比較と違い</h3>
+<h3 id="43-実際のパケットキャプチャ例">4.3 実際のパケットキャプチャ例</h3>
+<h2 id="5-フラグメンテーションと再構成">5 フラグメンテーションと再構成</h2>
+<h3 id="51-フラグメンテーションの仕組み">5.1 フラグメンテーションの仕組み</h3>
+<h3 id="52-再構成の流れと問題点">5.2 再構成の流れと問題点</h3>
+<h3 id="53-mtuとdont-fragmentフラグ">5.3 MTUとDon&rsquo;t Fragmentフラグ</h3>
+<h2 id="6-ルーティングとipの関係">6 ルーティングとIPの関係</h2>
+<h3 id="61-ipとルーティングの役割分担">6.1 IPとルーティングの役割分担</h3>
+<h3 id="62-ipフォワーディングとルーティングテーブル">6.2 IPフォワーディングとルーティングテーブル</h3>
+<h3 id="63-デフォルトゲートウェイと経路制御">6.3 デフォルトゲートウェイと経路制御</h3>
+<h2 id="7-ipのセキュリティ上の考慮点">7 IPのセキュリティ上の考慮点</h2>
+<h3 id="71-ipスプーフィング">7.1 IPスプーフィング</h3>
+<h3 id="72-フラグメンテーションを悪用した攻撃">7.2 フラグメンテーションを悪用した攻撃</h3>
+<h3 id="73-icmpリダイレクト攻撃">7.3 ICMPリダイレクト攻撃</h3>
+<h3 id="74-ipsecによる保護">7.4 IPsecによる保護</h3>
+<h2 id="8-ipの進化と限界">8 IPの進化と限界</h2>
+<h3 id="81-ipv4の限界とnatの登場">8.1 IPv4の限界とNATの登場</h3>
+<h3 id="82-ipv6の特徴と導入状況">8.2 IPv6の特徴と導入状況</h3>
+<h3 id="83-マルチキャストanycastユニキャスト">8.3 マルチキャスト・Anycast・ユニキャスト</h3>
+<h2 id="9-よくある誤解とfaq">9 よくある誤解とFAQ</h2>
+<h3 id="91-ipがホストを識別するの誤解">9.1 「IPがホストを識別する」の誤解</h3>
+<h3 id="92-ipは信頼できる通信を提供するの誤解">9.2 「IPは信頼できる通信を提供する」の誤解</h3>
+<h3 id="93-その他のよくある質問">9.3 その他のよくある質問</h3>
+<h2 id="10-まとめと参考資料">10 まとめと参考資料</h2>
+<h3 id="101-ipの本質と学びのポイント">10.1 IPの本質と学びのポイント</h3>
+<h3 id="102-さらなる学習へのリンクとrfc資料">10.2 さらなる学習へのリンクとRFC資料</h3>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="" rel=""></a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-22&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/c03e0cbc9b4b04377aeebe178590bacfe62fcf73" target="_blank" title="commit by root(root@kalis) c03e0cbc9b4b04377aeebe178590bacfe62fcf73: 2025062201">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>c03e0cb</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/network-ip/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/network-ip/" data-title="IPを完全に理解する" data-hashtags="Network"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/network-ip/" data-title="IPを完全に理解する"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/network-ip/" data-hashtag="Network"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/network-ip/" data-title="IPを完全に理解する"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/network-ip/" data-title="IPを完全に理解する"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/network-ip/" data-title="IPを完全に理解する"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/network-ip/" data-title="IPを完全に理解する" data-description="IPを完全に理解する"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fnetwork-ip%2f&amp;text=IP%e3%82%92%e5%ae%8c%e5%85%a8%e3%81%ab%e7%90%86%e8%a7%a3%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/network/">Network</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/network-nat/" class="prev" rel="prev" title="NATを完全に理解する"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>NATを完全に理解する</a>
+            <a href="/offtech.blog/http/" class="next" rel="next" title="HTTPを完全に理解する">HTTPを完全に理解する<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

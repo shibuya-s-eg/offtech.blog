@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>NASを完全に理解する - offtech.blog</title><meta name="Description" content="NASを完全に理解する。"><meta property="og:url" content="http://localhost:1313/offtech.blog/nas/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="NASを完全に理解する">
+  <meta property="og:description" content="NASを完全に理解する。">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-03-16T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-24T21:43:11+09:00">
+    <meta property="article:tag" content="Database, Storage">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="NASを完全に理解する">
+  <meta name="twitter:description" content="NASを完全に理解する。">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/nas/" /><link rel="prev" href="http://localhost:1313/offtech.blog/idea-log/" /><link rel="next" href="http://localhost:1313/offtech.blog/system-framework-guidline/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "NASを完全に理解する",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/nas\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Database, Storage","wordcount":  5842 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/nas\/","datePublished": "2025-03-16T00:00:00+09:00","dateModified": "2025-06-24T21:43:11+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "NASを完全に理解する。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/nas/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/nas/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">NASを完全に理解する</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-03-16">2025-03-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;5842 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;12 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#1nasの基本">1　NASの基本</a>
+      <ul>
+        <li><a href="#11nasとは">1.1　NASとは</a></li>
+        <li><a href="#12nasの機能">1.2　NASの機能</a></li>
+        <li><a href="#13nasのメリットデメリット">1.3　NASのメリット・デメリット</a></li>
+        <li><a href="#14外付けストレージファイルサーバとの違い">1.4　外付けストレージ・ファイルサーバとの違い</a></li>
+        <li><a href="#15ユースケース">1.5　ユースケース</a></li>
+      </ul>
+    </li>
+    <li><a href="#2synologyを触る">2　Synologyを触る</a>
+      <ul>
+        <li><a href="#21解体">2.1　解体</a></li>
+        <li><a href="#22初期設定">2.2　初期設定</a></li>
+        <li><a href="#22検証">2.2　検証</a></li>
+      </ul>
+    </li>
+    <li><a href="#3まとめ">3　まとめ</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>こんにちは、しぶやです。<br>
+最近、Synologyのnasを中古で安く仕入れたので、これを機にNASを「完全に理解」していきたいと思います。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li>NASはファイルサーバみたいなもの。</li>
+<li>標準機能として、RAIDが組めたり、バックアップとれたり、いろいろできる。</li>
+<li>NAS用ソフトが充実している。</li>
+</ul>
+<h2 id="1nasの基本">1　NASの基本</h2>
+<p>本章では、NASの基本について学んでいきます。</p>
+<h3 id="11nasとは">1.1　NASとは</h3>
+<p>NASとは、Network Attached Strorageの略です。その名の通り、ネットワークに接続して利用するストレージです。<br>
+代表的なNASメーカーには以下のようなものがあります。</p>
+<ul>
+<li>Synology</li>
+<li>QNAP</li>
+<li>BUFFALO</li>
+<li>NETGEAR</li>
+</ul>
+<p>何はともあれ、現物を見てイメージの具体化をしてみます。</p>
+<p>　</p>
+<ul>
+<li><a href="https://www.synology.com/ja-jp/products/DS223j" target="_blank" rel="noopener noreffer ">Synology DiskStation DS223j</a><br>
+小型で静音の省エネ型ストレージ</li>
+</ul>
+<p>こちらは、家庭用でも利用されているNASです。Youtubeとかもよく見るサイズのものですね。</p>
+<p>　</p>
+<ul>
+<li><a href="https://www.synology.com/ja-jp/products/DS3622xs&#43;" target="_blank" rel="noopener noreffer ">Synology DiskStation DS3622xs+</a><br>
+どんな環境にも適合する、パワフルで大容量のストレージ</li>
+</ul>
+<p>こちらは、より高性能な大容量ストレージです。いかつい見た目でかっこよいですね<i class="fa-brands fa-linux fax" aria-hidden="true"></i></p>
+<p>　</p>
+<ul>
+<li><a href="http://synology.com/ja-jp/products/FS6400" target="_blank" rel="noopener noreffer ">Synology FlashStation FS6400</a><br>
+I/O インテンシブなアプリケーション向けの超高速オールフラッシュサーバー</li>
+</ul>
+<p>ラックマウント用のNASもあるようです。</p>
+<p>　</p>
+<ul>
+<li><a href="https://www.synology.com/ja-jp/products/drives/hdd/plus-hat" target="_blank" rel="noopener noreffer ">Synology Plusシリーズ3.5インチSATA HDD</a><br>
+家庭やスモールオフィス環境のSynologyシステム専用に作られた高信頼性ハードドライブ</li>
+<li><a href="https://www.synology.com/ja-jp/products/drives/ssd/enterprise-sat" target="_blank" rel="noopener noreffer ">Synology Enterpriseシリーズ2.5インチSATA SSD</a><br>
+SynologyのSSDを使用してストレージ インフラを最新化</li>
+</ul>
+<p>NASには上記のようなHDDやSDDを差し込み利用します。<strong>nベイ</strong>というのは、これらを差し込むスロットが何個あるかを表しています。</p>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>DAS vs NAS vs SAN<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>NASと比較されるものとして、<strong>DAS</strong>や<strong>SAN</strong>があります。</p>
+<ul>
+<li><strong>DAS：Direct Attached Storage</strong><br>
+ストレージを直接コンピュータに接続する方式です。容易なセットアップや低コストといった特徴があります。</li>
+<li><strong>NAS：Network Attached Storage</strong><br>
+本記事で取り上げている通り、ネットワークを通じてアクセス可能なストレージです。ネットワーク経由で複数人で同時にアクセスできる特徴があります。</li>
+<li><strong>SAN：Storage Area Network</strong><br>
+専用のネットワーク経由で複数のサーバと接続できるストレージです。
+こちらについては、あまり詳しくわかっていませんが、データ転送が高速であったり、ブロックレベルでアクセス可能といった特徴があるようです。
+ちなみに、どんなプロトコルで通信が行われているのかについてですが、iSCSI（IP over SCSI）やFibre Channel（FC）、Fibre Channel over Ethernet（FCoE）といったものが利用されているようです。</li>
+</ul></div>
+        </div>
+    </div>
+<h3 id="12nasの機能">1.2　NASの機能</h3>
+<p>それでは、NASの具体的な機能を見ていきます。</p>
+<ul>
+<li>
+<p><strong>ファイル共有</strong><br>
+ネットワーク経由でファイルの読み書きが可能です。スナップショットをとれたり、バージョン管理機能を持っていたりするものなどもあります。
+「具体的に中で何が動いているのか」についてですが、NASはSMBやNFSなど複数のプロトコルをサポートしており、中身は一般的なOSSでファイルサーバのように動くようです。</p>
+</li>
+<li>
+<p><strong>アクセス管理</strong><br>
+利用者視点ではもちろん機能ですね。ユーザごとに読み取り専用などアクセス権の管理が可能です。</p>
+</li>
+<li>
+<p><strong>RAID</strong><br>
+RAIDによるデータの冗長性を確保できます。もちろん複数ベイが必要になります。</p>
+</li>
+</ul>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>復習：RAID<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>RAIDはRedundant Arrays of Inexpensive Disksの略です。複数のディスクを組み合わせて冗長化するやつですね。<br>
+RAIDの主なレベルは以下です。</p>
+<ul>
+<li>
+<p><strong>RAID 0</strong><br>
+冗長化していない通常のモードです。
+信頼性は失われますが、書き込む量も増えないため、高速でストレージの利用効率も高いです。</p>
+</li>
+<li>
+<p><strong>RAID 1</strong><br>
+2台のディスクを利用したシンプルなミラーリングです。データを二重に保存します。</p>
+</li>
+<li>
+<p><strong>RAID 5</strong><br>
+3台以上のディスクを利用し、データとそのパリティをそれぞれ分散させて保存します。
+パリティを保存しているため、容量効率は高いですが、データの復旧には時間がかかってしまいます。</p>
+</li>
+<li>
+<p><strong>RAID 6</strong><br>
+RAID5 + パリティです。RAID1やRIAD5と異なり、2台のディスクが壊れても復旧が可能です。</p>
+</li>
+<li>
+<p><strong>RAID 10</strong><br>
+RAID 1 + RAID 0でRAID 10です。RAID 5/6よりも書き込みが高速で、耐障害性も高いです。</p>
+</li>
+</ul>
+</div>
+        </div>
+    </div>
+<ul>
+<li><strong>バックアップ</strong><br>
+バックアップにはPC等のクライアントのバックアップとNAS自身のデータのバックアップの2つ観点があります。
+前者は専用のクライアントソフトなどを利用することで、手軽に頻度や対象を指定したバックアップを行えます。
+後者は、Google DriveやAWSなど、クラウドストレージへNAS自身のデータをバックアップできます。</li>
+</ul>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>Tip<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">NASは標準でRAID機能を持っているものが多いですが、これはあくまで冗長化です。<br>
+操作ミスによるNASデータの削除やランサムウェアによる被害が発生した際はデータを失ってしまいます。<br>
+これらの対策として別のストレージにバックアップを取ることが重要となり、NASは標準でクラウドストレージへのバップアップを行うことができます。</div>
+        </div>
+    </div>
+<p>データの冗長化ではないですが、通信の冗長化としてLAGが組めるのも良い点ですね。
+LANポートを複数持っているので、通信経路の冗長化にもなります。</p>
+<ul>
+<li>
+<p><strong>リモートアクセスやVPN</strong><br>
+専用ソフトを利用することで、インターネット経由で安全にアクセスできる機能を備えています。
+インターネット経由で利用することも考えると当たり前に欲しい機能ですね。</p>
+</li>
+<li>
+<p><strong>VMやコンテナの実行</strong><br>
+高性能のNASの場合は、VMやコンテナを中で動かせるようです。
+独自のアプリケーションを中で動かすことで様々なことができるようになります。</p>
+</li>
+<li>
+<p><strong>セキュリティ</strong><br>
+NAS自身がファイアウォール機能などを持っていることもあります。
+また、高性能なものは2段階認証を利用できたり、ウイルススキャン機能を持っていたりします。</p>
+</li>
+<li>
+<p><strong>Webサーバやメディアサーバ</strong><br>
+サーバ機能を持っているものもあるようです。</p>
+</li>
+<li>
+<p><strong>メンテナンス</strong><br>
+ファームウェアの自動アップデート機能を持っていたりします。
+また、今回Synologyを使ってみてわかりましたが、オンラインからのヘルスチェックサービスなどもあるようです。</p>
+</li>
+</ul>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>NASの性能<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">NASを買う前は、NASは高性能な高いやつほど読み書き速度が早いと安直に考えていました。
+改めて考えてみると、読み書き速度はNASの性能ではなく、HDDやSDDの読み書き速度に依存することがわかります。
+※ 正確には、ネットワークの帯域幅であったり、RAIDの構成、CPUの性能などにも依存します。</div>
+        </div>
+    </div>
+<h3 id="13nasのメリットデメリット">1.3　NASのメリット・デメリット</h3>
+<p>NASのメリットは何と言っても1.2であげたものが<strong>手軽に利用できる</strong>ことです。
+外付けHDDだけでは、複数人でデータを共有することはできないですし、ネットワーク経由でデータにアクセスすることもできません。</p>
+<p>一方でNASのデメリットは、初期費用が高いことです。高機能なものにもなると、HDD抜きでNAS自身が非常に高いです。</p>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>所感<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">上記で太字で記載しましたが、<strong>NASの本質は標準で様々な機能が入っており、手軽に導入できる</strong>ことかと思います。
+NAS自身のOSは専用の組み込みOSであることが多いようですが、その気になればPC1台とRAIDに必要な外付けHDDがあれば1.2で上げた機能をすべて実現できると思います。
+これらの導入コストを低くできることがNASのメリットだと考えています。※ 静音だとか性能だとかって話はあると思いますが。</div>
+        </div>
+    </div>
+<h3 id="14外付けストレージファイルサーバとの違い">1.4　外付けストレージ・ファイルサーバとの違い</h3>
+<p>比較表を書こうと思いましたが、1.3で述べたように、以下のような関係で表すことが適切かと思いました。</p>
+<ul>
+<li><strong>外付けHDD ⊂ ファイルサーバ ⊂ NAS</strong></li>
+</ul>
+<p>外付けHDDもRAIDが組めるものがありますし、複数台で自分で組むこともできるでしょう。
+また、外付けHDDをマウントし、ファイルサーバを建てることもできれば、フアイルサーバに機能を加えNASっぽく運用することもできるでしょう。
+これらのことから、それぞれの境界はやや曖昧で、包含関係がしっくりきました。</p>
+<h3 id="15ユースケース">1.5　ユースケース</h3>
+<ul>
+<li>
+<p><strong>ファイルサーバ</strong><br>
+家庭用、企業用問わずファイルサーバとしてデータ共有に利用されています。</p>
+</li>
+<li>
+<p><strong>バックアップ</strong><br>
+バックアップの保存用途でNASが利用されています。</p>
+</li>
+<li>
+<p><strong>その他</strong><br>
+メディアサーバ等様々な用途で利用されています。IoTの発展に伴い、カメラデータの保存等にも使われているようです。</p>
+</li>
+</ul>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>Tip<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>NASというよりHDDの話です。
+よく壊れやすいと言われているHDDについてですが、動かし続けていないとより壊れやすいようです。
+具体的な理由はChatGPTが以下のように教えてくれました。</p>
+<ul>
+<li>ヘッドの位置ずれ</li>
+<li>潤滑油の劣化</li>
+<li>温度管理の不良</li>
+<li>結露の問題</li>
+<li>機械部品の劣化
+家とかも誰も住んでいないとすぐだめになったりしますよね<i class="fa-brands fa-linux fax" aria-hidden="true"></i></li>
+</ul></div>
+        </div>
+    </div>
+<h2 id="2synologyを触る">2　Synologyを触る</h2>
+<p>今回は<a href="https://global.download.synology.com/download/Document/Hardware/DataSheet/DiskStation/20-year/DS120j/jpn/Synology_DS120j_Data_Sheet_jpn.pdf" target="_blank" rel="noopener noreffer ">Synology DS120j</a>を中古で安く仕入れたので、こちらを触ります。
+1ベイモデルとなっており、RAIDを組めないのが残念ですが、用途としては自宅鯖のバックアップようなのでよいでしょう。</p>
+<ul>
+<li>製品名：Synology DS120j</li>
+<li>バージョン：DSM 7.2.2</li>
+<li>HDD容量：2TB</li>
+</ul>
+<p>OSは初期セットアップ時にダウンロードしました。HDDは別で買うのが面倒だったので、HDD付きを買いました。</p>
+<figure><a class="lightgallery" href="/offtech.blog/nas/synology-exterior.jpeg" title="/offtech.blog/nas/synology-exterior.jpeg" data-thumbnail="/offtech.blog/nas/synology-exterior.jpeg" data-sub-html="<h2>Synology DS120j</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/nas/synology-exterior.jpeg"
+            data-srcset="/offtech.blog/nas/synology-exterior.jpeg, /offtech.blog/nas/synology-exterior.jpeg 1.5x, /offtech.blog/nas/synology-exterior.jpeg 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/nas/synology-exterior.jpeg" width="400px" height="300px" />
+    </a><figcaption class="image-caption">Synology DS120j</figcaption>
+    </figure>
+<h3 id="21解体">2.1　解体</h3>
+<p>解体（物理）です。</p>
+<figure><a class="lightgallery" href="/offtech.blog/nas/synology-interior.jpeg" title="/offtech.blog/nas/synology-interior.jpeg" data-thumbnail="/offtech.blog/nas/synology-interior.jpeg" data-sub-html="<h2>NAS 解体ショー</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/nas/synology-interior.jpeg"
+            data-srcset="/offtech.blog/nas/synology-interior.jpeg, /offtech.blog/nas/synology-interior.jpeg 1.5x, /offtech.blog/nas/synology-interior.jpeg 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/nas/synology-interior.jpeg" width="400px" height="300px" />
+    </a><figcaption class="image-caption">NAS 解体ショー</figcaption>
+    </figure>
+<p>思っていたより大きめの基盤が張り付いていました。この辺も最低でも登場人物と役割がわかる程度にはなりたいですが、今は電源やファンの接続部分くらいしか分からないです。
+近いうちに勉強する予定があるので別記事に書くとして今回はスルーします。</p>
+<div class="image-row">
+    <figure><a class="lightgallery" href="/offtech.blog/nas/synology-hdd0.jpeg" title="/offtech.blog/nas/synology-hdd0.jpeg" data-thumbnail="/offtech.blog/nas/synology-hdd0.jpeg" data-sub-html="<h2>HDD 表</h2>">
+            <img
+                class="lazyload"
+                src="/offtech.blog/svg/loading.min.svg"
+                data-src="/offtech.blog/nas/synology-hdd0.jpeg"
+                data-srcset="/offtech.blog/nas/synology-hdd0.jpeg, /offtech.blog/nas/synology-hdd0.jpeg 1.5x, /offtech.blog/nas/synology-hdd0.jpeg 2x"
+                data-sizes="auto"
+                alt="/offtech.blog/nas/synology-hdd0.jpeg" width="400px" height="300px" />
+        </a><figcaption class="image-caption">HDD 表</figcaption>
+        </figure>
+    <figure><a class="lightgallery" href="/offtech.blog/nas/synology-hdd1.jpeg" title="/offtech.blog/nas/synology-hdd1.jpeg" data-thumbnail="/offtech.blog/nas/synology-hdd1.jpeg" data-sub-html="<h2>HDD 裏</h2>">
+            <img
+                class="lazyload"
+                src="/offtech.blog/svg/loading.min.svg"
+                data-src="/offtech.blog/nas/synology-hdd1.jpeg"
+                data-srcset="/offtech.blog/nas/synology-hdd1.jpeg, /offtech.blog/nas/synology-hdd1.jpeg 1.5x, /offtech.blog/nas/synology-hdd1.jpeg 2x"
+                data-sizes="auto"
+                alt="/offtech.blog/nas/synology-hdd1.jpeg" width="400px" height="300px" />
+        </a><figcaption class="image-caption">HDD 裏</figcaption>
+        </figure>
+</div>
+<p>NAS用のHDDです。やはりHDDは重いですね。
+裏面を見るとよりディスクとヘッドの存在が透けてきてテンションが上がりました。
+真ん中にピング色の何かがついていますが、これは何なのでしょう。接着剤？</p>
+<p>HDDも解体して中身のディスクとか見たかったですが、使う前に壊してしまうのが怖くなりやめました。壊れたらやってみよう。</p>
+<h3 id="22初期設定">2.2　初期設定</h3>
+<p>物理を見たところで、いよいよNASを動かしてみます・</p>
+<figure><a class="lightgallery" href="/offtech.blog/nas/synology-setup0.png" title="/offtech.blog/nas/synology-setup0.png" data-thumbnail="/offtech.blog/nas/synology-setup0.png" data-sub-html="<h2>起動時画面</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/nas/synology-setup0.png"
+            data-srcset="/offtech.blog/nas/synology-setup0.png, /offtech.blog/nas/synology-setup0.png 1.5x, /offtech.blog/nas/synology-setup0.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/nas/synology-setup0.png" width="400px" height="300px" />
+    </a><figcaption class="image-caption">起動時画面</figcaption>
+    </figure>
+<div class="image-row">
+    <figure><a class="lightgallery" href="/offtech.blog/nas/synology-setup1.png" title="/offtech.blog/nas/synology-setup1.png" data-thumbnail="/offtech.blog/nas/synology-setup1.png" data-sub-html="<h2>ファームウェアの選択</h2>">
+            <img
+                class="lazyload"
+                src="/offtech.blog/svg/loading.min.svg"
+                data-src="/offtech.blog/nas/synology-setup1.png"
+                data-srcset="/offtech.blog/nas/synology-setup1.png, /offtech.blog/nas/synology-setup1.png 1.5x, /offtech.blog/nas/synology-setup1.png 2x"
+                data-sizes="auto"
+                alt="/offtech.blog/nas/synology-setup1.png" width="400px" height="300px" />
+        </a><figcaption class="image-caption">ファームウェアの選択</figcaption>
+        </figure>
+    <figure><a class="lightgallery" href="/offtech.blog/nas/synology-setup2.png" title="/offtech.blog/nas/synology-setup2.png" data-thumbnail="/offtech.blog/nas/synology-setup2.png" data-sub-html="<h2>ファームウェアのインストール</h2>">
+            <img
+                class="lazyload"
+                src="/offtech.blog/svg/loading.min.svg"
+                data-src="/offtech.blog/nas/synology-setup2.png"
+                data-srcset="/offtech.blog/nas/synology-setup2.png, /offtech.blog/nas/synology-setup2.png 1.5x, /offtech.blog/nas/synology-setup2.png 2x"
+                data-sizes="auto"
+                alt="/offtech.blog/nas/synology-setup2.png" width="400px" height="300px" />
+        </a><figcaption class="image-caption">ファームウェアのインストール</figcaption>
+        </figure>
+</div>
+<p>起動するとすぐにファームウェアを要求されました。
+<a href="https://www.synology.com/ja-jp/support/download/DS120j?version=7.2#system" target="_blank" rel="noopener noreffer ">公式</a>からダウンロードし、NASへインストールしていきます。\</p>
+<p>Synologyの組み込みOSは**DSM（Disk Station Manager）**というもので.patという拡張子が利用されているようです。</p>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>HDDのファームウェア<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">DSMのダウンロード時に<strong>Synology HDD/SSD オフラインアップデータ</strong>という項目を見つけ、.saという拡張子のファイルが存在することを見つけました。<br>
+これまで意識したことがなかったですが、HDDもRAMやROMを持っており、ファームウェアが動作しているようです。SynologyはDSMからHDDのファームウェアの管理ができるのだとか。<br>
+参考：<a href="https://www.get-it.ne.jp/column/column_technical-advisor_004/" target="_blank" rel="noopener noreffer ">【技術顧問の小話 ＃004】HDDのファームウェアとは？</a></div>
+        </div>
+    </div>
+<figure><a class="lightgallery" href="/offtech.blog/nas/synology-user-setup.png" title="/offtech.blog/nas/synology-user-setup.png" data-thumbnail="/offtech.blog/nas/synology-user-setup.png" data-sub-html="<h2>アカウント設定</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/nas/synology-user-setup.png"
+            data-srcset="/offtech.blog/nas/synology-user-setup.png, /offtech.blog/nas/synology-user-setup.png 1.5x, /offtech.blog/nas/synology-user-setup.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/nas/synology-user-setup.png" width="400px" height="300px" />
+    </a><figcaption class="image-caption">アカウント設定</figcaption>
+    </figure>
+<p>続きまして、ユーザの設定です。一般的なOSをインストールしたときと同じような流れですね。</p>
+<div class="image-row">
+    <figure><a class="lightgallery" href="/offtech.blog/nas/synology-auto-update.png" title="/offtech.blog/nas/synology-auto-update.png" data-thumbnail="/offtech.blog/nas/synology-auto-update.png" data-sub-html="<h2>ファームウェアの自動更新設定</h2>">
+            <img
+                class="lazyload"
+                src="/offtech.blog/svg/loading.min.svg"
+                data-src="/offtech.blog/nas/synology-auto-update.png"
+                data-srcset="/offtech.blog/nas/synology-auto-update.png, /offtech.blog/nas/synology-auto-update.png 1.5x, /offtech.blog/nas/synology-auto-update.png 2x"
+                data-sizes="auto"
+                alt="/offtech.blog/nas/synology-auto-update.png" width="400px" height="300px" />
+        </a><figcaption class="image-caption">ファームウェアの自動更新設定</figcaption>
+        </figure>
+    <figure><a class="lightgallery" href="/offtech.blog/nas/synology-more-benefits.png" title="/offtech.blog/nas/synology-more-benefits.png" data-thumbnail="/offtech.blog/nas/synology-more-benefits.png" data-sub-html="<h2>追加機能</h2>">
+            <img
+                class="lazyload"
+                src="/offtech.blog/svg/loading.min.svg"
+                data-src="/offtech.blog/nas/synology-more-benefits.png"
+                data-srcset="/offtech.blog/nas/synology-more-benefits.png, /offtech.blog/nas/synology-more-benefits.png 1.5x, /offtech.blog/nas/synology-more-benefits.png 2x"
+                data-sizes="auto"
+                alt="/offtech.blog/nas/synology-more-benefits.png" width="400px" height="300px" />
+        </a><figcaption class="image-caption">追加機能</figcaption>
+        </figure>
+</div>
+<p>NASっぽい設定が始まりました。<br>
+左の画像では、<strong>1.2 NASの機能</strong>でも記載したように、ファームウェアの自動更新ができるようです。選択肢配下。</p>
+<ul>
+<li>重要なDSMとパッケージのアップデートのみを自動で行う。（推奨）</li>
+<li>DSMとパッケージのアップデートを自動で行う。</li>
+<li>DSMとパッケージのアップデートの通知のみを行い、手動でアップデートを行う。</li>
+</ul>
+<p>右の画像では、Synologyのアカウントを作成することでオンラインで追加の機能を提供してくれるようです。以下、詳細です。</p>
+<ul>
+<li>
+<p>Secure Signin Service<br>
+具体的には以下の方法でサインインができるみたいです。</p>
+<ul>
+<li>2要素認証<br>
+専用アプリにOTPを発行可能。</li>
+<li>ハードウェアセキュリティキーによる認証<br>
+USB キー、Windows Hello、または Mac Touch IDで認証可能</li>
+</ul>
+</li>
+<li>
+<p>Access your Synology NAS from anywhere<br>
+インターネットからアクセスできるようにするものです。
+<a href="https://homepaperless.com/quick-connect/#rtoc-1" target="_blank" rel="noopener noreffer ">仕組み</a>としては、NAS → Synology中継サーバ、クライアント → Synology中継サーバで接続を行うことで、安全にアクセスできるようにするというものです。
+家にインバウンド通信を許可する必要もないことやSynologyが境界を固めてくれていることを考えると非常に便利で安全ですね。中継サーバが乗っ取られていない前提ですが。</p>
+</li>
+<li>
+<p>Around-the-clock monitoring and protection<br>
+Synology側のサーバからNASのヘルスチェックだったり、トラブルシュートの提供だったりを行ってくれるらしい。</p>
+</li>
+</ul>
+<h3 id="22検証">2.2　検証</h3>
+<figure><a class="lightgallery" href="/offtech.blog/nas/synology-desktop.png" title="/offtech.blog/nas/synology-desktop.png" data-thumbnail="/offtech.blog/nas/synology-desktop.png" data-sub-html="<h2>Synologyの画面</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/nas/synology-desktop.png"
+            data-srcset="/offtech.blog/nas/synology-desktop.png, /offtech.blog/nas/synology-desktop.png 1.5x, /offtech.blog/nas/synology-desktop.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/nas/synology-desktop.png" width="400px" height="300px" />
+    </a><figcaption class="image-caption">Synologyの画面</figcaption>
+    </figure>
+<p>Synologyの画面です。<strong>ブラウザで動くアプリケーション</strong>があるという認識はありましたが、<strong>デスクトップlike</strong>なアプリケーションなんですね。
+なぜデスクトップlikeにしているのでしょうか。
+VM動かしたりとかPCっぽい機能をたくさん利用することを考えるとユーザーフレンドリーなのでしょうか。</p>
+<div class="image-row">
+    <figure><a class="lightgallery" href="/offtech.blog/nas/synology-shared-folder.png" title="/offtech.blog/nas/synology-shared-folder.png" data-thumbnail="/offtech.blog/nas/synology-shared-folder.png" data-sub-html="<h2>共有フォルダ</h2>">
+            <img
+                class="lazyload"
+                src="/offtech.blog/svg/loading.min.svg"
+                data-src="/offtech.blog/nas/synology-shared-folder.png"
+                data-srcset="/offtech.blog/nas/synology-shared-folder.png, /offtech.blog/nas/synology-shared-folder.png 1.5x, /offtech.blog/nas/synology-shared-folder.png 2x"
+                data-sizes="auto"
+                alt="/offtech.blog/nas/synology-shared-folder.png" width="400px" height="300px" />
+        </a><figcaption class="image-caption">共有フォルダ</figcaption>
+        </figure>
+    <figure><a class="lightgallery" href="/offtech.blog/nas/synology-access-rights.png" title="/offtech.blog/nas/synology-access-rights.png" data-thumbnail="/offtech.blog/nas/synology-access-rights.png" data-sub-html="<h2>アクセス権</h2>">
+            <img
+                class="lazyload"
+                src="/offtech.blog/svg/loading.min.svg"
+                data-src="/offtech.blog/nas/synology-access-rights.png"
+                data-srcset="/offtech.blog/nas/synology-access-rights.png, /offtech.blog/nas/synology-access-rights.png 1.5x, /offtech.blog/nas/synology-access-rights.png 2x"
+                data-sizes="auto"
+                alt="/offtech.blog/nas/synology-access-rights.png" width="400px" height="300px" />
+        </a><figcaption class="image-caption">アクセス権</figcaption>
+        </figure>
+</div>
+<p>試しに共有フォルダを作成してみました。<br>
+Locationに<strong>Volume 1: ext4</strong>とあることから、裏ではボリューム作ってフォーマットしてファイルシステム作成している感じですかね。
+物理ボリューム → ボリュームグループ → 論理ボリューム → ファイルシステムみたいなコマンドベースの手順を踏まずにポチポチで完結するのはらくで良いですね。<br>
+アクセス権についてもGUIで簡単に設定できます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/nas/synology-applications.png" title="/offtech.blog/nas/synology-applications.png" data-thumbnail="/offtech.blog/nas/synology-applications.png" data-sub-html="<h2>豊富なアプリケーション</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/nas/synology-applications.png"
+            data-srcset="/offtech.blog/nas/synology-applications.png, /offtech.blog/nas/synology-applications.png 1.5x, /offtech.blog/nas/synology-applications.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/nas/synology-applications.png" width="400px" height="300px" />
+    </a><figcaption class="image-caption">豊富なアプリケーション</figcaption>
+    </figure>
+<p>アプリもかなり豊富な種類がありました。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>消費電力<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>Synology DS120jで消費電力を測ってみました。</p>
+<div class="image-row">
+    <figure><a class="lightgallery" href="/offtech.blog/nas/synology-wat2.jpg" title="/offtech.blog/nas/synology-wat2.jpg" data-thumbnail="/offtech.blog/nas/synology-wat2.jpg" data-sub-html="<h2>通常時の消費電力</h2>">
+            <img
+                class="lazyload"
+                src="/offtech.blog/svg/loading.min.svg"
+                data-src="/offtech.blog/nas/synology-wat2.jpg"
+                data-srcset="/offtech.blog/nas/synology-wat2.jpg, /offtech.blog/nas/synology-wat2.jpg 1.5x, /offtech.blog/nas/synology-wat2.jpg 2x"
+                data-sizes="auto"
+                alt="/offtech.blog/nas/synology-wat2.jpg" width="400px" height="300px" />
+        </a><figcaption class="image-caption">通常時の消費電力</figcaption>
+        </figure>
+    <figure><a class="lightgallery" href="/offtech.blog/nas/synology-wat.jpeg" title="/offtech.blog/nas/synology-wat.jpeg" data-thumbnail="/offtech.blog/nas/synology-wat.jpeg" data-sub-html="<h2>書き込み時の消費電力</h2>">
+            <img
+                class="lazyload"
+                src="/offtech.blog/svg/loading.min.svg"
+                data-src="/offtech.blog/nas/synology-wat.jpeg"
+                data-srcset="/offtech.blog/nas/synology-wat.jpeg, /offtech.blog/nas/synology-wat.jpeg 1.5x, /offtech.blog/nas/synology-wat.jpeg 2x"
+                data-sizes="auto"
+                alt="/offtech.blog/nas/synology-wat.jpeg" width="400px" height="300px" />
+        </a><figcaption class="image-caption">書き込み時の消費電力</figcaption>
+        </figure>
+</div>
+<p>高いのか低いのか勘所がないです。。
+アイドル時：4.68W、負荷時：9.81Wと紹介しているサイトがありました。アイドル状態とやらになったらもう少し消費電力を抑えられたのかもしれません。</p>
+</div>
+        </div>
+    </div>
+<h2 id="3まとめ">3　まとめ</h2>
+<p>記事の途中でも書きましたが、NASの本質は<strong>標準で様々な機能が入っており、手軽に導入できる</strong>ファイルサーバだと思っています。
+以上を踏まえ、以下にまとめます。</p>
+<ul>
+<li>NASはファイルサーバみたいなもの。</li>
+<li>標準機能として、RAIDが組めたり、バックアップとれたり、いろいろできる。</li>
+<li>NAS用ソフトが充実している。</li>
+</ul>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="https://www.synology.com/" target="_blank" rel="noopener noreffer ">Synology</a><br>
+[2] <a href="https://www.amazon.co.jp/NAS%E5%85%A5%E9%96%80-%E5%88%9D%E5%BF%83%E8%80%85%E3%81%A7%E3%82%82%E3%82%8F%E3%81%8B%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E4%BF%9D%E5%AD%98%E3%83%BB%E5%85%B1%E6%9C%89%E3%83%BB%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E6%A5%B5%E6%84%8F-%E5%A4%96%E4%BB%98%E3%81%91HDD%E3%81%AF%E3%82%82%E3%81%86%E5%8F%A4%E3%81%84%EF%BC%81%E5%AE%B6%E5%BA%AD%E7%94%A8%E3%83%87%E3%83%BC%E3%82%BF%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%81%AE%E6%B4%BB%E7%94%A8%E6%B3%95-%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8-%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8-ebook/dp/B0DX1XG5TJ" target="_blank" rel="noopener noreffer ">NAS入門: 初心者でもわかるデータ保存・共有・バックアップの極意</a>
+[3] <a href="https://www.get-it.ne.jp/column/column_technical-advisor_004/" target="_blank" rel="noopener noreffer ">【技術顧問の小話 ＃004】HDDのファームウェアとは？</a>
+[4] <a href="https://homepaperless.com/quick-connect/#rtoc-1" target="_blank" rel="noopener noreffer ">SynologyNASの外部アクセスQuickConnectの仕組みと設定方法</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-24&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/cdff6142bd227c739dffa3e57981347795afc22b" target="_blank" title="commit by shibuya-s-eg(shibuya.s.eg@gmail.com) cdff6142bd227c739dffa3e57981347795afc22b: Update-20250624-00">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>cdff614</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/nas/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/nas/" data-title="NASを完全に理解する" data-hashtags="Database, Storage"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/nas/" data-title="NASを完全に理解する"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/nas/" data-hashtag="Database, Storage"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/nas/" data-title="NASを完全に理解する"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/nas/" data-title="NASを完全に理解する"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/nas/" data-title="NASを完全に理解する"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/nas/" data-title="NASを完全に理解する" data-description="NASを完全に理解する。"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fnas%2f&amp;text=NAS%e3%82%92%e5%ae%8c%e5%85%a8%e3%81%ab%e7%90%86%e8%a7%a3%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href=""></a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/idea-log/" class="prev" rel="prev" title="執筆検討メモ"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>執筆検討メモ</a>
+            <a href="/offtech.blog/system-framework-guidline/" class="next" rel="next" title="制度/フレームワーク/ガイドライン">制度/フレームワーク/ガイドライン<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

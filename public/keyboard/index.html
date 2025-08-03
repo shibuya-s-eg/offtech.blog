@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>自作キーボードデビューする - offtech.blog</title><meta name="Description" content="自作キーボードデビューする"><meta property="og:url" content="http://localhost:1313/offtech.blog/keyboard/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="自作キーボードデビューする">
+  <meta property="og:description" content="自作キーボードデビューする">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-30T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-24T21:43:11+09:00">
+    <meta property="article:tag" content="Hobby">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="自作キーボードデビューする">
+  <meta name="twitter:description" content="自作キーボードデビューする">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/keyboard/" /><link rel="prev" href="http://localhost:1313/offtech.blog/home-intro/" /><link rel="next" href="http://localhost:1313/offtech.blog/docker/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "自作キーボードデビューする",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/keyboard\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Hobby","wordcount":  3417 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/keyboard\/","datePublished": "2025-04-30T00:00:00+09:00","dateModified": "2025-06-24T21:43:11+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "自作キーボードデビューする"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/keyboard/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/keyboard/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">自作キーボードデビューする</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/hobby/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Hobby</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-30">2025-04-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;3417 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;7 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#1はじめに">1　はじめに</a>
+      <ul>
+        <li><a href="#11経緯">1.1　経緯</a></li>
+        <li><a href="#12キーボード選定">1.2　キーボード選定</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-準備">2 準備</a></li>
+    <li><a href="#3-はんだ付け">3 はんだ付け</a></li>
+    <li><a href="#4-組み立て">4 組み立て</a></li>
+    <li><a href="#5-動作確認">5 動作確認</a></li>
+    <li><a href="#6完成">6　完成</a>
+      <ul>
+        <li><a href="#61外観">6.1　外観</a></li>
+        <li><a href="#62キーマップ">6.2　キーマップ</a></li>
+        <li><a href="#63その他">6.3　その他</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-感想">6 感想</a>
+      <ul>
+        <li><a href="#61自作の感想">6.1　自作の感想</a></li>
+        <li><a href="#62-robaの感想">6.2 robaの感想</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+- TLDR
+
+-->
+<p>こんにちは、しぶやです。
+最近、キーボードの自作を始めたので、その様子を紹介したいと思います。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li>キーボードを初めて自作しました。</li>
+<li>初心者でも頑張れば練習なしで作れます。</li>
+<li>諸々合わせると結構お金かかりました。</li>
+</ul>
+<h2 id="1はじめに">1　はじめに</h2>
+<h3 id="11経緯">1.1　経緯</h3>
+<p>まず、今回自作キーボードを始めようとした理由ですが、大きくは以下の点があります。</p>
+<ul>
+<li>オタクっぽくでカッコ良いから。</li>
+<li>40％キーボードを使いたかったから。</li>
+<li>電子工作を勉強したかったから。</li>
+</ul>
+<p>3つ目に関しては、回路を全て読めるようになるというよりは、ひとまず各部品やその役割を抑えることや、どのように基盤に取り付けられるのかを学ぶことくらいのイメージです。
+いずれは回路も読めるようになりたいですが、今回はスピードを重視してキーボードを動かすことに注力したいと思います。</p>
+<h3 id="12キーボード選定">1.2　キーボード選定</h3>
+<p>キーボードを選定するにあたり以下の条件がありました。</p>
+<ul>
+<li>はんだ付けから行えること。</li>
+<li>ビルドガイドやyoutubeなど情報が充実していること。</li>
+<li>40%キーボードであること。</li>
+</ul>
+<p>特に2点目はかなり大きかったです。
+ビルドガイドはもちろんYoutubeで同種のキーボード自作動画がたくさん存在したため、はんだ付けも視覚的な参考しながら進められました。</p>
+<p>今回、僕が選定したキーボードは<a href="" rel="">roba</a>です。
+robaは完全無線化された40%の分割キーボードで、トラックボールも搭載されています。
+robaについては、こちらの動画で詳しく紹介されています。</p>
+<p>キーボード自作という観点では、<a href="" rel="">ビルドガイド</a>が充実していることに加え、<a href="" rel="">Keyball</a>という似たキーボードの自作動画がたくさん存在するため参考情報には困らないです。</p>
+<p>本当に自分に合うかは分からないですが、Boothですぐ売り切れてしまう人気なキーボードなのでこちらで自作キーボードデビューをすることに決めました。</p>
+<h2 id="2-準備">2 準備</h2>
+<p>キーボードに加え、はんだ付けに必要な道具も一式揃えました。
+なお、robaはセット内容以外に追加で必要なものがあるため、そちらは別途購入する必要があります。</p>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/preparation.jpeg" title="/offtech.blog/keyboard/preparation.jpeg" data-thumbnail="/offtech.blog/keyboard/preparation.jpeg" data-sub-html="<h2>準備</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/preparation.jpeg"
+            data-srcset="/offtech.blog/keyboard/preparation.jpeg, /offtech.blog/keyboard/preparation.jpeg 1.5x, /offtech.blog/keyboard/preparation.jpeg 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/preparation.jpeg" width="800px" height="600px" />
+    </a><figcaption class="image-caption">準備</figcaption>
+    </figure>
+<p>キースイッチとキーキャップは全く知識がなかったので、ひとまず安いやつを購入しました。
+事前に勉強しようと思い、電子工作キットを購入しましたが使う場面はなかったです。
+後述しますが、テスターは必須だと思います。
+加えて、コテは良いやつを買った方が良いです。
+はんだ付け時に電子部品に熱を取られてしまってから温まるまでに時間がかかってしまい効率がかなり落ちます。</p>
+<h2 id="3-はんだ付け">3 はんだ付け</h2>
+<p>いよいよ、はんだ付けをしていきます。</p>
+<p>まずは、ダイオードのはんだ付けです。
+ダイオードには向きがありますが、プリント基板に印が付いているため注意していれば間違えることはないと思います。
+事前にマスキングテープに貼り付けて向きも固定しておくことで、スムーズにはんだ付けできると思います。</p>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/diord.jpeg" title="/offtech.blog/keyboard/diord.jpeg" data-thumbnail="/offtech.blog/keyboard/diord.jpeg" data-sub-html="<h2>ダイオードの準備</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/diord.jpeg"
+            data-srcset="/offtech.blog/keyboard/diord.jpeg, /offtech.blog/keyboard/diord.jpeg 1.5x, /offtech.blog/keyboard/diord.jpeg 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/diord.jpeg" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ダイオードの準備</figcaption>
+    </figure>
+<p>以下の流れではんだ付けを行いました。</p>
+<ol>
+<li>(片側に)フラックスを塗る。</li>
+<li>(片側の)基盤の装着部分を温める。</li>
+<li>(片側に)はんだを盛る。</li>
+<li>はんだを溶かしながらダイオードをスライドさせ、ダイオードを片側で固定する。</li>
+<li>反対側も1〜4を繰り返す。</li>
+<li>最初に固定した方のはんだを溶かし、再度調整する。はんだが足りていなければ追加する。</li>
+<li>フラックスクリーナーで掃除する。</li>
+<li>テスターで抵抗を測る。</li>
+</ol>
+<p>8は特に重要で、僕はこれを怠ったため、キーボード組み立て後にキーが反応せず手戻りが発生してしまいました。</p>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/diord-2.jpeg" title="/offtech.blog/keyboard/diord-2.jpeg" data-thumbnail="/offtech.blog/keyboard/diord-2.jpeg" data-sub-html="<h2>ダイオードのはんだ付け</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/diord-2.jpeg"
+            data-srcset="/offtech.blog/keyboard/diord-2.jpeg, /offtech.blog/keyboard/diord-2.jpeg 1.5x, /offtech.blog/keyboard/diord-2.jpeg 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/diord-2.jpeg" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ダイオードのはんだ付け</figcaption>
+    </figure>
+<p>続いて、キーソケットのはんだ付けです。
+キーソケットもダイオードと同様にはんだ付けをしていきます。
+「割と多めにハンダを持って、溶かしながら押し込む」とはんだ付けが上手くいった感じがします。</p>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/key-socket.jpeg" title="/offtech.blog/keyboard/key-socket.jpeg" data-thumbnail="/offtech.blog/keyboard/key-socket.jpeg" data-sub-html="<h2>キーソケットのはんだ付け</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/key-socket.jpeg"
+            data-srcset="/offtech.blog/keyboard/key-socket.jpeg, /offtech.blog/keyboard/key-socket.jpeg 1.5x, /offtech.blog/keyboard/key-socket.jpeg 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/key-socket.jpeg" width="800px" height="600px" />
+    </a><figcaption class="image-caption">キーソケットのはんだ付け</figcaption>
+    </figure>
+<p>難関のマイコンのはんだ付けです。
+(僕はマイコンの一部がはんだ付けできていなかったことで、複数のキーが反応しませんでした。)</p>
+<p>僕の場合はマイコン側にはんだが引っ張られ、基盤側に漏れないという問題が発生していました。
+どうやら、基盤側をしっかり温めることでこれは解決するようです。</p>
+<p>マイコンは左右に複数はんだ付けする部分がありますが、これを一つミスると複数のキーが動かなくなります。
+<a href="https://note.com/pooh_polo/n/n386f7c9355bc" target="_blank" rel="noopener noreffer ">こちら</a>で詳細なマッピングが紹介されているので、トラブルシュートに利用させてもらいました。</p>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/micon.jpeg" title="/offtech.blog/keyboard/micon.jpeg" data-thumbnail="/offtech.blog/keyboard/micon.jpeg" data-sub-html="<h2>マイコンのはんだ付け</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/micon.jpeg"
+            data-srcset="/offtech.blog/keyboard/micon.jpeg, /offtech.blog/keyboard/micon.jpeg 1.5x, /offtech.blog/keyboard/micon.jpeg 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/micon.jpeg" width="800px" height="600px" />
+    </a><figcaption class="image-caption">マイコンのはんだ付け</figcaption>
+    </figure>
+<p>フラックスを塗ってそのままにしておくと、基板が腐食するようです。
+そのため、はんだ付け後はフラックスクリーナーで掃除をします。</p>
+<p>テスターでテストをするためにもこの工程は必要になると思います。
+フラックスが塗ってある状態では、酸化被膜が付着しており上手く通電確認ができないためです。</p>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/cleaner.jpeg" title="/offtech.blog/keyboard/cleaner.jpeg" data-thumbnail="/offtech.blog/keyboard/cleaner.jpeg" data-sub-html="<h2>フラックスクリーナーで掃除</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/cleaner.jpeg"
+            data-srcset="/offtech.blog/keyboard/cleaner.jpeg, /offtech.blog/keyboard/cleaner.jpeg 1.5x, /offtech.blog/keyboard/cleaner.jpeg 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/cleaner.jpeg" width="800px" height="600px" />
+    </a><figcaption class="image-caption">フラックスクリーナーで掃除</figcaption>
+    </figure>
+<p>トラックボール用のセンサーとロータリーエンコーダーも作成し、はんだ付けは終了です。</p>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/sensor.jpeg" title="/offtech.blog/keyboard/sensor.jpeg" data-thumbnail="/offtech.blog/keyboard/sensor.jpeg" data-sub-html="<h2>トラックボール用のセンサーと水平ロータリーエンコーダの作成</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/sensor.jpeg"
+            data-srcset="/offtech.blog/keyboard/sensor.jpeg, /offtech.blog/keyboard/sensor.jpeg 1.5x, /offtech.blog/keyboard/sensor.jpeg 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/sensor.jpeg" width="800px" height="600px" />
+    </a><figcaption class="image-caption">トラックボール用のセンサーと水平ロータリーエンコーダの作成</figcaption>
+    </figure>
+<h2 id="4-組み立て">4 組み立て</h2>
+<p>ビルドガイドに沿って組み立てを行いました。
+無駄な手戻りが発生するので、組み立てを行う前にテスターで通電確認をしておくことをおすすめします。</p>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/frame.jpeg" title="/offtech.blog/keyboard/frame.jpeg" data-thumbnail="/offtech.blog/keyboard/frame.jpeg" data-sub-html="<h2>フレームの組み立て</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/frame.jpeg"
+            data-srcset="/offtech.blog/keyboard/frame.jpeg, /offtech.blog/keyboard/frame.jpeg 1.5x, /offtech.blog/keyboard/frame.jpeg 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/frame.jpeg" width="800px" height="600px" />
+    </a><figcaption class="image-caption">フレームの組み立て</figcaption>
+    </figure>
+<h2 id="5-動作確認">5 動作確認</h2>
+<p>最後に動作確認を行います。
+Windowsが手元にないためLinuxに接続をしていきます。</p>
+<p>まずは、マイコンにファームウェアを書き込んでいきます。
+USB-TypeCを接続し、リセットボタンを2度押すとXiaoBLEがブートローダーモードで起動します。
+&ldquo;/&ldquo;に出力されるログを確認すると、下記のような記載がありPCがデバイスを認識していることがわかります。</p>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/xiable.png" title="/offtech.blog/keyboard/xiable.png" data-thumbnail="/offtech.blog/keyboard/xiable.png" data-sub-html="<h2>Xiao BLEをブートローダーモードで起動</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/xiable.png"
+            data-srcset="/offtech.blog/keyboard/xiable.png, /offtech.blog/keyboard/xiable.png 1.5x, /offtech.blog/keyboard/xiable.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/xiable.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">Xiao BLEをブートローダーモードで起動</figcaption>
+    </figure>
+<p>適当なフォルダにマウントを行った上でビルドガイドに従ってファームウェアを書き込みます。
+左右両方に対して同様の作業をします。</p>
+<p><figure><a class="lightgallery" href="/offtech.blog/keyboard/xiaoble_write.png" title="/offtech.blog/keyboard/xiaoble_write.png" data-thumbnail="/offtech.blog/keyboard/xiaoble_write.png" data-sub-html="<h2>ファームウェアの書き込み１</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/xiaoble_write.png"
+            data-srcset="/offtech.blog/keyboard/xiaoble_write.png, /offtech.blog/keyboard/xiaoble_write.png 1.5x, /offtech.blog/keyboard/xiaoble_write.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/xiaoble_write.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ファームウェアの書き込み１</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/xiaoble_write2.png" title="/offtech.blog/keyboard/xiaoble_write2.png" data-thumbnail="/offtech.blog/keyboard/xiaoble_write2.png" data-sub-html="<h2>ファームウェアの書き込み２</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/xiaoble_write2.png"
+            data-srcset="/offtech.blog/keyboard/xiaoble_write2.png, /offtech.blog/keyboard/xiaoble_write2.png 1.5x, /offtech.blog/keyboard/xiaoble_write2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/xiaoble_write2.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ファームウェアの書き込み２</figcaption>
+    </figure></p>
+<p>無事に書き込みが終わりました。</p>
+<p>続いて、Bluetooth接続をしていきます。
+(GUIがよく分からずCLIで接続しています。)</p>
+<p><figure><a class="lightgallery" href="/offtech.blog/keyboard/bluetoothctl.png" title="/offtech.blog/keyboard/bluetoothctl.png" data-thumbnail="/offtech.blog/keyboard/bluetoothctl.png" data-sub-html="<h2>Bluetooth接続１</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/bluetoothctl.png"
+            data-srcset="/offtech.blog/keyboard/bluetoothctl.png, /offtech.blog/keyboard/bluetoothctl.png 1.5x, /offtech.blog/keyboard/bluetoothctl.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/bluetoothctl.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">Bluetooth接続１</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/bluetoothctl-2.png" title="/offtech.blog/keyboard/bluetoothctl-2.png" data-thumbnail="/offtech.blog/keyboard/bluetoothctl-2.png" data-sub-html="<h2>Bluetooth接続２</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/bluetoothctl-2.png"
+            data-srcset="/offtech.blog/keyboard/bluetoothctl-2.png, /offtech.blog/keyboard/bluetoothctl-2.png 1.5x, /offtech.blog/keyboard/bluetoothctl-2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/bluetoothctl-2.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">Bluetooth接続２</figcaption>
+    </figure></p>
+<p>無事接続できました。</p>
+<p>僕はここで初めて1／4程度のキーが反応していないことが分かり、フレームを外しはんだ付けをし直すことになりました。</p>
+<h2 id="6完成">6　完成</h2>
+<h3 id="61外観">6.1　外観</h3>
+<p>ひとまず、白で統一してみました。
+amazonで安いキーキャップをつけただけですが十分かっこよいです。</p>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/myroba.png" title="/offtech.blog/keyboard/myroba.png" data-thumbnail="/offtech.blog/keyboard/myroba.png" data-sub-html="<h2>my Roba</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/myroba.png"
+            data-srcset="/offtech.blog/keyboard/myroba.png, /offtech.blog/keyboard/myroba.png 1.5x, /offtech.blog/keyboard/myroba.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/myroba.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">my Roba</figcaption>
+    </figure>
+<p>amazonで丁度よいサイズの<a href="https://www.amazon.co.jp/%E3%82%B5%E3%83%B3%E3%83%AF%E3%83%80%E3%82%A4%E3%83%AC%E3%82%AF%E3%83%88-%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%83%9D%E3%83%BC%E3%83%81-%E3%82%AC%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88%E3%83%9D%E3%83%BC%E3%83%81-%E3%83%A2%E3%83%90%E3%82%A4%E3%83%AB%E3%83%90%E3%83%83%E3%83%86%E3%83%AA%E3%83%BC-200-BAGIN014BK/dp/B0843QXWWZ/ref=asc_df_B0843QXWWZ?mcid=0ec8152148bd3ae1ad5d4a26fe8f4e7c&amp;tag=jpgo-22&amp;linkCode=df0&amp;hvadid=707476841947&amp;hvpos=&amp;hvnetw=g&amp;hvrand=5656379571200932601&amp;hvpone=&amp;hvptwo=&amp;hvqmt=&amp;hvdev=c&amp;hvdvcmdl=&amp;hvlocint=&amp;hvlocphy=9196647&amp;hvtargid=pla-864105697622&amp;gad_source=1&amp;th=" target="_blank" rel="noopener noreffer ">ケース</a>も買いました。
+Xで検索するとrobaの持ち運びケースに丁度よいものがいくつか紹介されているのでそこから選びました。</p>
+<p><figure><a class="lightgallery" href="/offtech.blog/keyboard/case-1.png" title="/offtech.blog/keyboard/case-1.png" data-thumbnail="/offtech.blog/keyboard/case-1.png" data-sub-html="<h2>Roba用ケース</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/case-1.png"
+            data-srcset="/offtech.blog/keyboard/case-1.png, /offtech.blog/keyboard/case-1.png 1.5x, /offtech.blog/keyboard/case-1.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/case-1.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">Roba用ケース</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/keyboard/case-2.png" title="/offtech.blog/keyboard/case-2.png" data-thumbnail="/offtech.blog/keyboard/case-2.png" data-sub-html="<h2>Roba用ケース</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/keyboard/case-2.png"
+            data-srcset="/offtech.blog/keyboard/case-2.png, /offtech.blog/keyboard/case-2.png 1.5x, /offtech.blog/keyboard/case-2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/keyboard/case-2.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">Roba用ケース</figcaption>
+    </figure></p>
+<h3 id="62キーマップ">6.2　キーマップ</h3>
+<p>robaのビルドガイド通りに進めると<a href="https://nickcoutsos.github.io/keymap-editor/" target="_blank" rel="noopener noreffer ">ここ</a>でキーマップを編集することになります。
+<a href="https://note.com/bugzzy1013/n/nfc301dfdb1f8" target="_blank" rel="noopener noreffer ">こちらの方のキーマップ</a>を参考に設定を行い、自分用にアレンジをしていきました</p>
+<p>この記事もrobaで書いていますが非常に苦戦しています。
+新たなキーマップに慣れるまでかなり時間がかかりそうです。。</p>
+<h3 id="63その他">6.3　その他</h3>
+<p>その他の打鍵感などは素人すぎてよく分からないため、今後気にしていきたいと考えています。
+静音赤軸が良いという噂は聞いています。。</p>
+<h2 id="6-感想">6 感想</h2>
+<h3 id="61自作の感想">6.1　自作の感想</h3>
+<p>自作してみての感想は楽しかったにつきます。
+はじめてのはんだづけで苦労も多かったですが、上手く動作したときはテンションバク上がりでした。</p>
+<p>人気なキーボードを選んだこともあり、ビルドガイドや参考ソースが充実していた点はかなり大きかったです。</p>
+<p>一方で、自作に限らずですが、キーマップの編集はかなり骨が折れます。。
+使うたびに調整をしたくなりきりがありません。</p>
+<p>ここはゆっくり調整していきたいと思います。</p>
+<h3 id="62-robaの感想">6.2 robaの感想</h3>
+<p>まだ使い始めて日が浅いうえに、初の自作キーボードであったのであまり評価ができないのが正直なところです。
+ただ、トラックボール登載で完全無線は非常に使いやすいです!
+トラックボールを触った際にレイヤーが入れ替わること仕様も個人的には気に入っています。</p>
+<p>手を置く台があるとより使いやすいと感じるので試してみようと思います。</p>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="https://booth.pm/ja/items/6010869" target="_blank" rel="noopener noreffer ">roBa 【トラックボール付きワイヤレス自作キーボードキット】</a><br>
+[2] <a href="https://github.com/kumamuk-git/roBa/blob/main/doc/v3/buildguide_v3.md" target="_blank" rel="noopener noreffer ">Build Guide for roBa</a><br>
+[3] <a href="https://www.youtube.com/watch?v=MsvfFNaBjTs" target="_blank" rel="noopener noreffer ">分離式＆トラックボール搭載 自作キーボード Keyball39 制作工程 まとめ</a><br>
+[4] <a href="https://www.youtube.com/watch?v=XyoEP3h4iB8" target="_blank" rel="noopener noreffer ">自作キーボード作ってみた Keyball44編 | Keyball44 : Custom Mechanical Keyboard Build</a><br>
+[5] <a href="https://www.youtube.com/watch?v=dQ7AUjb1tkA" target="_blank" rel="noopener noreffer ">【永久保存版】はんだ付けのやり方を解説します【はんだづけの原理, DIP部品, 表面実装】【イチケン電子基礎シリーズ】RX-802AS</a>
+[6] <a href="https://note.com/pooh_polo/n/n386f7c9355bc" target="_blank" rel="noopener noreffer ">roBaの組み立てで動作不良？パターン別チェックポイントを解説</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-24&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/cdff6142bd227c739dffa3e57981347795afc22b" target="_blank" title="commit by shibuya-s-eg(shibuya.s.eg@gmail.com) cdff6142bd227c739dffa3e57981347795afc22b: Update-20250624-00">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>cdff614</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/keyboard/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/keyboard/" data-title="自作キーボードデビューする" data-hashtags="Hobby"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/keyboard/" data-title="自作キーボードデビューする"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/keyboard/" data-hashtag="Hobby"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/keyboard/" data-title="自作キーボードデビューする"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/keyboard/" data-title="自作キーボードデビューする"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/keyboard/" data-title="自作キーボードデビューする"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/keyboard/" data-title="自作キーボードデビューする" data-description="自作キーボードデビューする"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fkeyboard%2f&amp;text=%e8%87%aa%e4%bd%9c%e3%82%ad%e3%83%bc%e3%83%9c%e3%83%bc%e3%83%89%e3%83%87%e3%83%93%e3%83%a5%e3%83%bc%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/hobby/">Hobby</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/home-intro/" class="prev" rel="prev" title="自宅鯖環境を構築する~概要編~"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>自宅鯖環境を構築する~概要編~</a>
+            <a href="/offtech.blog/docker/" class="next" rel="next" title="コンテナとDockerを完全に理解する">コンテナとDockerを完全に理解する<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

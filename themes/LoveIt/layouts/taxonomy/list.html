@@ -1,0 +1,20 @@
+{{ define "title" }}
+  サブカテゴリ: {{ .Title }} - {{ .Site.Title }}
+{{ end }}
+
+{{ define "content" }}
+<div class="page archive">
+  <h2 class="single-title">サブカテゴリ: {{ .Title }}</h2>
+
+  {{ $target := .Title }}
+  {{ $matchedPages := where .Pages "Params.subcategories" "intersect" (slice $target) }}
+
+  {{ range $matchedPages }}
+    <article class="archive-item">
+      <a href="{{ .RelPermalink }}" class="archive-item-link">
+        {{ .Title | emojify }}
+      </a>
+    </article>
+  {{ end }}
+</div>
+{{ end }}

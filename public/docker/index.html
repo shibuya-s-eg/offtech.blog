@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>コンテナとDockerを完全に理解する - offtech.blog</title><meta name="Description" content="コンテナとDockerを完全に理解する。"><meta property="og:url" content="http://localhost:1313/offtech.blog/docker/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="コンテナとDockerを完全に理解する">
+  <meta property="og:description" content="コンテナとDockerを完全に理解する。">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-30T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-28T21:52:00+09:00">
+    <meta property="article:tag" content="Virtualization">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="コンテナとDockerを完全に理解する">
+  <meta name="twitter:description" content="コンテナとDockerを完全に理解する。">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/docker/" /><link rel="prev" href="http://localhost:1313/offtech.blog/keyboard/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "コンテナとDockerを完全に理解する",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/docker\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Virtualization","wordcount":  17026 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/docker\/","datePublished": "2025-04-30T00:00:00+09:00","dateModified": "2025-06-28T21:52:00+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "コンテナとDockerを完全に理解する。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/docker/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/docker/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">コンテナとDockerを完全に理解する</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-30">2025-04-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;17026 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;34 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#0はじめに">0　はじめに</a>
+      <ul>
+        <li><a href="#01コンテナの歴史">0.1　コンテナの歴史</a></li>
+        <li><a href="#02vmとの違い">0.2　VMとの違い</a></li>
+      </ul>
+    </li>
+    <li><a href="#1コンテナの仕組み">1　コンテナの仕組み</a>
+      <ul>
+        <li><a href="#11namespace">1.1　namespace</a></li>
+        <li><a href="#12cgroup">1.2　cgroup</a></li>
+        <li><a href="#13chrootrootfs">1.3　chroot/rootfs</a></li>
+        <li><a href="#14コンテナの本質">1.4　コンテナの本質</a></li>
+      </ul>
+    </li>
+    <li><a href="#2コンテナイメージ">2　コンテナイメージ</a>
+      <ul>
+        <li><a href="#21イメージ管理">2.1　イメージ管理</a></li>
+        <li><a href="#22イメージの構成">2.2　イメージの構成</a></li>
+        <li><a href="#23最小化">2.3　最小化</a></li>
+      </ul>
+    </li>
+    <li><a href="#3docker実践">3　Docker実践</a></li>
+    <li><a href="#4コンテナセキュリティ">4　コンテナセキュリティ</a>
+      <ul>
+        <li><a href="#41capability">4.1　Capability</a></li>
+        <li><a href="#42コンテナroot">4.2　コンテナroot</a></li>
+        <li><a href="#43イメージ">4.3　イメージ</a></li>
+        <li><a href="#44リソース共有">4.4　リソース共有</a></li>
+      </ul>
+    </li>
+    <li><a href="#5dockerのメリットデメリット">5　Dockerのメリット/デメリット</a>
+      <ul>
+        <li><a href="#51メリット">5.1　メリット</a></li>
+        <li><a href="#52デメリット">5.2　デメリット</a></li>
+      </ul>
+    </li>
+    <li><a href="#6dockerのユースケースとアーキテクチャ">6　Dockerのユースケースとアーキテクチャ</a>
+      <ul>
+        <li><a href="#61環境統一">6.1　環境統一</a></li>
+        <li><a href="#62cicd">6.2　CI/CD</a></li>
+        <li><a href="#63kubernetes">6.3　Kubernetes</a></li>
+      </ul>
+    </li>
+    <li><a href="#7まとめ">7　まとめ</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>こんにちは、しぶやです。<br>
+学生時代の研究から始まり、社会人になってからも愛用しているDockerとそもそものコンテナについて、気合をいれてまとめようと思います。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li>コンテナとはコンテナ化されたプロセスである。</li>
+</ul>
+<h2 id="0はじめに">0　はじめに</h2>
+<h3 id="01コンテナの歴史">0.1　コンテナの歴史</h3>
+<p>コンテナ技術の初期段階として、2008年ごろLXC（Linux Container）が登場しました。
+LXCは、2000年代に入ってLinuxに導入されたNamespaceやCgroupsを利用した軽量なコンテナ環境を提供するものです。</p>
+<p>その後、2013年ごろ、Dockerが登場し、コンテナ技術が広く知られるようになりました。
+DockerはLXCをもとに、コンテナの作成、管理、デプロイを非常に簡単にするツールとして登場しました。
+Dockerの登場により、コンテナは非常に使いやすいものとなり、仮想マシンに代わる新しい標準として急速に普及しました。</p>
+<p>※ Dockerはあくまでコンテナを管理するためのツールであり、Docker=コンテナではないです。</p>
+<p>公式ではDockerを以下のように説明しています。</p>
+<blockquote>
+<p>Docker は、アプリケーションの開発、出荷、実行の方法に革命をもたらした包括的なプラットフォームとツールスイートを提供します。
+コンテナ化の概念に基づいて構築されており、コンテナの代名詞になるほど単純化されています。</p>
+</blockquote>
+<p>コンテナ関連では近年、Kubernetesにより大規模な分散システムの基盤として使用されたり、サーバーレスコンピューティングに応用されていたりします。</p>
+<h3 id="02vmとの違い">0.2　VMとの違い</h3>
+<p>VMとコンテナの違いはよく聞く話だと思います。
+<a href="https://www.redhat.com/ja/topics/containers/containers-vs-vms" target="_blank" rel="noopener noreffer ">RedHatの説明</a>によるとこの違いは、 「ホストOS上に新たにOSを乗せるているか」と「ホストOS上にコンテナとして隔離されたアプリケーションを乗せているか」の違いによるものです。</p>
+<p>この説明の通り、<strong>VMとコンテナの違いはホストのカーネルを共有するか</strong>です。
+VMはホストOS上でカーネルの仮想化を行います。
+一方で、コンテナはホストのカーネルを共有し、リソースなどを分離します。</p>
+<p>これにより、コンテナは<strong>軽量なアプリケーションの実行環境</strong>を実現します。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>ハイパーバイザのタイプ<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>コンテナから話がそれますが、ハイパーバイザーとそのタイプについて紹介します。</p>
+<p>まずは、そもそものハイパーバイザーの定義を見てみましょう。</p>
+<blockquote>
+<p>ハイパーバイザー (hypervisor) とは、仮想化技術であり、必要なコンピューティング・リソースを分離し、仮想マシン(VM)の作成、実行、管理を可能にするソフトウェアです。ハイパーバイザーは、演算処理、メモリー、ストレージなどのコンピューティング・リソースをプールし、それらを仮想マシン (VM) 間で再割り当てします。このテクノロジーによって仮想化が可能になり、1 つの物理マシンから多数の VM を作成して実行することができます。
+by <a href="https://www.redhat.com/ja/topics/virtualization/what-is-a-hypervisor" target="_blank" rel="noopener noreffer ">redhat</a></p>
+</blockquote>
+<p>一般的にもよく使われるものでいうと、VMware Workstationや VirtualBoxがありますね。
+商用でも見るものだとVMware ESXiやKVMなどがありますね。</p>
+<p>これらのハイパーバイザーは大きく以下の2種類に分けられます。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>タイプ1</th>
+<th>タイプ2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>実行権限</td>
+<td>直接</td>
+<td>間接(ホストOS経由)</td>
+</tr>
+<tr>
+<td>制御主体</td>
+<td>ハイパーバイザー自身</td>
+<td>ホストOS</td>
+</tr>
+<tr>
+<td>安全性・効率</td>
+<td>高い</td>
+<td>低い　</td>
+</tr>
+</tbody>
+</table>
+<p>結局タイプ1のハイパーバイザー自身もOSみたいなものが動いているんだから何が違うんだ？って感じです。
+ChatGPTによると、「仮想化機能だけを持った(それに特化した)制御ソフト」か「汎用OSで制御ソフトを動かしている」かの違いで区別できるようです。
+これは、「カーネルの一部として動作」か「ユーザ空間のアプリケーションとして動作する」かの違いとも言えそうです。</p>
+<p>上記の表にある安全性や効率に関しては、タイプ1が「余計なものを動かしていない」ことや「余計なものが含まれていない」ことから来るもののようです。
+参考書[2]によると、Linuxカーネルは2000万行以上のコードがあるのに対し、Xenは5万行程度らしいです。</p>
+<p>有名な製品をタイプ1とタイプ2で分けると以下のようになります。</p>
+<ul>
+<li>タイプ1
+<ul>
+<li>VWware ESXi</li>
+<li>Microsoft Hyper-V</li>
+<li>Xen</li>
+<li>KVM</li>
+</ul>
+</li>
+<li>タイプ2
+<ul>
+<li>VMware Workstation/Fusion</li>
+<li>VirtualBox</li>
+<li>Parallel Desktop</li>
+</ul>
+</li>
+</ul>
+<p>※ KVMやHyper-Vは汎用OS上で、Kernelを拡張してVMを動かすため、タイプ2という意見もあるようです。</p>
+</div>
+        </div>
+    </div>
+<h2 id="1コンテナの仕組み">1　コンテナの仕組み</h2>
+<p>コンテナにはいくつかの欠かせない要素技術があります。
+本章では、コンテナの本質を理解するために、それらの要素技術について学習しようと思います。</p>
+<h3 id="11namespace">1.1　namespace</h3>
+<p>NamespaceはLinuxカーネルに組み込まれたプロセス単位でリソースを分離する機能です。
+具体的には、特定のプロセスに対し、ネットワークインターフェースを見せたり、プロセスID空間を見せたりできます。</p>
+<p>linuxでサポートされているNamespaceには以下のよいなものがあります。</p>
+<table>
+<thead>
+<tr>
+<th>名前</th>
+<th>分離対象</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mount (mnt)</td>
+<td>ファイルシステムのマウント状態</td>
+<td>別のルートディレクトリ構造を持たせることができる</td>
+</tr>
+<tr>
+<td>UTS</td>
+<td>ホスト名、ドメイン名</td>
+<td>各Namespaceごとにホスト名が持つことができる</td>
+</tr>
+<tr>
+<td>IPC</td>
+<td>プロセス間通信（共有メモリなど）</td>
+<td>通信空間を隔離することができる</td>
+</tr>
+<tr>
+<td>PID</td>
+<td>プロセスID</td>
+<td>プロセスID空間を分けることができる</td>
+</tr>
+<tr>
+<td>Network</td>
+<td>ネットワークデバイス、IPアドレス</td>
+<td>独立したネットワークスタックを管理できる</td>
+</tr>
+<tr>
+<td>User</td>
+<td>ユーザID、グループID</td>
+<td>プロセスに別のUID/GIDマッピングできる</td>
+</tr>
+<tr>
+<td>Cgroup</td>
+<td>cgroupのビュー</td>
+<td>制御グループの空間を分離することができる</td>
+</tr>
+</tbody>
+</table>
+<p>では、実際にNamespaceを見てみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/lsns.png" title="/offtech.blog/docker/lsns.png" data-thumbnail="/offtech.blog/docker/lsns.png" data-sub-html="<h2>Namespaceの一覧</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/lsns.png"
+            data-srcset="/offtech.blog/docker/lsns.png, /offtech.blog/docker/lsns.png 1.5x, /offtech.blog/docker/lsns.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/lsns.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">Namespaceの一覧</figcaption>
+    </figure>
+<p>lsnsはNamespaceを表示するためのコマンドです。
+TYPEが上で紹介したNamespaceの種類です。
+NPROCSはそのNamespaceに所属するプロセス数、PID以降は親プロセスの情報です。</p>
+<p>ここで、&ldquo;sudo lsns&quot;と&quot;lsns&quot;で表示されているNamespaceの数が違うことが分かります。</p>
+<p>これは、rootでしかアクセスできないプロセスがいるためです。
+よく見るとNPROCSの値も異なることが分かると思います。
+Namespaceの情報は各プロセスが持つので、ユーザでは一部のNamespaceに所属するすべてのプロセスが見えず、Namespaceを確認することができないのです。</p>
+<p>実際に、/proc配下のアクセス権限を見ると一般ユーザではみれないものがいることが分かります。
+（Linuxではプロセス情報はLinuxカーネルが提供する/procから取得できます。）</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/proc-visibility.png" title="/offtech.blog/docker/proc-visibility.png" data-thumbnail="/offtech.blog/docker/proc-visibility.png" data-sub-html="<h2>/procのアクセス権</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/proc-visibility.png"
+            data-srcset="/offtech.blog/docker/proc-visibility.png, /offtech.blog/docker/proc-visibility.png 1.5x, /offtech.blog/docker/proc-visibility.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/proc-visibility.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">/procのアクセス権</figcaption>
+    </figure>
+<p>それでは、Namespaceについて詳しく見ていきましょう。
+まずはUTSです。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/uts.png" title="/offtech.blog/docker/uts.png" data-thumbnail="/offtech.blog/docker/uts.png" data-sub-html="<h2>UTS Namespaceの分離</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/uts.png"
+            data-srcset="/offtech.blog/docker/uts.png, /offtech.blog/docker/uts.png 1.5x, /offtech.blog/docker/uts.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/uts.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">UTS Namespaceの分離</figcaption>
+    </figure>
+<p>&ldquo;unshare&quot;コマンドは新しいNamespaceでプログラムを実行できます。
+すなわち、親プロセスである現在のshellからNamespaceを継承せずに子プロセスを作成することができます。</p>
+<p>今回の例では、新しいUTS Namespaceを持つshellのプロセスを作成しています。
+この場合、新しく作成したプロセス内でhostnameを変更しても、shellが認識しているUTS Namespaceとホスト側の
+が認識していUTS Namespaceが異なるため、ホスト側からhostnameコマンドを打っても特に変化はありません。</p>
+<p>プロセス空間についても試してみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/pid.png" title="/offtech.blog/docker/pid.png" data-thumbnail="/offtech.blog/docker/pid.png" data-sub-html="<h2>PID Namespaceの分離</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/pid.png"
+            data-srcset="/offtech.blog/docker/pid.png, /offtech.blog/docker/pid.png 1.5x, /offtech.blog/docker/pid.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/pid.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">PID Namespaceの分離</figcaption>
+    </figure>
+<p>プロセス空間を分離してshellプロセスを立ち上げました。
+ここで重要なのは、新しいPID Namespaceでは、このshellプロセスがプロセス番号1として扱われていることです。
+ホストのPID Namespace絡みた際はプロセス番号1ではありません。</p>
+<p>ここでは、プロセスID空間を分離していますが、ホストのプロセス全体が見えています。
+これは、psコマンドは/procを見てるだけだからです。
+ホストからpsコマンドでアクセスする際と何も変わりません。</p>
+<p>コンテナの動きを考えると、プロセスID空間が分離され、新しいプロセスからは何も見えない状況となって欲しいところです。
+これを実現するには、作成したshellプロセスから、procファイルシステムを再マウントする必要があります。</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>mount -t proc none /proc</code></pre></div>
+<p>上記を実行すると、カーネルが実行した際のプロセスのPID Namespace内のプロセス情報を/procに提供してくれます。
+これにより、新しいプロセス空間のプロセスのみが見えるようになり、ホスト側のプロセスは見えなくなります。</p>
+<p>コンテナでは、1.3のchrootと合わせてこれを利用しています。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>/procの値とNamespace<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>/procはアクセス時にアクセスしたプロセスのNamespaceに応じて結果を返すわけではないようです。
+正確には、/procをマウントしたプロセスのNamespaceに応じてアクセス時の結果が変わるようです。</p>
+<p>すなわち、procファイルシステムのマウント時のPID Namespaceにより、/procの中身が変わります。</p>
+</div>
+        </div>
+    </div>
+<p>それでは、mount Namespaceについて見ていきましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/mount.png" title="/offtech.blog/docker/mount.png" data-thumbnail="/offtech.blog/docker/mount.png" data-sub-html="<h2>mount Namespaceの分離</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/mount.png"
+            data-srcset="/offtech.blog/docker/mount.png, /offtech.blog/docker/mount.png 1.5x, /offtech.blog/docker/mount.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/mount.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">mount Namespaceの分離</figcaption>
+    </figure>
+<p>&ldquo;mount &ndash;bind&quot;はプロセスにファイルシステムのマウントポイントをバインドし実行するコマンドです。
+そもそもプロセスへのマウントとは何でしょうか？
+Linuxにおいて各プロセスはファイルシステムのマウントポイントを持っています。
+これは、/proc/${pid}/mountsで見ることができます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/proc-mounts.png" title="/offtech.blog/docker/proc-mounts.png" data-thumbnail="/offtech.blog/docker/proc-mounts.png" data-sub-html="<h2>プロセスのマウント情報</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/proc-mounts.png"
+            data-srcset="/offtech.blog/docker/proc-mounts.png, /offtech.blog/docker/proc-mounts.png 1.5x, /offtech.blog/docker/proc-mounts.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/proc-mounts.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">プロセスのマウント情報</figcaption>
+    </figure>
+<p>よく分からないものが大量にマウントされていますね。
+いずれにせよ、プロセスごとにマウントポイントを持っていることが分かると思います。
+これにより、どのプロセスからアクセスするかにより、マウントされているものの見え方が変わります。</p>
+<p>Dockerでは、このmount namespaceの分離と1.3で説明するchrootを組み合わせてコンテナ領域の分離を行っています。</p>
+<p>続いてNetwork Namespaceです。
+Network Namespaceはネットワークインターフェースやルーティングテーブルの分離を行います。
+実際に見てみしょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/unshare-net.png" title="/offtech.blog/docker/unshare-net.png" data-thumbnail="/offtech.blog/docker/unshare-net.png" data-sub-html="<h2>Network Namespaceの作成</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/unshare-net.png"
+            data-srcset="/offtech.blog/docker/unshare-net.png, /offtech.blog/docker/unshare-net.png 1.5x, /offtech.blog/docker/unshare-net.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/unshare-net.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">Network Namespaceの作成</figcaption>
+    </figure>
+<p>上記の例では、新規のNetwork Namespaceを作成し、bashを実行しています。
+しかし、これだけでは、仮想インターフェースがないためホストと通信ができません。
+ホストと通信できるようにします。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/unshare-net-2.png" title="/offtech.blog/docker/unshare-net-2.png" data-thumbnail="/offtech.blog/docker/unshare-net-2.png" data-sub-html="<h2>仮想NICの作成</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/unshare-net-2.png"
+            data-srcset="/offtech.blog/docker/unshare-net-2.png, /offtech.blog/docker/unshare-net-2.png 1.5x, /offtech.blog/docker/unshare-net-2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/unshare-net-2.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">仮想NICの作成</figcaption>
+    </figure>
+<p>※ 一応、左右で時系列を意識しています。。</p>
+<p>これでホストとコンテナが通信できるようになりました。
+上記の例では、お互いのNetwork Namespaceで仮想NICを作成し、IPアドレスを割り当てることで通信できるようにしました。
+Network Namespaceを分離することにより、各プロセスはNICやルーティングテーブルなど独立したネットワークスタックを保持できていることが分かります。</p>
+<p>続いては、User Namespaeです。User Namespaceはプロセスごとにユーザやグループの分離を行います。</p>
+<p>新たなUsername Namespaceを作成してみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/user.png" title="/offtech.blog/docker/user.png" data-thumbnail="/offtech.blog/docker/user.png" data-sub-html="<h2>User Namespaceの作成</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/user.png"
+            data-srcset="/offtech.blog/docker/user.png, /offtech.blog/docker/user.png 1.5x, /offtech.blog/docker/user.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/user.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">User Namespaceの作成</figcaption>
+    </figure>
+<p>新しいUser Namespaceを作成するとユーザはnobodyになります。</p>
+<p>ここでホストのユーザとのマッピングを行います。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/user-3.png" title="/offtech.blog/docker/user-3.png" data-thumbnail="/offtech.blog/docker/user-3.png" data-sub-html="<h2>User Namespaceの作成</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/user-3.png"
+            data-srcset="/offtech.blog/docker/user-3.png, /offtech.blog/docker/user-3.png 1.5x, /offtech.blog/docker/user-3.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/user-3.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">User Namespaceの作成</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/docker/user-2.png" title="/offtech.blog/docker/user-2.png" data-thumbnail="/offtech.blog/docker/user-2.png" data-sub-html="<h2>プロセスへのUIDのマッピング</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/user-2.png"
+            data-srcset="/offtech.blog/docker/user-2.png, /offtech.blog/docker/user-2.png 1.5x, /offtech.blog/docker/user-2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/user-2.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">プロセスへのUIDのマッピング</figcaption>
+    </figure>
+<p>時系列が分かりづらくなってしまいましたが、1枚目の画像の前半では、User Namespaceを新たに作成し、bashを起動しています。
+その後、2枚目の画像のように、ホストから先程のプロセスにrootのUIDをマッピングしています。
+これにより、1枚目の画像の後半のようにプロセスのユーザがrootに置き換わります。</p>
+<p>残りはIPC NamespaceとCgroup Namespaceです。</p>
+<p>IPC Namespaceは、プロセス間通信を行うために利用されます。
+Dockerではコンテナ同士に同じIPC Namespaceを割り当てることで互いに共有メモリにアクセスできるようにします。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/ipcs.png" title="/offtech.blog/docker/ipcs.png" data-thumbnail="/offtech.blog/docker/ipcs.png" data-sub-html="<h2>IPC Namespaceの分離</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/ipcs.png"
+            data-srcset="/offtech.blog/docker/ipcs.png, /offtech.blog/docker/ipcs.png 1.5x, /offtech.blog/docker/ipcs.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/ipcs.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">IPC Namespaceの分離</figcaption>
+    </figure>
+<p>Cgroup Namespaceは1.2節で説明するCgroupについて、Cgroupの見える範囲を分離します。
+これにより、プロセスは上位のリソース構成を覗けず、独立して動いているように見えます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/cgroup.png" title="/offtech.blog/docker/cgroup.png" data-thumbnail="/offtech.blog/docker/cgroup.png" data-sub-html="<h2>cgroup Namespaceの分離</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/cgroup.png"
+            data-srcset="/offtech.blog/docker/cgroup.png, /offtech.blog/docker/cgroup.png 1.5x, /offtech.blog/docker/cgroup.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/cgroup.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">cgroup Namespaceの分離</figcaption>
+    </figure>
+<h3 id="12cgroup">1.2　cgroup</h3>
+<p>CgroupはLinuxカーネルに組み込まれたプロセス単位でリソースを監視/制御する機能です。
+具体的には以下のようなことができます。</p>
+<ul>
+<li>リソース使用量のモニタリング</li>
+<li>CPU使用率の制限</li>
+<li>メモリ使用量の制限</li>
+<li>ディスクI/O帯域の制限</li>
+<li>ネットワーク帯域の制限</li>
+</ul>
+<p>Cgroupはプロセスをグループにまとめたプロセスグループを作成し、リソース管理のルールを適用することでリソース使用量の管理／制御を行います。</p>
+<p>Dockerはコンテナ単位でCgroupのグループを作成し、リソース使用量を管理しているのです！</p>
+<p>それでは実際にCgroupを見ていきましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/fs-cgroup.png" title="/offtech.blog/docker/fs-cgroup.png" data-thumbnail="/offtech.blog/docker/fs-cgroup.png" data-sub-html="<h2>Cgroup</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/fs-cgroup.png"
+            data-srcset="/offtech.blog/docker/fs-cgroup.png, /offtech.blog/docker/fs-cgroup.png 1.5x, /offtech.blog/docker/fs-cgroup.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/fs-cgroup.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">Cgroup</figcaption>
+    </figure>
+<p>Linuxカーネルは/sys/fs/cgroupに擬似ファイルシステムを作成し、Cgroupに関連する情報を提供します。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>擬似ファイルシステムとは<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>擬似ファイルシステムとは、実際にファイルのようにカーネル内部の情報にアクセスできるようにする仕組みです。
+実際にディスク内部にデータを保存しているわけではなく、リアルタイムにカーネルが情報を生成して応答してくれています。
+カーネルAPIみたいな感じですね。</p>
+<p>Linuxの擬似ファイルシステムのは以下のようなものがあります。</p>
+<ul>
+<li>/proc<br>
+プロセス情報やシステム情報をファイル形式で提供</li>
+<li>/sys<br>
+デバイスやカーネル内部設定の情報/操作をファイル形式で提供</li>
+<li>/dev<br>
+デバイスファイル</li>
+</ul>
+</div>
+        </div>
+    </div>
+<p>実際にCgroupを試してみましょう。</p>
+<p>まずは、&ldquo;stress&quot;コマンドで2GBのメモリを利用するプロセスを動かしてみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/cgroup-nolimit.png" title="/offtech.blog/docker/cgroup-nolimit.png" data-thumbnail="/offtech.blog/docker/cgroup-nolimit.png" data-sub-html="<h2>負荷の大きいプロセス</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/cgroup-nolimit.png"
+            data-srcset="/offtech.blog/docker/cgroup-nolimit.png, /offtech.blog/docker/cgroup-nolimit.png 1.5x, /offtech.blog/docker/cgroup-nolimit.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/cgroup-nolimit.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">負荷の大きいプロセス</figcaption>
+    </figure>
+<p>psコマンドの結果からメモリを50%利用していることが分かります。
+これに対し、Cgroupを設定して同じことをした場合どうなるか見てみます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/cgroup-oomkiller.png" title="/offtech.blog/docker/cgroup-oomkiller.png" data-thumbnail="/offtech.blog/docker/cgroup-oomkiller.png" data-sub-html="<h2>Cgroupで制御されたプロセス</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/cgroup-oomkiller.png"
+            data-srcset="/offtech.blog/docker/cgroup-oomkiller.png, /offtech.blog/docker/cgroup-oomkiller.png 1.5x, /offtech.blog/docker/cgroup-oomkiller.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/cgroup-oomkiller.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">Cgroupで制御されたプロセス</figcaption>
+    </figure>
+<p>上記の例では、&quot;/sys/gs/cgroup&quot;に&quot;mylimit&quot;というフォルダを作成し、&ldquo;memory.max&quot;という名前でメモリの制限値を入力しています。
+その後、同フォルダの&quot;cgroup.procs&quot;にプロセス番号を入れながら、先ほどと同じプロセスを動かしています。
+結果から、プロセスが強制終了させられていることが分かると思います。
+これは、Cgroupでの制限値を超えたことにより、カーネルがプロセスの終了を行ったためです。</p>
+<h3 id="13chrootrootfs">1.3　chroot/rootfs</h3>
+<p>chrootはrootディレクトリを変更するコマンドです。
+chrootは引数にパスとコマンドを受け取ります。
+これにより、指定したパスをルートとして、コマンドを実行します。
+ここで、注意が必要なのは、コマンド（により生成されたプロセス）自身もルートより上位のファイルにはアクセスできなくなります。
+すなわち、ルートとして指定したパスの配下にコマンド実行に必要なファイルが一式必要です。</p>
+<p>実際に、適当なコマンドで試してみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/chroot-1.png" title="/offtech.blog/docker/chroot-1.png" data-thumbnail="/offtech.blog/docker/chroot-1.png" data-sub-html="<h2>chrootの例（エラー）</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/chroot-1.png"
+            data-srcset="/offtech.blog/docker/chroot-1.png, /offtech.blog/docker/chroot-1.png 1.5x, /offtech.blog/docker/chroot-1.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/chroot-1.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">chrootの例（エラー）</figcaption>
+    </figure>
+<p>配下にbashの実行ファイルがないため、エラーになります。</p>
+<p>では、よりdockerを意識してalpineのパッケージを使って試してみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/chroot-2.png" title="/offtech.blog/docker/chroot-2.png" data-thumbnail="/offtech.blog/docker/chroot-2.png" data-sub-html="<h2>chrootの例（エラーなし）</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/chroot-2.png"
+            data-srcset="/offtech.blog/docker/chroot-2.png, /offtech.blog/docker/chroot-2.png 1.5x, /offtech.blog/docker/chroot-2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/chroot-2.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">chrootの例（エラーなし）</figcaption>
+    </figure>
+<p>配下にalpineのパッケージが一式あるため、コマンドを実行できます。
+shを実行してみるとルートより上には上がれず、一式のファイルがあるため仮想環境のように感じます。
+まさにDockerでコンテナを立てたときのようですね！<br>
+※ ここで、shのpathはどうなっているのか？と感じますね。
+chroot時はホストの環境変数は引き継がれ、$pathなどはルートとして設定された位置を起点に検索が行われています。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>環境変数<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>chrootではホストの環境変数が引き継がれていましたが、dockerで立てたコンテナではホストとは隔離されて別の環境変数が利用できます。
+これはどのように実現されているのでしょうか？</p>
+<p>これを理解するためには、そもそも環境変数の理解が必要です。
+実は、環境変数の実体はメモリ上に保存されており、プロセスごとに保持しています。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/environ.png" title="/offtech.blog/docker/environ.png" data-thumbnail="/offtech.blog/docker/environ.png" data-sub-html="<h2>プロセスがもつ環境変数</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/environ.png"
+            data-srcset="/offtech.blog/docker/environ.png, /offtech.blog/docker/environ.png 1.5x, /offtech.blog/docker/environ.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/environ.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">プロセスがもつ環境変数</figcaption>
+    </figure>
+<p>上の画像からプロセスが環境変数を持っていることが分かると思います。</p>
+<p>確認したように、環境変数はプロセスごとに保持しており、プロセスは他プロセスの環境変数にアクセスすることはできません。
+子プロセスは親プロセスの環境変数を引き継ぎ、親プロセスの環境変数のは影響を与えずに自身の環境変数を変更できます。</p>
+<p>dockerなどでは、コンテナを生成する際にメインプロセスに引数やDockerfike、コンテナイメージから受け取った環境変数を付与し、コンテナを立ち上げます。</p>
+</div>
+        </div>
+    </div>
+<h3 id="14コンテナの本質">1.4　コンテナの本質</h3>
+<p>「結局コンテナって何なの？」と言われた時に何て答えましょう？
+個人的には、参考書[2]にあった「コンテナ」=「<strong>コンテナ化されたプロセス</strong>」という表現がしっくりきています。
+「Linuxのプロセスをリソースやアクセスできる空間などを分離した上で動かしたもの」がコンテナと言えそうです。</p>
+<h2 id="2コンテナイメージ">2　コンテナイメージ</h2>
+<p>本性では、コンテナ自身の実体である、イメージとその管理について説明します。</p>
+<h3 id="21イメージ管理">2.1　イメージ管理</h3>
+<p>コンテナレジストリとは、コンテナイメージ全体の保管サーバです。
+代表的なレジストリには以下があります。</p>
+<ul>
+<li>Docker Hub&hellip;Docker社が運営する、最も有名なパブリックレジストリ</li>
+<li>Github Container Registry&hellip;Githubが提供するコンテナレジストリ</li>
+<li>Amazon ECR&hellip;AWSが提供するマネージドなレジストリ（AzureやGCPも同様）</li>
+</ul>
+<p>コンテナレジストリに対し、レジストリ内の特定の名前空間/プロジェクトごと保存単位をレポジトリと呼びます。
+Docker Hubにある公式の&quot;nginx:latest&quot;を例にするとDocker Hubがレジストリであり、nginxがレポジトリ名です。</p>
+<p>ここでは、Dockerでデフォルトで利用されるDocker Hubについて調査します。</p>
+<p><a href="https://www.docker.com/ja-jp/products/docker-hub/" target="_blank" rel="noopener noreffer ">Docker Hub</a>はコンテナ化されたアプリを簡単に保存、管理、デプロイするためのプラットフォームです。
+Docker Hubの機能には以下のようなものがあります。</p>
+<ul>
+<li>無制限のパブリックリポジトリ&hellip;無制限のパブリックなリポジトリを利用できます。誰かが作成したカスタムイメージなどもすぐに利用できます。</li>
+<li>プライベート リポジトリ&hellip;プライベートリポジトリを作成し、イメージへのアクセス制御を行うことができます。</li>
+<li>効率的なイメージアクセス&hellip;コンテナイメージへの効率的なアクセスと配布をサポート</li>
+<li>Webhook&hellip;イメージのプッシュなどのイベントをトリガーに外部に通知を送ることができます。これにより、Docker HubのCI/CDパイプラインとの統合を可能にします。</li>
+<li>自動テスト&hellip;コンテナイメージで自動テストを実行し、問題を早期に発見することができます。</li>
+<li>GitHubとBitbucketの統合&hellip;Githubなどと統合し、バージョン管理システムからの直接ビルドと導入を自動化します。</li>
+<li>同時ビルドと自動ビルド&hellip;複数のビルドを同時に実行することができます。</li>
+</ul>
+<h3 id="22イメージの構成">2.2　イメージの構成</h3>
+<p>コンテナ関連の標準仕様は<a href="https://opencontainers.org/" target="_blank" rel="noopener noreffer ">OCI（Open Container Initiative）</a>で標準化されています。
+OCIは2015年にDocker社を含む複数の企業により設立されました。
+以下は、OCIで標準化しているものの例です。</p>
+<ul>
+<li>OCI Runtime Specification&hellip;コンテナランタイムの標準仕様</li>
+<li>OCI Image Format Specification&hellip;コンテナイメージの標準仕様</li>
+<li>OCI Distribution Specification&hellip;コンテナイメージの配布に関する標準仕様</li>
+</ul>
+<p>Dockerでも利用するコンテナのイメージは<a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md" target="_blank" rel="noopener noreffer ">OCI Image Format Specification</a>で標準化されているのです。
+ここでは、このコンテナイメージについて深ぼって見ていきます。</p>
+<p>1.3節のchrootでは、パケージ群をまるごと用意して、コンテナ環境の動作イメージを確認しました。
+もちろん、コンテナイメージは単純にパッケージ群をまとめて圧縮しているだけではありません。
+ここでは、コンテナイメージの階層構造について学習しようと思います。</p>
+<p>コンテナイメージにはLayerという概念があります。
+これはUnionFSの仕組みを利用したイメージの構築/管理の仕組みです。
+（UnionFSは<a href="https://christina04.hatenablog.com/entry/2016/01/26/204659" target="_blank" rel="noopener noreffer ">ここ</a>の説明が分かりやすいです。）</p>
+<p>Dockerイメージのレイヤの特徴は以下です。</p>
+<ul>
+<li>読み取り専用のレイヤを積み重ね、最上位に書き込み可能なレイヤを追加する。</li>
+<li>各レイヤはファイルシステムの差分情報をもつ</li>
+<li>同じイメージから作成されたコンテナは読み取り専用レイヤを共有する。</li>
+<li>読み取り専用レイヤはキャッシュされる。</li>
+</ul>
+<p>実際にイメージを見てみましょう。</p>
+<p>今回は下記Dockerfileをもとにイメージをビルドしていきます。
+&ldquo;myapp/hoge.txt&quot;を持ったイメージをビルドしています。
+<figure><a class="lightgallery" href="/offtech.blog/docker/dockerfile.png" title="/offtech.blog/docker/dockerfile.png" data-thumbnail="/offtech.blog/docker/dockerfile.png" data-sub-html="<h2>UbuntuをベースイメージとしたDockerfile</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/dockerfile.png"
+            data-srcset="/offtech.blog/docker/dockerfile.png, /offtech.blog/docker/dockerfile.png 1.5x, /offtech.blog/docker/dockerfile.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/dockerfile.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">UbuntuをベースイメージとしたDockerfile</figcaption>
+    </figure></p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/docker-build.png" title="/offtech.blog/docker/docker-build.png" data-thumbnail="/offtech.blog/docker/docker-build.png" data-sub-html="<h2>イメージのビルド</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/docker-build.png"
+            data-srcset="/offtech.blog/docker/docker-build.png, /offtech.blog/docker/docker-build.png 1.5x, /offtech.blog/docker/docker-build.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/docker-build.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">イメージのビルド</figcaption>
+    </figure>
+<p>[x/4]となっている部分がレイヤーを表しています。
+各レイヤーはDockerfileの各行と一致していることが分かります。
+また、レイヤー2では&quot;CASHED&quot;という文字がありキャッシュが利用されていることも分かります。</p>
+<p>docker inspectコマンドを利用して、イメージを見てみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/docker-inspect.png" title="/offtech.blog/docker/docker-inspect.png" data-thumbnail="/offtech.blog/docker/docker-inspect.png" data-sub-html="<h2>inspectコマンド</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/docker-inspect.png"
+            data-srcset="/offtech.blog/docker/docker-inspect.png, /offtech.blog/docker/docker-inspect.png 1.5x, /offtech.blog/docker/docker-inspect.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/docker-inspect.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">inspectコマンド</figcaption>
+    </figure>
+<p>イメージ自身はIdをもっており、sha256のハッシュ値となっていることが分かります。
+Config: Labelsにはイメージの名前が記載されています。(タグの値がこれなのでしょうか)
+RootFSには複数のLayerが記載されていることが分かります。</p>
+<p>それでは実際にイメージの中身を見ていきましょう。
+ここではイメージをローカルにファイルとして落として展開してみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/image-content.png" title="/offtech.blog/docker/image-content.png" data-thumbnail="/offtech.blog/docker/image-content.png" data-sub-html="<h2>コンテナイメージの展開</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/image-content.png"
+            data-srcset="/offtech.blog/docker/image-content.png, /offtech.blog/docker/image-content.png 1.5x, /offtech.blog/docker/image-content.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/image-content.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">コンテナイメージの展開</figcaption>
+    </figure>
+<p>イメージを展開するとLayerが入ったフォルダとindex.json、manifest.jsonなどが現れます。
+これは、OCI標準のイメージレイアウトのようです。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>ローカルリポジトリの実態<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>dockerが管理する情報は/var/lib/dockerにあります。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/local-1.png" title="/offtech.blog/docker/local-1.png" data-thumbnail="/offtech.blog/docker/local-1.png" data-sub-html="<h2>ローカルのDockerの情報</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/local-1.png"
+            data-srcset="/offtech.blog/docker/local-1.png, /offtech.blog/docker/local-1.png 1.5x, /offtech.blog/docker/local-1.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/local-1.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">ローカルのDockerの情報</figcaption>
+    </figure>
+<p>ローカルのイメージの情報は/var/lib/docker/image/overlay2/imagedb/にあります。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/local-2.png" title="/offtech.blog/docker/local-2.png" data-thumbnail="/offtech.blog/docker/local-2.png" data-sub-html="<h2>ローカルイメージ</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/local-2.png"
+            data-srcset="/offtech.blog/docker/local-2.png, /offtech.blog/docker/local-2.png 1.5x, /offtech.blog/docker/local-2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/local-2.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">ローカルイメージ</figcaption>
+    </figure>
+</div>
+        </div>
+    </div>
+<p>各ファイルを見ていきましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/image-content-2.png" title="/offtech.blog/docker/image-content-2.png" data-thumbnail="/offtech.blog/docker/image-content-2.png" data-sub-html="<h2>イメージ内のメタデータ</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/image-content-2.png"
+            data-srcset="/offtech.blog/docker/image-content-2.png, /offtech.blog/docker/image-content-2.png 1.5x, /offtech.blog/docker/image-content-2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/image-content-2.png" width="1000px" height="1200px" />
+    </a><figcaption class="image-caption">イメージ内のメタデータ</figcaption>
+    </figure>
+<p>イメージの名前の他にmediaTypeでイメージの規格か何かを示しています。
+また、platformでCPUアーキテクチャを指定する場合もあるようです。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/image-content-3.png" title="/offtech.blog/docker/image-content-3.png" data-thumbnail="/offtech.blog/docker/image-content-3.png" data-sub-html="<h2>イメージ内のレイヤ</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/image-content-3.png"
+            data-srcset="/offtech.blog/docker/image-content-3.png, /offtech.blog/docker/image-content-3.png 1.5x, /offtech.blog/docker/image-content-3.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/image-content-3.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">イメージ内のレイヤ</figcaption>
+    </figure>
+<p>manifest.jsonにLayerのハッシュが記載されており、blobs/sha256にLayerの実体が配置されています。</p>
+<p>では、manifest.jsonに記載されている順に各レイヤを展開してみましょう。
+まずは、ひとつめのLayerです。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/image-content-4.png" title="/offtech.blog/docker/image-content-4.png" data-thumbnail="/offtech.blog/docker/image-content-4.png" data-sub-html="<h2>レイヤの中身１</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/image-content-4.png"
+            data-srcset="/offtech.blog/docker/image-content-4.png, /offtech.blog/docker/image-content-4.png 1.5x, /offtech.blog/docker/image-content-4.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/image-content-4.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">レイヤの中身１</figcaption>
+    </figure>
+<p>一般的なLinuxのファイル構造の一部が現れました。
+とはいえ、/etc以外はほとんど何もない状態です。</p>
+<p>2番目以降のレイヤも展開してみます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/image-content-5.png" title="/offtech.blog/docker/image-content-5.png" data-thumbnail="/offtech.blog/docker/image-content-5.png" data-sub-html="<h2>レイヤの中身２</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/image-content-5.png"
+            data-srcset="/offtech.blog/docker/image-content-5.png, /offtech.blog/docker/image-content-5.png 1.5x, /offtech.blog/docker/image-content-5.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/image-content-5.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">レイヤの中身２</figcaption>
+    </figure>
+<p>2番目のLayerでは、/tmpや/var/lib/apt/listsも追加されました。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/image-content-6.png" title="/offtech.blog/docker/image-content-6.png" data-thumbnail="/offtech.blog/docker/image-content-6.png" data-sub-html="<h2>レイヤの中身３</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/image-content-6.png"
+            data-srcset="/offtech.blog/docker/image-content-6.png, /offtech.blog/docker/image-content-6.png 1.5x, /offtech.blog/docker/image-content-6.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/image-content-6.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">レイヤの中身３</figcaption>
+    </figure>
+<p>3番目のLayerでは、さらに/etcが足されました。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/image-content-7.png" title="/offtech.blog/docker/image-content-7.png" data-thumbnail="/offtech.blog/docker/image-content-7.png" data-sub-html="<h2>レイヤの中身４</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/image-content-7.png"
+            data-srcset="/offtech.blog/docker/image-content-7.png, /offtech.blog/docker/image-content-7.png 1.5x, /offtech.blog/docker/image-content-7.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/image-content-7.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">レイヤの中身４</figcaption>
+    </figure>
+<p>4番目のLayerでは、DockerfilenでCOPYを記載したhoge.txtが含まれていました。</p>
+<p>これらから分かるように各LayerはDockerfileに記載した各行と対応していることが分かります。
+本節の最初に話したとおり、コンテナイメージは読み取り専用のLayerを重ねているのです。</p>
+<h3 id="23最小化">2.3　最小化</h3>
+<p>基本的にイメージは小さいほど良いされます。
+この理由として以下のようなことがあります。</p>
+<ul>
+<li>
+<p>起動時間の短縮<br>
+コンテナは頻繁にレジストリからイメージをpullしたり、イメージから展開したりします。
+イメージのサイズが小さいことはこれらの実行時間が短くなります。
+また、ネットワーク経由で行われる動作に関しては、ネットワーク負荷を抑えることにもつながります。</p>
+</li>
+<li>
+<p>ストレージの節約<br>
+イメージが小さいことはストレージの節約につながります。
+イメージの比較をするためにubuntuとalpineのベースイメージを比較してみました。
+ベースイメージを軽量なものにするだけで10分の1程度のイメージサイズになることが分かります。</p>
+<ul>
+<li>ubunu:latest&hellip;78.1MB</li>
+<li>alpine:latest&hellip;7.83MB</li>
+</ul>
+</li>
+<li>
+<p>セキュリティ対策<br>
+不要なパッケージが含まれていなければ、攻撃者が攻撃に利用する材料を減らし、攻撃の成功可能性を減らすことにつながります。</p>
+</li>
+<li>
+<p>管理<br>
+余計なパッケージが含まれていなければ、トラブル時などの管理が容易になります。</p>
+</li>
+</ul>
+<p>以上のようにベースイメージを軽量なものにするなどして、コンテナイメージを軽量にすることは様々なメリットがあります。</p>
+<h2 id="3docker実践">3　Docker実践</h2>
+<p>ここでは、実際にnginxのコンテナを立てながら1,2章の内容を確認していきます。</p>
+<p>まずは、イメージをローカルリポジトリに持ってきます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/pull-nginx.png" title="/offtech.blog/docker/pull-nginx.png" data-thumbnail="/offtech.blog/docker/pull-nginx.png" data-sub-html="<h2>イメージの取得</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/pull-nginx.png"
+            data-srcset="/offtech.blog/docker/pull-nginx.png, /offtech.blog/docker/pull-nginx.png 1.5x, /offtech.blog/docker/pull-nginx.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/pull-nginx.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">イメージの取得</figcaption>
+    </figure>
+<p>デフォルトのDocker Hubからイメージを取得しました。
+ログから分かる通り、イメージもレイヤーごとに取得しています。</p>
+<p>docker imagesコマンドにより、ローカルリポジトリに存在するイメージを一覧表示することができます。
+nginxイメージは何秒前に取得され、サイズはであることが分かります。</p>
+<p>取得したイメージを確認してみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/inspect-nginx.png" title="/offtech.blog/docker/inspect-nginx.png" data-thumbnail="/offtech.blog/docker/inspect-nginx.png" data-sub-html="<h2>nginxイメージの詳細情報</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/inspect-nginx.png"
+            data-srcset="/offtech.blog/docker/inspect-nginx.png, /offtech.blog/docker/inspect-nginx.png 1.5x, /offtech.blog/docker/inspect-nginx.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/inspect-nginx.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">nginxイメージの詳細情報</figcaption>
+    </figure>
+<p>docker inspectの結果では、イメージについてより詳細な情報が得られます。
+Nginxイメージは192MBであることなどが分かります。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>docker pullを実行したときの通信<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><figure><a class="lightgallery" href="/offtech.blog/docker/docker-pull.png" title="/offtech.blog/docker/docker-pull.png" data-thumbnail="/offtech.blog/docker/docker-pull.png" data-sub-html="<h2>イメージ取得時の通信</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/docker-pull.png"
+            data-srcset="/offtech.blog/docker/docker-pull.png, /offtech.blog/docker/docker-pull.png 1.5x, /offtech.blog/docker/docker-pull.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/docker-pull.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">イメージ取得時の通信</figcaption>
+    </figure>
+<p>接続先は、&ldquo;registry-1.docker.io&rdquo; であった。</p></div>
+        </div>
+    </div>
+<p>nginxイメージをベースイメージとして、Dockerfileを書いていきましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/nginx-dockerfile.png" title="/offtech.blog/docker/nginx-dockerfile.png" data-thumbnail="/offtech.blog/docker/nginx-dockerfile.png" data-sub-html="<h2>nginx用Dockerfile</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/nginx-dockerfile.png"
+            data-srcset="/offtech.blog/docker/nginx-dockerfile.png, /offtech.blog/docker/nginx-dockerfile.png 1.5x, /offtech.blog/docker/nginx-dockerfile.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/nginx-dockerfile.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">nginx用Dockerfile</figcaption>
+    </figure>
+<p>ページのリソースを作成し、そのままイメージをビルドしていきます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/hello-nginx.png" title="/offtech.blog/docker/hello-nginx.png" data-thumbnail="/offtech.blog/docker/hello-nginx.png" data-sub-html="<h2>nginxイメージのビルド</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/hello-nginx.png"
+            data-srcset="/offtech.blog/docker/hello-nginx.png, /offtech.blog/docker/hello-nginx.png 1.5x, /offtech.blog/docker/hello-nginx.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/hello-nginx.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">nginxイメージのビルド</figcaption>
+    </figure>
+<p>Dockerfileの各行をレイヤとしてビルドされていることがわかります。
+このイメージからnginxをコンテナとして立ち上げていきます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/hellow-nginx-container.png" title="/offtech.blog/docker/hellow-nginx-container.png" data-thumbnail="/offtech.blog/docker/hellow-nginx-container.png" data-sub-html="<h2>コンテナの起動</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/hellow-nginx-container.png"
+            data-srcset="/offtech.blog/docker/hellow-nginx-container.png, /offtech.blog/docker/hellow-nginx-container.png 1.5x, /offtech.blog/docker/hellow-nginx-container.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/hellow-nginx-container.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">コンテナの起動</figcaption>
+    </figure>
+<p>ローカルの8080番ポートとコンテナ内部の80番ポートをつなげて、nginxコンテナを起動しています。</p>
+<p>&ldquo;docker ps&quot;コマンドでコンテナの情報を確認できます。</p>
+<a class="lightgallery" href="/offtech.blog/docker/localhost-8080.png" title="/offtech.blog/docker/localhost-8080.png" data-thumbnail="/offtech.blog/docker/localhost-8080.png">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/localhost-8080.png"
+            data-srcset="/offtech.blog/docker/localhost-8080.png, /offtech.blog/docker/localhost-8080.png 1.5x, /offtech.blog/docker/localhost-8080.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/localhost-8080.png" width="800px" height="600px" />
+    </a>
+<p>上記のようにlocalhost:8080にアクセスするとnginxにアクセスできます。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>dockerdによるローソケットの開放<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>先ほどはホストの8080番ポートを利用しましたが、80番ポートを利用することも可能なのでしょうか？</p>
+<a class="lightgallery" href="/offtech.blog/docker/docker-raw-socket.png" title="/offtech.blog/docker/docker-raw-socket.png" data-thumbnail="/offtech.blog/docker/docker-raw-socket.png">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/docker-raw-socket.png"
+            data-srcset="/offtech.blog/docker/docker-raw-socket.png, /offtech.blog/docker/docker-raw-socket.png 1.5x, /offtech.blog/docker/docker-raw-socket.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/docker-raw-socket.png" width="800px" height="600px" />
+    </a>
+<p>上記のようにホストの80番ポートも問題なく開けられることがわかります。
+なぜ、管理者権限を利用せずに開けられのでしょうか？</p>
+<p>これは、dockerデーモンが管理者権限で動いており、dockerデーモン経由でポート開放などが行われているからです。</p>
+</div>
+        </div>
+    </div>
+<p>各コンテナの情報は&rdquo;/var/lib/docker/containers/&ldquo;にあります。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/nginx-container-data.png" title="/offtech.blog/docker/nginx-container-data.png" data-thumbnail="/offtech.blog/docker/nginx-container-data.png" data-sub-html="<h2>/var/lib/docker/containers</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/nginx-container-data.png"
+            data-srcset="/offtech.blog/docker/nginx-container-data.png, /offtech.blog/docker/nginx-container-data.png 1.5x, /offtech.blog/docker/nginx-container-data.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/nginx-container-data.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">/var/lib/docker/containers</figcaption>
+    </figure>
+<p>&ldquo;/var/lib/docker/containers/${コンテナID}&ldquo;にはコンテナに関するメタデータやログ情報が保管されています。
+実際にnginxのログを見てみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/nginx-container-log.png" title="/offtech.blog/docker/nginx-container-log.png" data-thumbnail="/offtech.blog/docker/nginx-container-log.png" data-sub-html="<h2>nginxコンテナのログ</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/nginx-container-log.png"
+            data-srcset="/offtech.blog/docker/nginx-container-log.png, /offtech.blog/docker/nginx-container-log.png 1.5x, /offtech.blog/docker/nginx-container-log.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/nginx-container-log.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">nginxコンテナのログ</figcaption>
+    </figure>
+<p>nginxコンテナの標準出力/標準エラー出力が確認できます。
+ここで重要なのは、<strong>このディレクトリはコンテナが消えると削除されることです。</strong>
+すなわち、コンテナのログもコンテナがなくなると消えてしまいます。
+このため、コンテナのログをコンテナのライフタイムに依存せず管理したい場合は、別の仕組みで管理する必要があります。</p>
+<p>&ldquo;/var/lib/docker/overlay2/&ldquo;ではローカルリポジトリにある各レイヤの実体が保管されています。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/overlay2.png" title="/offtech.blog/docker/overlay2.png" data-thumbnail="/offtech.blog/docker/overlay2.png" data-sub-html="<h2>ローカルリポジトリのレイヤの実体の保管</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/overlay2.png"
+            data-srcset="/offtech.blog/docker/overlay2.png, /offtech.blog/docker/overlay2.png 1.5x, /offtech.blog/docker/overlay2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/overlay2.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">ローカルリポジトリのレイヤの実体の保管</figcaption>
+    </figure>
+<p>こちらはVMでなく僕自身の私用端末で実行した結果なので、ごみがたくさん混じっています。。</p>
+<p>Cgroupも確認していきましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/container-info.png" title="/offtech.blog/docker/container-info.png" data-thumbnail="/offtech.blog/docker/container-info.png" data-sub-html="<h2>nginxコンテナのCgroup</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/container-info.png"
+            data-srcset="/offtech.blog/docker/container-info.png, /offtech.blog/docker/container-info.png 1.5x, /offtech.blog/docker/container-info.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/container-info.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">nginxコンテナのCgroup</figcaption>
+    </figure>
+<p>コンテナに限らず、Cgroupの情報は&rdquo;/proc/${PID}/cgroup/&ldquo;からアクセスできます。
+このため、nginxコンテナのプロセスIDを取得し、&quot;/proc/${nginx pid}/cgroup&quot;からnginxのCgroup情報を確認しています。</p>
+<p>実際にファイルの中身を確認してみます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/container-info-2.png" title="/offtech.blog/docker/container-info-2.png" data-thumbnail="/offtech.blog/docker/container-info-2.png" data-sub-html="<h2>nginxコンテナのCgroup詳細</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/container-info-2.png"
+            data-srcset="/offtech.blog/docker/container-info-2.png, /offtech.blog/docker/container-info-2.png 1.5x, /offtech.blog/docker/container-info-2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/container-info-2.png" width="1000px" height="800px" />
+    </a><figcaption class="image-caption">nginxコンテナのCgroup詳細</figcaption>
+    </figure>
+<p>&ldquo;memor.current&quot;はそのプロセス（nginxコンテナ）の現在のメモリ使用量です。22MB利用していることがわかります。
+同様に&quot;cpu.stat&quot;はcpu使用量、&ldquo;pids.current&quot;はそのコンテナが生成したプロセス数を表しています。</p>
+<h2 id="4コンテナセキュリティ">4　コンテナセキュリティ</h2>
+<h3 id="41capability">4.1　Capability</h3>
+<p>管理者権限を与えずに、最小権限の原則に則り、動作に必要な権限のみを与えるやつです。
+以下は「Linuxのアクセス制御を完全に理解する」からの抜粋です。</p>
+<blockquote>
+<p>capabilityは従来のルート権限を分割したものです。
+ルート権限という強く広い権限を与えるではなく、capabilityによる一部の強い権限を与えることにより、最小権限の原則に従うことができます。</p>
+<p>実際に例を見てみましょう。以下はubuntuにもともと入っている&quot;ping&quot;です。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/ppping.png" title="/offtech.blog/docker/ppping.png" data-thumbnail="/offtech.blog/docker/ppping.png" data-sub-html="<h2>pingの権限</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/ppping.png"
+            data-srcset="/offtech.blog/docker/ppping.png, /offtech.blog/docker/ppping.png 1.5x, /offtech.blog/docker/ppping.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/ppping.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">pingの権限</figcaption>
+    </figure>
+<p>特にsetuidが付与されているわけでもなく、一般ユーザとして実行できるように見えます。
+実際に、pingは一般ユーザでも実行できると思います。</p>
+<p>では、このコマンドを自分のものとしてコピーして実行してみましょう。
+一般ユーザとして実行できているファイルなので、コピーができれば問題なく動作するはずです。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/ping_caps_error.png" title="/offtech.blog/docker/ping_caps_error.png" data-thumbnail="/offtech.blog/docker/ping_caps_error.png" data-sub-html="<h2>ソケットエラー</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/ping_caps_error.png"
+            data-srcset="/offtech.blog/docker/ping_caps_error.png, /offtech.blog/docker/ping_caps_error.png 1.5x, /offtech.blog/docker/ping_caps_error.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/ping_caps_error.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ソケットエラー</figcaption>
+    </figure>
+<p>エラーになりました。
+ローソケットの操作が許可されていないと怒られており、&ldquo;capability&quot;か&quot;setuid&quot;がないと言われています。</p>
+<p>これは、&ldquo;ping&quot;がローソケットを利用しており、その権限がないためエラーが出ているのです。
+では、もともと入っていた&quot;ping&quot;を見てみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/docker/ping_caps.png" title="/offtech.blog/docker/ping_caps.png" data-thumbnail="/offtech.blog/docker/ping_caps.png" data-sub-html="<h2>pingのcapability</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/docker/ping_caps.png"
+            data-srcset="/offtech.blog/docker/ping_caps.png, /offtech.blog/docker/ping_caps.png 1.5x, /offtech.blog/docker/ping_caps.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/docker/ping_caps.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">pingのcapability</figcaption>
+    </figure>
+<p>&ldquo;cap_net_raw=ep&quot;とあり、ローソケットを利用するためのcapabilityが割り当てられていることが分かります。<br>
+※ e=Effectve, p=Permitted を意味してます。</p>
+<p>これにより、setuidを利用せずにローソケットの利用しており、pingに脆弱性があったとしても権限昇格などの危険性が緩和されます。</p>
+<p>基本的なアクセス制御から復習したい方は「Linuxのアクセス制御を完全に理解する」をお勧めします！</p>
+</blockquote>
+<p>Dockerでは、特定のCapabilityだけをコンテナに割り当てることで、より厳密な最小権限の割当を実現しています。</p>
+<h3 id="42コンテナroot">4.2　コンテナroot</h3>
+<p>多くのコンテナはデフォルトでrootユーザのプロセスとして実行されます。
+これは、<strong>コンテナからホストへエスケープされた際にそのまま権限昇格される</strong>ため非常に危険です。
+OSSの公式イメージなどはデフォルトで実行時のユーザを変更してくれていますが、それがない場合はDockerfileでUSER命令を実行するなどして実行ユーザを変えることが得策です。</p>
+<p>上記では、コンテナのプロセスがそのコンテナ自身のUserネームスペース内でrootユーザとして実行されることを説明しています。
+しかし、3章で確認したように、通常コンテナには最低限のCapabilityしか付与されておらず、プロセスがアクセスできるリソースも制限されています。
+そのため、「ホストのrootのようにコンテナ内から何でもできる」というわけではありません。</p>
+<p>ここで、最も注意すべき点は&rdquo;&ndash;privileged&quot;というオプションです。
+これは特権を与えてコンテナを動かすためのオプションであり、数多くのCapabilityをコンテナに与えます。</p>
+<p>&ldquo;&ndash;privileged&quot;オプションが付与されている場合、コンテナ内からホストのファイルシステムをマウントして、ホストの環境にアクセスすることもできます。
+&ldquo;&ndash;privileged&quot;は非常に危険なオプションであり、基本的には利用を避けるべきです。
+代替手段として、必要なCapabilityのみを個別に付与するなどの対策を行うと良いでしょう。</p>
+<h3 id="43イメージ">4.3　イメージ</h3>
+<p>セキュリティに関してコンテナイメージで気にすることに以下のようなものがあります。</p>
+<ul>
+<li>信頼のあるベースイメージの利用<br>
+コンテナのイメージは非常に多く存在します。
+闇雲にイメージを利用していると、悪意のある攻撃者がバックドアを仕掛けたイメージなどを利用してしまう可能性もあります。
+重要なことは信頼のあるベースイメージを利用することです。
+公式のイメージのみを利用したり、イメージの署名検証やハッシュ値の比較を実施したりすることが大切です。</li>
+<li>脆弱性対応<br>
+通常のソフトウェアと同じく、コンテナでも脆弱性への対応が必要です。
+コンテナに対しイメージスキャンを行うなどして、運用として脆弱性対応を行うことが大切です。</li>
+<li>設定ミス防止<br>
+イメージの設定ミスにより、脆弱なコンテナを運用してしまう可能性があります。
+また、本来イメージに埋め込むべきでない機密情報などをビルド時にイメージに埋め込んでしまうと情報漏洩につながる可能性があります。
+開発者が注意することが一番の対策ですが、イメージスキャンを行うことで設定ミスを検出できる可能性もあります。</li>
+<li>イメージの最小化<br>
+イメージに必要なものだけを含めることは、アタックサーフェスを縮小することにつながります。</li>
+<li>デプロイの承認<br>
+コンテナはビルド時のみでなく、デプロイメント時にもセキュリティ上問題がないか確認を行うことが大切です。
+悪意のあるイメージが実行されないよう、信頼されたイメージかどうかや署名が行われているかを確認し、条件を満たした場合のみデプロイできる環境を構築することが大切です。</li>
+</ul>
+<h3 id="44リソース共有">4.4　リソース共有</h3>
+<p>Dockerはデフォルトで1章で取り上げたようなリソースを分離してコンテナを実行してくれます。
+しかし、ユーザの設定によってはコンテナにホストのリソースを共有しすぎることにより不用意なホストへのアクセスの危険性が生まれます。</p>
+<p>一つの例としてボリュームがあります。
+極端な例としてはコンテナにホストのルートディレクトリをボリュームとしてマウントした場合、コンテナ内から自由にホストにリソースにアクセスできます。</p>
+<p>ボリュームをはじめ、ネームスペースなどコンテナのアクセス範囲を追加で設定する場合は必要最小限に抑えることが大切です。
+これによりコンテナが攻撃を受けた際の影響範囲を抑えることができます。</p>
+<h2 id="5dockerのメリットデメリット">5　Dockerのメリット/デメリット</h2>
+<p>本章ではDockerのメリットやデメリットを主にVMと比較したときの観点で紹介していきます。</p>
+<h3 id="51メリット">5.1　メリット</h3>
+<ul>
+<li>
+<p>軽量性<br>
+コンテナはあくまでプロセスにすぎません。
+VMのやうにハードウェアをエミュレートしたり、ゲスト用に新たなカーネルを動作させたりもしません。
+これにより、専用にVMを立ててアプリケーションを動かす場合と比較し、軽量に動作させることができます。
+また、起動時間が非常に短いことも大きなメリットと言えます。</p>
+</li>
+<li>
+<p>再現性/移行性<br>
+コンテナは自身のパッケージ群を持っています。
+すなわち、Dockerfileと参照するイメージが同じであれば、いつでもパッケージ群でプロセスが動くということです。
+これにより、開発者は開発環境が違っても同じアプリケーション環境での開発、デプロイを実現することができます。</p>
+</li>
+<li>
+<p>環境構築の迅速化<br>
+コンテナはDocker Hubなどを通して非常に多くのイメージが展開されています。
+また、追加のパッケージ等もDockerfileにコードとして記載することで容易にインストールできます。
+これにより、VMを立てて必要なパッケージをインストール/設定していく場合と比較し、より迅速に環境構築を行うことができると言えます。</p>
+</li>
+<li>
+<p>リソースの節約<br>
+VM単位でリソースを確保せず、アプリケーション単位でリソースを確保できるためリソースの節約になる可能性があります。
+具体的には、クラウドでのコンテナ利用があります。
+VMで固定のリソースを確保した場合は、実際にリソースを利用していなくても課金されますが、コンテナであれば使ったリソース分のみの課金ですみます。</p>
+</li>
+<li>
+<p>ホストを汚さない<br>
+これは、個人的に大きなメリットだと持っている点です。
+Dockerfileはいつでも同じものを作れる設計書です。
+リソースを外から取ってこれる場合は、テキストファイルのみあれば、いつでもすぐに同じ環境を作れます。
+これは、ホスト環境も汚れずにストレージ容量も取らないため検証用の環境だったりを手元に保管しておくうえで非常に便利です。</p>
+</li>
+<li>
+<p>アタックサーフェスの縮小
+アプリケーションをコンテナとして必要最小限の権限のみをつけて実行することで、アタックサーフェスを縮小できます。
+コンテナは様々なリソースを分離し、必要なcapabilityのみを持たせることで、攻撃対象を縮小するだけでなく、攻撃を受けた際の影響を抑えてくれます。
+アプリケーションユーザも変えずに何でもかんでもsudoでアプリケーションを動かす場合と比較し、非常に堅牢であると言えます。</p>
+</li>
+</ul>
+<h3 id="52デメリット">5.2　デメリット</h3>
+<ul>
+<li>
+<p>VMと比較し、分離レベルが低い<br>
+コンテナはホストのカーネルを共有するため、VMと比較し分離レベルは低いです。
+これにより、設定が不適切であったり、脆弱性があったりするとホストに影響を与える可能性があります。
+（決して「コンテナ=危険」というわけではないです。一方で、専用の特化したタイプ1のハイパーバイザーほど安全とは言えないでしょう。）</p>
+</li>
+<li>
+<p>ホストと同じOSしか動かせない<br>
+ホストのカーネルを共有するため、ホストと同じOSしか動かせません。
+WindowsであればWSLなどでLinuxを動かし、そこでコンテナを動かす必要があります。
+Linux環境では、Windowsのコンテナが動かせません。</p>
+</li>
+<li>
+<p>状態管理が難しい<br>
+コンテナは使い捨てが前提です。
+状態管理やログの保管などはコンテナ外の別の仕組みと組み合わせて実装する必要があります。</p>
+</li>
+<li>
+<p>オーバヘッド<br>
+Dockerで動かす場合はコンテナ化の処理とコンテナ関連の管理が必要となるため、ホストで直接動かすよりは負荷が増えます。</p>
+</li>
+</ul>
+<h2 id="6dockerのユースケースとアーキテクチャ">6　Dockerのユースケースとアーキテクチャ</h2>
+<h3 id="61環境統一">6.1　環境統一</h3>
+<p>5.1節で述べたように、Dockerで開発を行うことで開発環境の差異をなくすことができます。
+同じDockerfileを共有することで同じパッケージ群でアプリケーションを動かすことができるからです。
+また、これは開発者の環境だけでなく、本番環境でも同じアプリケーション環境でアプリケーションを動かせるというメリットがあります。</p>
+<h3 id="62cicd">6.2　CI/CD</h3>
+<p>CI/CD（継続的インテグレーション/継続的デリバリー）はコンテナで開発を行う大きなメリットです。</p>
+<p>CIは開発時にコードを共有のレポジトリで管理し、コード配置後には自動でビルドやテストを行う開発手法です。
+一つの例として、githubとクラウドを連携させるなどして、チームでコード開発からビルド/テストまでを統一的に行うものがあります。
+CDはCIに成功した場合などにそのまま本番環境に自動デプロイする手法です。</p>
+<p>これにより、開発から本番環境への適用までのプロセスを効率化できます。
+CI/CDのような開発と運用を統合した考え方をDevOpsといいます。</p>
+<h3 id="63kubernetes">6.3　Kubernetes</h3>
+<p>Kubernetesはコンテナの管理を行うOSSのコンテナプラットフォームです。
+Kubernetesでコンテナ管理を行うことで以下のことを実現できます。</p>
+<ul>
+<li>コンテナの自動デプロイと管理</li>
+<li>IaCによるコンテナの管理</li>
+<li>自己修復</li>
+<li>自動スケーリング</li>
+<li>ローリングアップデートやロールバック
+など</li>
+</ul>
+<p>Kubernetesについては、「Kubernetesについて完全に理解する」で詳しく書こうと思います。</p>
+<h2 id="7まとめ">7　まとめ</h2>
+<p>本記事では、dockerをベースにコンテナの仕組みからコンテナのユースケースまで解説しました。
+今後もkubernetesを始めとしたコンテナによるマイクロサービスはますます増えると思われます。
+仕組みを理解した上でメリットデメリットを判断し、有効活用していきましょう。</p>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="https://www.docker.com/" target="_blank" rel="noopener noreffer ">docker</a><br>
+[2] <a href="https://www.amazon.co.jp/%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3-%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E5%8C%96%E3%81%95%E3%82%8C%E3%81%9F%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E4%BF%9D%E8%AD%B7%E3%81%99%E3%82%8B%E8%A6%81%E7%B4%A0%E6%8A%80%E8%A1%93-Liz-Rice/dp/4295016403" target="_blank" rel="noopener noreffer ">コンテナセキュリティ　コンテナ化されたアプリケーションを保護する要素技術 </a><br>
+[3] <a href="https://www.redhat.com/ja/topics/containers/containers-vs-vms" target="_blank" rel="noopener noreffer ">コンテナと VM</a><br>
+[4] <a href="https://hub.docker.com/" target="_blank" rel="noopener noreffer ">docker hub</a><br>
+[5] <a href="https://www.docker.com/ja-jp/products/docker-hub/" target="_blank" rel="noopener noreffer ">docker hub クラウドネイティブなソフトウェアの導入を簡単に</a><br>
+[6] <a href="https://namu-r21.hatenablog.com/entry/2016/10/27/013006" target="_blank" rel="noopener noreffer ">dockerが使うUnionFileSystemを僕なりに解釈した</a><br>
+[7] <a href="https://book.impress.co.jp/books/1122101051" target="_blank" rel="noopener noreffer ">コンテナセキュリティ コンテナ化されたアプリケーションを保護する要素技術</a><br>
+[8] <a href="https://qiita.com/mamomamo/items/448a8edf6d4ccfc22bbd" target="_blank" rel="noopener noreffer ">コンテナの標準仕様について調査してみた件</a><br>
+[9] <a href="https://github.com/opencontainers/image-spec" target="_blank" rel="noopener noreffer ">OCI Image Format Specification</a><br>
+[10] <a href="https://qiita.com/okmtz/items/f8231c83134a6363647b" target="_blank" rel="noopener noreffer ">Dockerコンテナのレイヤ構造とは？</a><br>
+[11] <a href="https://christina04.hatenablog.com/entry/2016/01/26/204659" target="_blank" rel="noopener noreffer ">UnionFS で Docker のレイヤ構造を理解する</a><br>
+[12] <a href="https://opencontainers.org/" target="_blank" rel="noopener noreffer ">Open Container Initiative</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-28&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/400bbc772dc2778c91c3a690caeefb87727c8e50" target="_blank" title="commit by shibuya-s-eg(shibuya.s.eg@gmail.com) 400bbc772dc2778c91c3a690caeefb87727c8e50: Update-20250628-01">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>400bbc7</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/docker/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/docker/" data-title="コンテナとDockerを完全に理解する" data-hashtags="Virtualization"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/docker/" data-title="コンテナとDockerを完全に理解する"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/docker/" data-hashtag="Virtualization"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/docker/" data-title="コンテナとDockerを完全に理解する"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/docker/" data-title="コンテナとDockerを完全に理解する"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/docker/" data-title="コンテナとDockerを完全に理解する"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/docker/" data-title="コンテナとDockerを完全に理解する" data-description="コンテナとDockerを完全に理解する。"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fdocker%2f&amp;text=%e3%82%b3%e3%83%b3%e3%83%86%e3%83%8a%e3%81%a8Docker%e3%82%92%e5%ae%8c%e5%85%a8%e3%81%ab%e7%90%86%e8%a7%a3%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/virtualization/">Virtualization</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/keyboard/" class="prev" rel="prev" title="自作キーボードデビューする"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>自作キーボードデビューする</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

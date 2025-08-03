@@ -1,0 +1,18 @@
+<h4>Debug: Categories and Subcategories</h4>
+
+{{ range .Data.Terms.ByCount }}
+  <h5>カテゴリ: {{ .Term }}</h5>
+  {{ $pages := .Pages }}
+  {{ range $pages }}
+    <p>記事タイトル: {{ .Title }}</p>
+    {{ if .Params.subcategories }}
+      <ul>
+        {{ range .Params.subcategories }}
+          <li>{{ . }}</li>
+        {{ end }}
+      </ul>
+    {{ else }}
+      <p>サブカテゴリなし</p>
+    {{ end }}
+  {{ end }}
+{{ end }}

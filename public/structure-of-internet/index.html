@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>インターネットの構造を完全に理解する - offtech.blog</title><meta name="Description" content="インターネットの構造を完全に理解する"><meta property="og:url" content="http://localhost:1313/offtech.blog/structure-of-internet/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="インターネットの構造を完全に理解する">
+  <meta property="og:description" content="インターネットの構造を完全に理解する">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-13T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-07-02T21:08:17+09:00">
+    <meta property="article:tag" content="Network">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="インターネットの構造を完全に理解する">
+  <meta name="twitter:description" content="インターネットの構造を完全に理解する">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/structure-of-internet/" /><link rel="prev" href="http://localhost:1313/offtech.blog/mail/" /><link rel="next" href="http://localhost:1313/offtech.blog/vrf/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "インターネットの構造を完全に理解する",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/structure-of-internet\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Network","wordcount":  2975 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/structure-of-internet\/","datePublished": "2025-04-13T00:00:00+09:00","dateModified": "2025-07-02T21:08:17+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "インターネットの構造を完全に理解する"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/structure-of-internet/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/structure-of-internet/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">インターネットの構造を完全に理解する</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-13">2025-04-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;2975 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;6 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#1はじめに">1　はじめに</a>
+      <ul>
+        <li><a href="#11インターネットとは何か">1.1　インターネットとは何か</a></li>
+        <li><a href="#12非中央集権型分散型ネットワーク">1.2　非中央集権型/分散型ネットワーク</a></li>
+      </ul>
+    </li>
+    <li><a href="#2物理層インターネットの土台">2　物理層：インターネットの土台</a>
+      <ul>
+        <li><a href="#21端末---ルータスイッチ間">2.1　端末 - ルータ/スイッチ間</a></li>
+        <li><a href="#22ルータ---モデムonu">2.2　ルータ - モデム/ONU</a></li>
+        <li><a href="#21光ファイバーと海底ケーブル">2.1　光ファイバーと海底ケーブル</a></li>
+        <li><a href="#22電柱マンホールとダークファイバー">2.2　電柱・マンホールとダークファイバー</a></li>
+        <li><a href="#23ispまでのアクセスラインftthdsl5gなど">2.3　ISPまでのアクセスライン（FTTH/DSL/5Gなど）</a></li>
+      </ul>
+    </li>
+    <li><a href="#4ネットワーク層ipとルーティングの世界">4　ネットワーク層：IPとルーティングの世界</a>
+      <ul>
+        <li><a href="#41ipアドレスとサブネット">4.1　IPアドレスとサブネット</a></li>
+        <li><a href="#42ルーティングとは何か">4.2　ルーティングとは何か</a></li>
+        <li><a href="#43経路制御の仕組みbgpとospfの役割">4.3　経路制御の仕組み：BGPとOSPFの役割</a></li>
+        <li><a href="#44パケットの流れを追う">4.4　パケットの流れを追う</a></li>
+      </ul>
+    </li>
+    <li><a href="#5as自律システムとインターネットの構造">5　AS（自律システム）とインターネットの構造</a>
+      <ul>
+        <li><a href="#51asとは何か管理単位としての意味">5.1　ASとは何か：管理単位としての意味</a></li>
+        <li><a href="#52グローバルなasの分布">5.2　グローバルなASの分布</a></li>
+        <li><a href="#53as間の接続とbgpポリシー">5.3　AS間の接続とBGPポリシー</a></li>
+        <li><a href="#54tier構造tier-1tier-2など">5.4　Tier構造（Tier 1/Tier 2など）</a></li>
+      </ul>
+    </li>
+    <li><a href="#6インターネットエクスチェンジixie">6　インターネットエクスチェンジ（IX/IE）</a>
+      <ul>
+        <li><a href="#61ixとは何か">6.1　IXとは何か</a></li>
+        <li><a href="#62ピアリングとトランジットの違い">6.2　ピアリングとトランジットの違い</a></li>
+        <li><a href="#63代表的なixjpnapjpixなど">6.3　代表的なIX（JPNAP、JPIXなど）</a></li>
+        <li><a href="#64ixの内部構造と運用">6.4　IXの内部構造と運用</a></li>
+      </ul>
+    </li>
+    <li><a href="#7プロトコルと通信の流れ">7　プロトコルと通信の流れ</a>
+      <ul>
+        <li><a href="#71tcpipモデルとosiモデル">7.1　TCP/IPモデルとOSIモデル</a></li>
+        <li><a href="#72dnsと名前解決の仕組み">7.2　DNSと名前解決の仕組み</a></li>
+        <li><a href="#73httpとtlsの役割">7.3　HTTPとTLSの役割</a></li>
+        <li><a href="#74トレーサウトpingで見る実際の流れ">7.4　トレーサウト・pingで見る実際の流れ</a></li>
+      </ul>
+    </li>
+    <li><a href="#8障害とその影響">8　障害とその影響</a>
+      <ul>
+        <li><a href="#81海底ケーブル断線時の影響">8.1　海底ケーブル断線時の影響</a></li>
+        <li><a href="#82bgpハイジャックとセキュリティ">8.2　BGPハイジャックとセキュリティ</a></li>
+        <li><a href="#83ddos攻撃のトラフィック構造">8.3　DDoS攻撃のトラフィック構造</a></li>
+        <li><a href="#84冗長構成と自律回復性">8.4　冗長構成と自律回復性</a></li>
+      </ul>
+    </li>
+    <li><a href="#9今後のインターネット">9　今後のインターネット</a>
+      <ul>
+        <li><a href="#91ipv6移行の進捗と課題">9.1　IPv6移行の進捗と課題</a></li>
+        <li><a href="#92量子通信衛星インターネットの可能性">9.2　量子通信・衛星インターネットの可能性</a></li>
+        <li><a href="#93地域格差とインフラ整備">9.3　地域格差とインフラ整備</a></li>
+        <li><a href="#94政府とインターネット管理icannrirnic">9.4　政府とインターネット管理（ICANN/RIR/NIC）</a></li>
+      </ul>
+    </li>
+    <li><a href="#10まとめと参考資料">10　まとめと参考資料</a>
+      <ul>
+        <li><a href="#101">10.1</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+- TLDR
+
+-->
+<p>こんにちは、しぶやです。
+今回はインターネットの構造を完全に理解していきます。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+<h2 id="1はじめに">1　はじめに</h2>
+<h3 id="11インターネットとは何か">1.1　インターネットとは何か</h3>
+<p>いきなりですが、インターネットとは段でしょうか？
+今や小学生でも通じる単語ですが、改めて聞かれると困りますね。
+<a href="https://www.nic.ad.jp/ja/" target="_blank" rel="noopener noreffer ">JPNIC</a>には<a href="https://www.nic.ad.jp/ja/basics/beginners/internet.html" target="_blank" rel="noopener noreffer ">下記</a>のように定義しています。</p>
+<blockquote>
+<p>まずはインターネットとは何かをはっきりさせましょう。 もともとinterとは中間とか間、相互といった意味を持ちます。
+internationalなら国際ですし、intercessionなら仲介です。 ですから、語源的にはネットワークとネットワークをつなぐものが、 すなわちインターネットです。
+英語だと、小文字で始まるinternetがこれに相当して、 LANとLANをつないだもの、 というイメージになります。</p>
+<p>対して日本でインターネット、 英語では大文字で始まるThe Internetのほうは、 もっと限定的です。
+これはIPという約束に従って接続された、 世界規模のコンピュータネットワークを意味します。</p>
+</blockquote>
+<p>インターネットとは<strong>IPという約束に従って接続された、 世界規模のコンピュータネットワーク</strong>であるようです。</p>
+<h3 id="12非中央集権型分散型ネットワーク">1.2　非中央集権型/分散型ネットワーク</h3>
+<p>1.1節に続いて、インターネットは誰によっって管理されているのでしょうか。
+こちらもJPNIC先生に教えてもらいましょう。</p>
+<blockquote>
+<p>インターネットはだれが運営しているのでしょうか。 実は、特定の団体が運営しているわけではないのです。
+強いてあげれば、 ICANN (The Internet Corporation for Assinged Names and Numbers)と IETF (The Internet Engineering Task Force)でしょうか。</p>
+<p>資源管理の観点で言うと、 長らく南カリフォルニア大学情報科学研究所(ISI)がアメリカ政府からの委託を受けIPアドレスとドメイン名を管理しており、 後にそのプロジェクトをIANA(Internet Assigned Numbers Authority)と呼ぶようになりました。
+ドメイン名の登録業務に関しては、 アメリカ政府からスタンフォード研究所(SRI)に委託されていましたが、 その後ネットワーク・ソリューションズ社に移管されました。
+こうした背景のもと、 アメリカでは1993年にゴア副大統領(当時)が情報ハイウェイ構想を発表し、 急速にインターネットが普及し始めました。
+5年後の1998年、 IANAが担ってきた機能に関する権限をアメリカ政府から移行する目的で組織されたのがICANNです。
+その設立には、アメリカ政府の発表したグリーンペーパー、 ホワイトペーパーが強く影響しています。
+現在ではIPアドレス、ドメイン名、 プロトコル、 ポート番号はICANNが管理しています。
+しかし歴史的経緯から、 いまだにその機能のことを差してIANAと呼んでいます。</p>
+<p>ICANNが資源管理を担う一方、 技術面での責を担うのがIETFです。
+ここでは、 RFC (Request For Comments)と呼ばれる、 一連の技術文書を発行しています。
+これは独占的なものではなく、誰でも自由に使えます。
+それどころか正式なRFCとして採用されるためには、 素案の段階で独立した複数の開発が行われて、 相互に運用可能であることが確認されなければならないくらいです。</p>
+<p>特筆すべきは、 ICANN、 IETFともに非常に開かれた組織で、 原則として誰でも参加できるという点でしょう。</p>
+</blockquote>
+<p>重要なのは<strong>特定の団体が運営しているわけではない</strong>という部分です。
+管理簿に登録する人や技術的なルールを定める人はいても、中央集権的にだれかが管理しているわけではないのです。
+これにより、企業のネットワークや大学、ISPなどが独立して介入することが可能になります。</p>
+<p>また、中央集権型でない分散システムであるため、どこかで障害が起きても別経路でネットワークをつなげることが可能です。
+これが分散型ネットワークです。</p>
+<h2 id="2物理層インターネットの土台">2　物理層：インターネットの土台</h2>
+<p>本章では、インターネットの物理的な接続について学習していきます。
+この手の説明では、いきなり光ファイバーケーブルとか言われ、いまいちイメージが沸かないことが多々あります。
+よって、本章では、よりイメージのが湧きやすいように、「自宅のスマホやPCからどのように外の世界と通信しているか」という流れで説明していきます。</p>
+<h3 id="21端末---ルータスイッチ間">2.1　端末 - ルータ/スイッチ間</h3>
+<p>インターネットへアクセスする場合、読者のみなさんは何を利用するでしょうか？
+たいていの場合、スマホやパソコンだと思います。
+そしてそれらの接続先は自宅のWifiルータとかでしょうか。
+今どきスマート家電も進み、様々なものにインターネットにつなげているでしょう。</p>
+<p>スマホ/PCからWifiにはどのようにつながっているでしょうか？
+皆さんご存知の通り、接続方法には無線か有線があります。
+無線の場合は、電波でつながっています。
+もう少し丁寧に説明すると、（ほとんどの場合は、）IEEE 802.1に従い、特定の周波数帯を利用したデータのやりとりを行っています。
+有線の場合は<a href="https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%86%E3%82%B4%E3%83%AA%E3%83%BC6%E3%82%B1%E3%83%BC%E3%83%96%E3%83%AB" target="_blank" rel="noopener noreffer ">LANケーブル</a>と呼ばれるケーブルで直接接続します。
+有線LANのIEEEの規格はというと、IEEE 802.3で定められています。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>無線LANの周波数帯<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>読者のみなさんは自宅のWifiルータに接続する際、5GHzと2.4GHzの2つを見たことはないでしょうか？
+Wifiではこの2つの周波数帯を利用しています。（Wi-Fi 6以降は6GHzも利用されているようです。）</p>
+<p>この2つの周波数帯の違いは下記です。</p>
+<table>
+<thead>
+<tr>
+<th>特徴</th>
+<th>2.4GHz</th>
+<th>5GHz</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>通信速度</td>
+<td>遅い</td>
+<td>速い</td>
+</tr>
+<tr>
+<td>障害物の強さ</td>
+<td>壁や床を通りやすい</td>
+<td>壁や床を通りにくい</td>
+</tr>
+<tr>
+<td>干渉しやすさ</td>
+<td>鑑賞しやすい</td>
+<td>干渉しにくい</td>
+</tr>
+</tbody>
+</table>
+<p>物理の話になってしまうので詳しく説明はしませんが、Wi-Fiルータまでの間に壁や床などの障害物がなければ5GHzを使ったほうが通信速度も早く、他の電波を発している家電などの影響も受けにくいです。
+一方で、5GHzは障害物に弱いので、障害物が間にある場合は2.4の利用も考えたほうが良いかもしれません。</p>
+</div>
+        </div>
+    </div>
+<h3 id="22ルータ---モデムonu">2.2　ルータ - モデム/ONU</h3>
+<p>このあたりから人によっては意識したことがない世界かと思います。
+（一人暮らしとからならあるかな？）</p>
+<h3 id="21光ファイバーと海底ケーブル">2.1　光ファイバーと海底ケーブル</h3>
+<h3 id="22電柱マンホールとダークファイバー">2.2　電柱・マンホールとダークファイバー</h3>
+<h3 id="23ispまでのアクセスラインftthdsl5gなど">2.3　ISPまでのアクセスライン（FTTH/DSL/5Gなど）</h3>
+<h2 id="4ネットワーク層ipとルーティングの世界">4　ネットワーク層：IPとルーティングの世界</h2>
+<h3 id="41ipアドレスとサブネット">4.1　IPアドレスとサブネット</h3>
+<h3 id="42ルーティングとは何か">4.2　ルーティングとは何か</h3>
+<h3 id="43経路制御の仕組みbgpとospfの役割">4.3　経路制御の仕組み：BGPとOSPFの役割</h3>
+<h3 id="44パケットの流れを追う">4.4　パケットの流れを追う</h3>
+<h2 id="5as自律システムとインターネットの構造">5　AS（自律システム）とインターネットの構造</h2>
+<h3 id="51asとは何か管理単位としての意味">5.1　ASとは何か：管理単位としての意味</h3>
+<h3 id="52グローバルなasの分布">5.2　グローバルなASの分布</h3>
+<h3 id="53as間の接続とbgpポリシー">5.3　AS間の接続とBGPポリシー</h3>
+<h3 id="54tier構造tier-1tier-2など">5.4　Tier構造（Tier 1/Tier 2など）</h3>
+<h2 id="6インターネットエクスチェンジixie">6　インターネットエクスチェンジ（IX/IE）</h2>
+<h3 id="61ixとは何か">6.1　IXとは何か</h3>
+<h3 id="62ピアリングとトランジットの違い">6.2　ピアリングとトランジットの違い</h3>
+<h3 id="63代表的なixjpnapjpixなど">6.3　代表的なIX（JPNAP、JPIXなど）</h3>
+<h3 id="64ixの内部構造と運用">6.4　IXの内部構造と運用</h3>
+<h2 id="7プロトコルと通信の流れ">7　プロトコルと通信の流れ</h2>
+<h3 id="71tcpipモデルとosiモデル">7.1　TCP/IPモデルとOSIモデル</h3>
+<h3 id="72dnsと名前解決の仕組み">7.2　DNSと名前解決の仕組み</h3>
+<h3 id="73httpとtlsの役割">7.3　HTTPとTLSの役割</h3>
+<h3 id="74トレーサウトpingで見る実際の流れ">7.4　トレーサウト・pingで見る実際の流れ</h3>
+<h2 id="8障害とその影響">8　障害とその影響</h2>
+<h3 id="81海底ケーブル断線時の影響">8.1　海底ケーブル断線時の影響</h3>
+<h3 id="82bgpハイジャックとセキュリティ">8.2　BGPハイジャックとセキュリティ</h3>
+<h3 id="83ddos攻撃のトラフィック構造">8.3　DDoS攻撃のトラフィック構造</h3>
+<h3 id="84冗長構成と自律回復性">8.4　冗長構成と自律回復性</h3>
+<h2 id="9今後のインターネット">9　今後のインターネット</h2>
+<h3 id="91ipv6移行の進捗と課題">9.1　IPv6移行の進捗と課題</h3>
+<h3 id="92量子通信衛星インターネットの可能性">9.2　量子通信・衛星インターネットの可能性</h3>
+<h3 id="93地域格差とインフラ整備">9.3　地域格差とインフラ整備</h3>
+<h3 id="94政府とインターネット管理icannrirnic">9.4　政府とインターネット管理（ICANN/RIR/NIC）</h3>
+<h2 id="10まとめと参考資料">10　まとめと参考資料</h2>
+<h3 id="101">10.1</h3>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="" rel=""></a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-07-02&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/4c53eac2c81e6b15de6ee898d44a4b0ddfbe7a6b" target="_blank" title="commit by shibuya-s-eg(shibuya.s.eg@gmail.com) 4c53eac2c81e6b15de6ee898d44a4b0ddfbe7a6b: Update-20250702-00">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>4c53eac</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/structure-of-internet/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/structure-of-internet/" data-title="インターネットの構造を完全に理解する" data-hashtags="Network"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/structure-of-internet/" data-title="インターネットの構造を完全に理解する"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/structure-of-internet/" data-hashtag="Network"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/structure-of-internet/" data-title="インターネットの構造を完全に理解する"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/structure-of-internet/" data-title="インターネットの構造を完全に理解する"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/structure-of-internet/" data-title="インターネットの構造を完全に理解する"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/structure-of-internet/" data-title="インターネットの構造を完全に理解する" data-description="インターネットの構造を完全に理解する"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fstructure-of-internet%2f&amp;text=%e3%82%a4%e3%83%b3%e3%82%bf%e3%83%bc%e3%83%8d%e3%83%83%e3%83%88%e3%81%ae%e6%a7%8b%e9%80%a0%e3%82%92%e5%ae%8c%e5%85%a8%e3%81%ab%e7%90%86%e8%a7%a3%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/network/">Network</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/mail/" class="prev" rel="prev" title="メールシステムを完全に理解する"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>メールシステムを完全に理解する</a>
+            <a href="/offtech.blog/vrf/" class="next" rel="next" title="VRFを完全に理解する">VRFを完全に理解する<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

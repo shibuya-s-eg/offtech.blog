@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>RAGを完全に理解する - offtech.blog</title><meta name="Description" content="RAGを完全に理解する"><meta property="og:url" content="http://localhost:1313/offtech.blog/rag/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="RAGを完全に理解する">
+  <meta property="og:description" content="RAGを完全に理解する">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-13T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-24T21:43:11+09:00">
+    <meta property="article:tag" content="Network">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="RAGを完全に理解する">
+  <meta name="twitter:description" content="RAGを完全に理解する">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/rag/" /><link rel="prev" href="http://localhost:1313/offtech.blog/rip/" /><link rel="next" href="http://localhost:1313/offtech.blog/qos/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "RAGを完全に理解する",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/rag\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Network","wordcount":  777 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/rag\/","datePublished": "2025-04-13T00:00:00+09:00","dateModified": "2025-06-24T21:43:11+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "RAGを完全に理解する"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/rag/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/rag/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">RAGを完全に理解する</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-13">2025-04-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;777 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#1-はじめに">1 はじめに</a>
+      <ul>
+        <li><a href="#11-なぜrag">1.1 なぜRAG</a></li>
+        <li><a href="#12-ragとは何か">1.2 RAGとは何か</a></li>
+        <li><a href="#13-本記事の目的とゴール">1.3 本記事の目的とゴール</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-ragの全体像と構成要素">2 RAGの全体像と構成要素</a>
+      <ul>
+        <li><a href="#21-ragの基本構造とアーキテクチャ">2.1 RAGの基本構造とアーキテクチャ</a></li>
+        <li><a href="#22-retrievalとgenerationの役割分担">2.2 RetrievalとGenerationの役割分担</a></li>
+        <li><a href="#23-外部知識ベースの活用">2.3 外部知識ベースの活用</a></li>
+        <li><a href="#24-全体の処理フロー">2.4 全体の処理フロー</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-retrievalの仕組み">3 Retrievalの仕組み</a>
+      <ul>
+        <li><a href="#31-検索方式の分類dense-vs-sparse">3.1 検索方式の分類：Dense vs Sparse</a></li>
+        <li><a href="#32-埋め込み生成とエンコーダdprなど">3.2 埋め込み生成とエンコーダ（DPRなど）</a></li>
+        <li><a href="#33-類似度検索とベクトルdbfaissなど">3.3 類似度検索とベクトルDB（FAISSなど）</a></li>
+        <li><a href="#34-retrieverのパフォーマンスと精度向上">3.4 Retrieverのパフォーマンスと精度向上</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-generationの仕組み">4 Generationの仕組み</a>
+      <ul>
+        <li><a href="#41-使用される生成モデルbart-t5-gptなど">4.1 使用される生成モデル（BART, T5, GPTなど）</a></li>
+        <li><a href="#42-検索結果と生成器の接続方式">4.2 検索結果と生成器の接続方式</a></li>
+        <li><a href="#43-multi-document-summarizationとの関係">4.3 Multi-document summarizationとの関係</a></li>
+        <li><a href="#44-出力生成の工夫とチューニング">4.4 出力生成の工夫とチューニング</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-実装例とプロセスの可視化">5 実装例とプロセスの可視化</a>
+      <ul>
+        <li><a href="#51-ragの簡易実装hugging-face--faiss">5.1 RAGの簡易実装（Hugging Face + FAISS）</a></li>
+        <li><a href="#52-retrieverとgeneratorの連携処理">5.2 RetrieverとGeneratorの連携処理</a></li>
+        <li><a href="#53-実行例とデータフロー図">5.3 実行例とデータフロー図</a></li>
+        <li><a href="#54-コードで見る仕組みの分解">5.4 コードで見る仕組みの分解</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-ragの代表的なユースケース">6 RAGの代表的なユースケース</a>
+      <ul>
+        <li><a href="#61-文書検索型qa">6.1 文書検索型QA</a></li>
+        <li><a href="#62-ナレッジベースチャットボット">6.2 ナレッジベースチャットボット</a></li>
+        <li><a href="#63-法律医療企業内検索応用">6.3 法律・医療・企業内検索応用</a></li>
+        <li><a href="#64-その他の実用例">6.4 その他の実用例</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-ragの課題と限界">7 RAGの課題と限界</a>
+      <ul>
+        <li><a href="#71-レイテンシの問題と最適化">7.1 レイテンシの問題と最適化</a></li>
+        <li><a href="#72-retriever精度への依存">7.2 Retriever精度への依存</a></li>
+        <li><a href="#73-ハルシネーションと事実性の確保">7.3 ハルシネーションと事実性の確保</a></li>
+        <li><a href="#74-コンテキスト長の制限と対策">7.4 コンテキスト長の制限と対策</a></li>
+      </ul>
+    </li>
+    <li><a href="#8-ragの進化系と研究動向">8 RAGの進化系と研究動向</a>
+      <ul>
+        <li><a href="#81-fidfusion-in-decoder">8.1 FiD（Fusion-in-Decoder）</a></li>
+        <li><a href="#82-replugrealmrag-end2end">8.2 REPLUG・REALM・RAG-End2End</a></li>
+        <li><a href="#83-retrievalの学習手法コントラスト学習など">8.3 Retrievalの学習手法（コントラスト学習など）</a></li>
+        <li><a href="#84-raftretrieval-augmented-fine-tuning">8.4 RAFT（Retrieval-Augmented Fine-Tuning）</a></li>
+      </ul>
+    </li>
+    <li><a href="#9-セキュリティと倫理的観点">9 セキュリティと倫理的観点</a>
+      <ul>
+        <li><a href="#91-知識ソースの整合性と更新性">9.1 知識ソースの整合性と更新性</a></li>
+        <li><a href="#92-情報漏洩と機密性の確保">9.2 情報漏洩と機密性の確保</a></li>
+        <li><a href="#93-バイアス公平性の問題">9.3 バイアス・公平性の問題</a></li>
+        <li><a href="#94-説明可能性と可監査性の重要性">9.4 説明可能性と可監査性の重要性</a></li>
+      </ul>
+    </li>
+    <li><a href="#10-まとめと今後の展望">10 まとめと今後の展望</a>
+      <ul>
+        <li><a href="#101-本記事のまとめと復習">10.1 本記事のまとめと復習</a></li>
+        <li><a href="#102-ragの未来と技術的進化">10.2 RAGの未来と技術的進化</a></li>
+        <li><a href="#103-応用に向けたヒントと参考資料">10.3 応用に向けたヒントと参考資料</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+- TLDR
+
+-->
+<p>こんにちは、しぶやです。
+今回はを完全に理解していきます。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+<h2 id="1-はじめに">1 はじめに</h2>
+<h3 id="11-なぜrag">1.1 なぜRAG</h3>
+<h3 id="12-ragとは何か">1.2 RAGとは何か</h3>
+<h3 id="13-本記事の目的とゴール">1.3 本記事の目的とゴール</h3>
+<h2 id="2-ragの全体像と構成要素">2 RAGの全体像と構成要素</h2>
+<h3 id="21-ragの基本構造とアーキテクチャ">2.1 RAGの基本構造とアーキテクチャ</h3>
+<h3 id="22-retrievalとgenerationの役割分担">2.2 RetrievalとGenerationの役割分担</h3>
+<h3 id="23-外部知識ベースの活用">2.3 外部知識ベースの活用</h3>
+<h3 id="24-全体の処理フロー">2.4 全体の処理フロー</h3>
+<h2 id="3-retrievalの仕組み">3 Retrievalの仕組み</h2>
+<h3 id="31-検索方式の分類dense-vs-sparse">3.1 検索方式の分類：Dense vs Sparse</h3>
+<h3 id="32-埋め込み生成とエンコーダdprなど">3.2 埋め込み生成とエンコーダ（DPRなど）</h3>
+<h3 id="33-類似度検索とベクトルdbfaissなど">3.3 類似度検索とベクトルDB（FAISSなど）</h3>
+<h3 id="34-retrieverのパフォーマンスと精度向上">3.4 Retrieverのパフォーマンスと精度向上</h3>
+<h2 id="4-generationの仕組み">4 Generationの仕組み</h2>
+<h3 id="41-使用される生成モデルbart-t5-gptなど">4.1 使用される生成モデル（BART, T5, GPTなど）</h3>
+<h3 id="42-検索結果と生成器の接続方式">4.2 検索結果と生成器の接続方式</h3>
+<h3 id="43-multi-document-summarizationとの関係">4.3 Multi-document summarizationとの関係</h3>
+<h3 id="44-出力生成の工夫とチューニング">4.4 出力生成の工夫とチューニング</h3>
+<h2 id="5-実装例とプロセスの可視化">5 実装例とプロセスの可視化</h2>
+<h3 id="51-ragの簡易実装hugging-face--faiss">5.1 RAGの簡易実装（Hugging Face + FAISS）</h3>
+<h3 id="52-retrieverとgeneratorの連携処理">5.2 RetrieverとGeneratorの連携処理</h3>
+<h3 id="53-実行例とデータフロー図">5.3 実行例とデータフロー図</h3>
+<h3 id="54-コードで見る仕組みの分解">5.4 コードで見る仕組みの分解</h3>
+<h2 id="6-ragの代表的なユースケース">6 RAGの代表的なユースケース</h2>
+<h3 id="61-文書検索型qa">6.1 文書検索型QA</h3>
+<h3 id="62-ナレッジベースチャットボット">6.2 ナレッジベースチャットボット</h3>
+<h3 id="63-法律医療企業内検索応用">6.3 法律・医療・企業内検索応用</h3>
+<h3 id="64-その他の実用例">6.4 その他の実用例</h3>
+<h2 id="7-ragの課題と限界">7 RAGの課題と限界</h2>
+<h3 id="71-レイテンシの問題と最適化">7.1 レイテンシの問題と最適化</h3>
+<h3 id="72-retriever精度への依存">7.2 Retriever精度への依存</h3>
+<h3 id="73-ハルシネーションと事実性の確保">7.3 ハルシネーションと事実性の確保</h3>
+<h3 id="74-コンテキスト長の制限と対策">7.4 コンテキスト長の制限と対策</h3>
+<h2 id="8-ragの進化系と研究動向">8 RAGの進化系と研究動向</h2>
+<h3 id="81-fidfusion-in-decoder">8.1 FiD（Fusion-in-Decoder）</h3>
+<h3 id="82-replugrealmrag-end2end">8.2 REPLUG・REALM・RAG-End2End</h3>
+<h3 id="83-retrievalの学習手法コントラスト学習など">8.3 Retrievalの学習手法（コントラスト学習など）</h3>
+<h3 id="84-raftretrieval-augmented-fine-tuning">8.4 RAFT（Retrieval-Augmented Fine-Tuning）</h3>
+<h2 id="9-セキュリティと倫理的観点">9 セキュリティと倫理的観点</h2>
+<h3 id="91-知識ソースの整合性と更新性">9.1 知識ソースの整合性と更新性</h3>
+<h3 id="92-情報漏洩と機密性の確保">9.2 情報漏洩と機密性の確保</h3>
+<h3 id="93-バイアス公平性の問題">9.3 バイアス・公平性の問題</h3>
+<h3 id="94-説明可能性と可監査性の重要性">9.4 説明可能性と可監査性の重要性</h3>
+<h2 id="10-まとめと今後の展望">10 まとめと今後の展望</h2>
+<h3 id="101-本記事のまとめと復習">10.1 本記事のまとめと復習</h3>
+<h3 id="102-ragの未来と技術的進化">10.2 RAGの未来と技術的進化</h3>
+<h3 id="103-応用に向けたヒントと参考資料">10.3 応用に向けたヒントと参考資料</h3>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="" rel=""></a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-24&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/cdff6142bd227c739dffa3e57981347795afc22b" target="_blank" title="commit by shibuya-s-eg(shibuya.s.eg@gmail.com) cdff6142bd227c739dffa3e57981347795afc22b: Update-20250624-00">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>cdff614</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/rag/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/rag/" data-title="RAGを完全に理解する" data-hashtags="Network"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/rag/" data-title="RAGを完全に理解する"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/rag/" data-hashtag="Network"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/rag/" data-title="RAGを完全に理解する"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/rag/" data-title="RAGを完全に理解する"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/rag/" data-title="RAGを完全に理解する"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/rag/" data-title="RAGを完全に理解する" data-description="RAGを完全に理解する"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2frag%2f&amp;text=RAG%e3%82%92%e5%ae%8c%e5%85%a8%e3%81%ab%e7%90%86%e8%a7%a3%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/network/">Network</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/rip/" class="prev" rel="prev" title="RIPを完全に理解する"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>RIPを完全に理解する</a>
+            <a href="/offtech.blog/qos/" class="next" rel="next" title="QoSを完全に理解する">QoSを完全に理解する<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

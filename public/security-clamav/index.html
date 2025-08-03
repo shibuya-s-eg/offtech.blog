@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>ClamAVを完全に理解する - offtech.blog</title><meta name="Description" content="ClamAVを完全に理解する。"><meta property="og:url" content="http://localhost:1313/offtech.blog/security-clamav/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="ClamAVを完全に理解する">
+  <meta property="og:description" content="ClamAVを完全に理解する。">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-03-18T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-22T13:54:21+09:00">
+    <meta property="article:tag" content="Security">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="ClamAVを完全に理解する">
+  <meta name="twitter:description" content="ClamAVを完全に理解する。">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/security-clamav/" /><link rel="prev" href="http://localhost:1313/offtech.blog/kubernetes/" /><link rel="next" href="http://localhost:1313/offtech.blog/linux-access-controle/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "ClamAVを完全に理解する",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/security-clamav\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Security","wordcount":  10513 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/security-clamav\/","datePublished": "2025-03-18T00:00:00+09:00","dateModified": "2025-06-22T13:54:21+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "ClamAVを完全に理解する。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/security-clamav/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/security-clamav/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">ClamAVを完全に理解する</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-03-18">2025-03-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;10513 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;21 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#1clamav基礎">1　ClamAV基礎</a>
+      <ul>
+        <li><a href="#10マルウェアとは">1.0　マルウェアとは？</a></li>
+        <li><a href="#11clamavとは">1.1　ClamAVとは？</a></li>
+        <li><a href="#12clamavの機能">1.2　ClamAVの機能</a></li>
+        <li><a href="#13その他のウイルス対策ソフトとの違い">1.3　その他のウイルス対策ソフトとの違い</a></li>
+        <li><a href="#13clamavの構成要素">1.3　ClamAVの構成要素</a></li>
+        <li><a href="#14clamavのウイルススキャンを覗いてみる">1.4　ClamAVのウイルススキャンを覗いてみる</a></li>
+      </ul>
+    </li>
+    <li><a href="#2検証">2　検証</a>
+      <ul>
+        <li><a href="#21インストール">2.1　インストール</a></li>
+        <li><a href="#22ウイルス定義の更新">2.2　ウイルス定義の更新</a></li>
+        <li><a href="#23ウイルススキャン">2.3　ウイルススキャン</a></li>
+        <li><a href="#24リアルタイムスキャン">2.4　リアルタイムスキャン</a></li>
+        <li><a href="#24隔離">2.4　隔離</a></li>
+      </ul>
+    </li>
+    <li><a href="#3定義ファイルの作成">3　定義ファイルの作成</a></li>
+    <li><a href="#4まとめ">4　まとめ</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+- ウイルス定義ファイル
+    - 実際に書いてみる
+- 標的型とかは検知が難しい話
+    - 書き換えられる
+    - 回避しようとしてくる
+-->
+<p>こんにちは、しぶやです。<br>
+近いうちにClamAVを利用する機会がありそうなので、これを機にClamAVを「完全に理解」していきたいと思います。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li>ウイルスは実行されて初めて感染</li>
+<li>ClamAVはCiscoが管理するOSSのウイルス対策ソフトであり、シグネチャも</li>
+<li>リアルタイムスキャンや隔離に対応しているが、振る舞い検知等には未対応</li>
+</ul>
+<h2 id="1clamav基礎">1　ClamAV基礎</h2>
+<h3 id="10マルウェアとは">1.0　マルウェアとは？</h3>
+<p>そもそもマルウェアの定義が何なのか曖昧であったので、Wikipediaで調べてみます。
+（個人的にWikipediaは定義が純粋で変な解釈されていないイメージがあります。また、十分な信頼性を示したいわけでもないので手軽にWikipediaで調べてます。）</p>
+<p><a href="https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2" target="_blank" rel="noopener noreffer "><strong>Wikipedia</strong></a>では以下のように書かれています。</p>
+<blockquote>
+<p>マルウェア (malware) とは、不正かつ有害に動作させる意図で作成された悪意のあるソフトウェアや悪質なコードの総称。</p>
+</blockquote>
+<p>つまり、<strong>悪意のあるソフトウェア = マルウェア</strong>のようですね。</p>
+<div class="details admonition Note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>マルウェア感染とは？<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>それでは、<strong>マルウェア感染</strong>とは何なのでしょうか？</p>
+<p>意外に明確な定義が見つかりませんでした。<strong>ChatGPT</strong>に聞いてみると以下のように返ってきました。</p>
+<blockquote>
+<p>マルウェア感染の定義は、悪意のあるソフトウェア（マルウェア）が、ユーザーの意図しない形でデバイス、システム、またはネットワークに侵入し、実行されることによって、その正常な動作を妨害、情報の窃取、システムの破壊、もしくは攻撃者に対する遠隔操作の権限を与える状態を指します。</p>
+</blockquote>
+<p>すなわち、実行されることによって悪意のある動作がされることのようです。
+ポイントは侵入したあとに実行までされて初めて感染であり、インストールされただけでは、感染ではないことです。
+改めて考えてみると、ウイルス対策ソフトがインストールされたソフトをウイルスと判定し、隔離した際は感染したとは言い難いですよね。</p>
+<p>実行環境だけ整えてあとから実行されるパターンなどもありますが、この時点で感染なのでしょうか？
+ウイルス対策の視点から考えてみると、「実行環境が整ったがその後のウイルススキャンで実行される前に削除された」となれば感染したとは言わない気がします。
+そのため、やはり実行に成功して初めて感染と定義したほうが良さそうです。※ そもそも環境が整った時点ですでに実行されていると考えられます。この場合は一度実行されてしまっているので感染ですね。</p>
+<p>では、実行されだけど昔のウイルスなどでまともに動作せずに終わった場合はどうなのでしょう？<br>
+※ ここでの「動作しない」とは、マルウェアが目的としていた動作（C2サーバとの接続等）に失敗した場合だけでなく、実行ファイルがエラー終了した場合も含めて考えています。
+僕は、これも感染と考えています。感染したけど被害はなかったと。
+根拠としては、実際に実行されてプログラムが動作したた時点で、コンピュータの隔離や解析等の対応が予想されるからです。
+エラー終了していてもどの段階でエラー終了したのか分からないですからね。
+この時点で感染したとして後続対応がはじまるイメージです。</p>
+<p>実際には他と整合性をとるための定義の問題でしかないので、正解はないのかもしれません。
+現状、<strong>実行されて初めて感染</strong>くらいの定義がしっくりきていますが、もっと良い定義があるかもしれません。</p>
+</div>
+        </div>
+    </div>
+<p>それでは、具体的なマルウェアの種類をみていきます。
+ここでも、<a href="https://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2" target="_blank" rel="noopener noreffer ">Wikipedia</a>の定義を参照します。</p>
+<ul>
+<li>
+<p><strong>（広義の）ウイルス</strong><br>
+自己伝染機能、潜伏機能、発病機能のいずれかをもつ加害プログラム</p>
+</li>
+<li>
+<p><strong>（狭義の）ウイルス</strong><br>
+他のプログラムやファイルの一部を書き換え（寄生、感染）、自己複製する機能を持つマルウェア</p>
+</li>
+<li>
+<p><strong>ワーム</strong><br>
+ウイルス同様自己増殖するが、ホストプログラムを持たず、単体で存在するプログラム</p>
+</li>
+<li>
+<p><strong>バックドア</strong><br>
+外部からコンピュータを操るために作られたコンピュータへの不正な侵入経路</p>
+</li>
+<li>
+<p><strong>トロイの木馬</strong><br>
+無害なファイルやプログラムに偽装した上でコンピュータに侵入したあと悪意のある振る舞いをするもの</p>
+</li>
+<li>
+<p><strong>スパイウェア</strong><br>
+コンピュータの内部情報を外部に勝手に送信するソフトウェア</p>
+</li>
+<li>
+<p><strong>キーロガー</strong><br>
+キーボードからの入力を記録するプログラム</p>
+</li>
+<li>
+<p><strong>ボット</strong><br>
+ボットネットと呼ばれる仕組みにより、IRCなどを利用して攻撃者から命令を受け取り、命令に応じてDDoS攻撃やスパムメール送信などを行うマルウェア<br>
+※ ボット自体は常駐してチャットで会話するなどといった機能を持つ任意のプログラムを指すもの</p>
+</li>
+<li>
+<p><strong>ルートキット</strong><br>
+攻撃者が被害者のコンピュータに侵入したあとに用いるツールを集めたパッケージで、マルウェアとして被害者のコンピュータにしかけるもの。
+侵入の発覚を防ぐログ改ざんツール、バックドアをしかけるツール、キーロガー、パスワードやクレジットカード情報等の窃盗ツールなどがある。</p>
+</li>
+<li>
+<p><strong>ランサムウェア</strong><br>
+コンピュータをロックしたり重要なファイルを暗号化して読めなくするなどして被害者を困らせ，身代金 (ransom) を払えば元に戻すと脅迫するマルウェア</p>
+</li>
+<li>
+<p><strong>スケアウェア</strong><br>
+ユーザの恐怖 (scare) 心を煽る偽の警告メッセージ（「PCから違法ポルノやウイルスが検出された」等）を表示し、問題を解決するには所定の金額を支払うようにと脅すマルウェア</p>
+</li>
+<li>
+<p><strong>ダウンローダー</strong><br>
+サイズの小さなマルウェアで、攻撃者のサーバから被害者のコンピュータに実行ファイルなどをダウンロードするなどさらなる攻撃の足がかりにするもの。
+本体内部に不正なプログラムが格納されており、実行時に実行可能ファイルに展開するはドロッパーともいう。</p>
+</li>
+<li>
+<p><strong>アドウェア</strong><br>
+ユーザの望まない広告を勝手に出すソフトウェアである。</p>
+</li>
+<li>
+<p><strong>ワイパー</strong><br>
+感染したコンピュータの補助記憶装置内のデータを完全消去して使用不能にするもの。</p>
+</li>
+</ul>
+<h3 id="11clamavとは">1.1　ClamAVとは？</h3>
+<p>まず、「ClamAVとは何か？」についてですが、<a href="https://www.synology.com/" target="_blank" rel="noopener noreffer ">公式</a>では以下のように書かれています。</p>
+<blockquote>
+<p>ClamAV は、メール ゲートウェイでの電子メール スキャン用に特別に設計されたオープン ソース (GPLv2) のウイルス対策ツールキットです。
+柔軟でスケーラブルなマルチスレッド デーモン、コマンド ライン スキャナー、自動データベース更新用の高度なツールなど、多数のユーティリティを提供します。
+パッケージの核となるのは、共有ライブラリの形式で利用できるウイルス対策エンジンです。
+（Google翻訳）</p>
+</blockquote>
+<p><strong>ウイルス対策ツールキット</strong>と説明しているようです。
+最後の文にもある通り、パッケージの核となるウイルス対策エンジンを中心として、様々な機能/用途をもっているため、このように呼んでいるのでしょうか。
+また、ClamAV自体はもともとメールのスキャン用に作れたようです。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>ウイルス対策とマルウェア対策<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">ClamAVは&quot;ウイルス対策ソフト&quot;と呼ばれていますが、機能的にはマルウェア対策ソフトです。
+実際に、ワームやトロイの木馬などウイルス以外のマルウェアの検出にも対応しています。
+これは、昔コンピュータウイルスが最初に流行り始めた際にアンチウイルスという言葉がセキュリティソフトを指す名称として定着したからだそうです。</div>
+        </div>
+    </div>
+<p>ClamAVは現在、<strong>Cisco System, Inc</strong>によって提供されているようです。もともとメンテナンスを主導していた<strong>Sourcefire</strong>という会社が買収されたのだとか。</p>
+<p>ClamAVではOSSとしてのメンテナンス以外にも以下のことが行われています。</p>
+<ul>
+<li>メーリングリスト<br>
+ソフトウェアのアップデート情報やデータベースの更新、技術的な議論などをメールで通知しています。</li>
+<li>チャット<br>
+コミュニティ用にDiscordサーバを運営しています。</li>
+<li>マルウェア情報の管理<br>
+新規のマルウェアや未検出のマルウェアを受け付けてレビュー/管理しています。</li>
+</ul>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>有名なウイルス対策ソフト<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>ChatGPTに商用を含めウイルス対策ソフトの有名どころを聞いてみました。</p>
+<table>
+<thead>
+<tr>
+<th>製品名</th>
+<th>提供元</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Microsoft Defender for Endpoint</td>
+<td>Microsoft</td>
+</tr>
+<tr>
+<td>Symantec Endpoint Security</td>
+<td>Broadcom</td>
+</tr>
+<tr>
+<td>Trend Micro Apex One</td>
+<td>Trend Micro</td>
+</tr>
+<tr>
+<td>McAfee Endpoint Security</td>
+<td>McAfee</td>
+</tr>
+<tr>
+<td>Cisco Secure Endpoint</td>
+<td>Cisco</td>
+</tr>
+<tr>
+<td>SentinelOne</td>
+<td>SentinelOne</td>
+</tr>
+<tr>
+<td>CrowdStrike Falcon</td>
+<td>CrowdStrike</td>
+</tr>
+<tr>
+<td>Sophos Intercept X</td>
+<td>Sophos</td>
+</tr>
+<tr>
+<td>ESET PROTECT</td>
+<td>ESET</td>
+</tr>
+</tbody>
+</table></div>
+        </div>
+    </div>
+<h3 id="12clamavの機能">1.2　ClamAVの機能</h3>
+<p>それでは、ClamAVの具体的な機能を見ていきましょう。</p>
+<p>ClamAVのウイルススキャンは幅広いファイルをカバーしています。</p>
+<ul>
+<li>ドキュメント形式：tar, zip, gzip等</li>
+<li>アーカイブ、圧縮ファイル：docx, xlsx, PDF等</li>
+<li>スクリプト：JS, PHP, HTML, VBS等</li>
+<li>実行ファイル：exe, dll, elf等</li>
+<li>メール形式：eml, msg等</li>
+<li>イメージ：iso, vhd等</li>
+</ul>
+<p>docxやxlsxから分かる通り、clamAVは<strong>Linux専用ではない</strong>です。
+ただし、一部機能はLinuxしか対応していなかったりとLinuxに強い感じです。</p>
+<p>ウイルススキャンの機能として、ユーザが任意のタイミングで行うウイルススキャンに加え、<strong>オンアクセススキャン</strong>があります。
+これは、ユーザがファイルにアクセスしたときに該当ファイルをスキャンすることでリアルタイム保護を行うものです。</p>
+<p>その他の機能としては、シグネチャデータベースのアップデート機能やClamAVのデーモンのリソースモニタリングなどがあります。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>ClamAVのウイルス定義の更新<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>OSSのウイルス対策ソフトなのでウイルス定義の更新が遅いのでは？と思い調べてみたところ、公式で以下のような文言を見つけました。</p>
+<blockquote>
+<p>How long does it take for a signature change after submitting new malware or submitting a false positive report?<br>
+In most cases, it takes at least 48 hours from initial submission before any change will be published in the official ClamAV signature databases.
+第三者により、発見＆提供されたウイルスに対し、48時間以内にウイルス定義データベースに反映させてくれるようです。</p>
+</blockquote>
+<p>※ 早いのでしょうか？個人的には、2日もかかると危険に感じてしまいます。ファイルのハッシュ値ベースのものだけでもすぐに更新したいところです。</p>
+</div>
+        </div>
+    </div>
+<h3 id="13その他のウイルス対策ソフトとの違い">1.3　その他のウイルス対策ソフトとの違い</h3>
+<p>ClamAVはOSSであるため、無料で利用できます。
+そのためか、<strong>高いお金を払ってまではウイルス対策ソフトを導入したくない</strong>ときにClamAVを入れるイメージがあります。
+ここでは、実際にClamAVとその他のウイルス対策ソフトの機能を比較し、ウイルス対策ソフトにお金を払う価値を調べてみようと思います。
+ここでは、その他のウイルス対策ソフトの代表として、Trellixを比較してみようと思います。</p>
+<table>
+<thead>
+<tr>
+<th>機能</th>
+<th>ClamAV</th>
+<th>Trellix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>静的ヒューリスティック解析</td>
+<td>△</td>
+<td>○</td>
+</tr>
+<tr>
+<td>動的ヒューリスティック解析</td>
+<td>×</td>
+<td>○</td>
+</tr>
+<tr>
+<td>リアルタイムスキャン</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>サンドボックス機能</td>
+<td>×</td>
+<td>○</td>
+</tr>
+<tr>
+<td>AI</td>
+<td>×</td>
+<td>○</td>
+</tr>
+<tr>
+<td>ホワイトリスト型制御</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>管理機能・UI</td>
+<td>△</td>
+<td>○</td>
+</tr>
+<tr>
+<td>自動修復</td>
+<td>×</td>
+<td>○</td>
+</tr>
+<tr>
+<td>商用サポート</td>
+<td>×</td>
+<td>○</td>
+</tr>
+<tr>
+<td>価格</td>
+<td>○</td>
+<td>×</td>
+</tr>
+<tr>
+<td>その他</td>
+<td>カスタマイズ</td>
+<td>保護, 修復</td>
+</tr>
+</tbody>
+</table>
+<p>※ 特定の製品についての記載ではなく、該当機能を持った製品があるかで見ています。</p>
+<p>検知という意味では、動的ヒューリスティック解析、AI機能が大きな違いとしてあります。
+実際にどれだけ検知できるかは不明ですが、未知のウイルスにも対応できるというの大きいと思います。
+特にウイルス対策ソフトの対策として、ウイルスの中身を良い感じに書き換えられたときにも<strong>振る舞いが似ていれば検知できる</strong>というのは安心につながりますね。</p>
+<p>また、その他に書いた<strong>保護・修復</strong>にも大きな違いがあるかと思います。
+以下は、<a href="https://docs.trellix.com/ja-JP/bundle/endpoint-security-10.6.0-threat-prevention-product-guide-windows/page/GUID-7939E36B-8FC4-42F4-BE70-46AB2B9B0954.html" target="_blank" rel="noopener noreffer ">Trellix公式</a>の記載内容です。</p>
+<blockquote>
+<p><strong>保護</strong></p>
+<p>脅威対策は、次の機能を使用して環境への侵入を防ぎ、システムを保護します。</p>
+<ul>
+<li>
+<p>アクセス保護 － 指定されたファイル、共有、レジストリ キー、レジストリ値へのアクセスを制限し、プロセスとサービスを脅威動作から防止または制限することにより、クライアント システムへの不要な変更を阻止します。</p>
+</li>
+<li>
+<p>エクスプロイト防止 － 脅威対策は、コンテンツ更新のシグネチャを使用して、次のエクスプロイトを阻止します。</p>
+<ul>
+<li>バッファー オーバーフロー － バッファー オーバーフローを悪用して任意のコードを実行できないようにします。</li>
+<li>API の不正利用 － システム上で実行されている未知のアプリケーションまたは侵害されたアプリケーションによる悪質な API 呼び出しを防ぎます。</li>
+<li>ネットワーク侵入防止 (ネットワーク IPS) － ネットワーク トラフィックを拒否または低下させる DoS 攻撃および帯域幅指向攻撃から保護します。</li>
+<li>エキスパート ルール － 追加のパラメーターを使用して、アクセス保護カスタム ルールよりも柔軟なルールを作成できます。 ただし、エキスパート ルールを作成するには、McAfee 固有の構文を理解する必要があります。</li>
+</ul>
+</li>
+</ul>
+<p><strong>検出</strong></p>
+<p>脅威対策は、次の機能を使用して環境内の脅威を検出します。</p>
+<ul>
+<li>オンアクセス スキャン － ファイルの読み取り時と書き込み時に脅威をスキャンします。 システムがアイドル状態の場合にのみスキャンします。 マルウェア対策スキャン インターフェース (AMSI) と統合され、ブラウザー ベース以外のスクリプトの脅威に対するスキャン機能を強化しています。</li>
+<li>オンデマンド スキャン － 事前定義のスキャンを今すぐまたはスケジュールに従って実行します。スパイウェア関連のレジストリ項目もスキャンし、クリーンアップします。</li>
+<li>不審なプログラム － スパイウェアやアドウェアなどの不審なプログラムを検出し、環境内での実行を阻止します。</li>
+<li>隔離 － 感染項目を隔離し、駆除または修復を試みます。あるいは、自動的に削除します。</li>
+<li>ダッシュボードとモニター － 脅威対策の統計情報を表示します。スキャン時間、コンテンツの更新ステータス、攻撃が最も多いアプリケーションなどの情報が表示されます。</li>
+<li>クエリーとレポート － 脅威対策の詳細情報を取得します。脅威数、スキャンの完了、検出に対する応答、誤検知回避イベント、McAfee GTI の感度レベルなどの情報が表示されます。</li>
+<li>マルウェア対策の早期読み込み － Windows 8 以降のリリースに含まれている ELAM 機能のサポートを提供します。 ELAM は、ブートサイクル時に読み込まれたデバイス ドライバーのリストを収集します。スキャン サービスが実行されると、これらのドライバーがスキャンされます。</li>
+</ul>
+<p><strong>修正</strong></p>
+<p>脅威対策は、次の機能を使用してセキュリティ問題を修正し、検出を処理します。また、パフォーマンスを向上させ、保護機能を強化します。</p>
+<ul>
+<li>アクション － 検出時に特定のアクションを実行します。</li>
+<li>アラート － 検出時に通知を行い、フィルターでトラフィックを制限します。</li>
+<li>Extra.DAT ファイル － ウイルスの大量発生を含む新しい脅威から保護します。</li>
+<li>スケジュール スキャン － システムのパフォーマンスを低下させず、スキャンを迅速に実行するため、ピーク時以外にスキャンを実行します。</li>
+<li>コンテンツ リポジトリ － クライアント システムに近いリポジトリにコンテンツ ファイルを移動することで、会社のインターネットまたはイントラネットで発生するトラフィック量を減らします。</li>
+<li>ログ ファイル (Endpoint Security クライアント) － 検出項目の履歴情報を提供します。このファイルを使用して設定を変更し、保護機能を強化したり、システムのパフォーマンスを向上させることができます。</li>
+<li>ダッシュボードとモニター － アクティビティを確認して、脅威対策の設定を調整します。</li>
+</ul>
+</blockquote>
+<p>保護のアクセス保護機能はClamAVにはないのではないかと思います。これについては、ClamAVの機能が足りないというより、TrellixはEDRのような機能も持っている感じですかね。</p>
+<p>また、修正については、管理機能・UIにもつながりますが、検知後に行う動作を具体的に設定できたり、ダッシュボードを持っていたりします。
+他のソフトウェアと組み合わせるなどして自分で作成できる範疇と言われればそこまでなのかも知れないですが、やはりウイルス対策ソフト自身が多機能で、ユーザーフレンドリーに作られていると商用利用しやすいのは事実ですね。</p>
+<p>最後にもちろん、ウイルス対策ソフトにコストをかける大きなメリットは商用サポートがあることですね。
+これはウイルス対策ソフトに限った話ではありませんが。</p>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>静的ヒューリスティック解析、動的ヒューリスティック解析<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>比較表にいきなり表れた静的ユーリスティック解析と動的ヒューリスティック解析について説明します。</p>
+<ul>
+<li>
+<p>静的ヒューリスティック解析<br>
+静的ヒューリスティック解析にも2種類あります。</p>
+<ul>
+<li>構造解析<br>
+コードやバイナリの中身をそのまま見て、ウイルス定義と一致するかを確認します。</li>
+<li>挙動推測型解析<br>
+コードやバイナリを解析し、発生するシステムコールなどを予測した上で怪しい構造がないかを確認します。</li>
+</ul>
+</li>
+<li>
+<p>動的ヒューリスティック解析<br>
+実際にウイルスを動作させ、怪しい振る舞いがないかを確認します。</p>
+</li>
+</ul>
+<p>ここで素人の私は、<strong>挙動推測型解析と動的ヒューリスティック解析は同じじゃないか。</strong>
+**結局、発生するシステムコールとか見ているだけで結果は一意に定まるのでは？**と思いました。
+実際のところ、前者の場合は、動的に生成されるコードの展開であったり、実行環境依存のAPI呼び出しは解析できないという課題があります。
+また、難読化についても、<strong>コンパイルしたら同じではないか</strong>と思いますが、無意味なコードの挿入であったりと解析が難しくなる部分はあるようです。
+（ポリモーフィック・メタモーフィックコードという実行時に自分自身を変化させたり、コードの動作を変更させることで静的解析を回避する技術もあるようです。）</p>
+</div>
+        </div>
+    </div>
+<h3 id="13clamavの構成要素">1.3　ClamAVの構成要素</h3>
+<p>それでは、<a href="https://docs.clamav.net/manual/Usage.html" target="_blank" rel="noopener noreffer ">ClamAVのドキュメント</a>から構成要素を見ていきます。</p>
+<blockquote>
+<p><strong>Daemon</strong></p>
+<p>The ClamAV Daemon, or clamd, is a multi-threaded daemon that uses libclamav to scan files for viruses. ClamAV provides a number of tools which interface with this daemon. They are, as follows:</p>
+<p>clamdscan - a simple scanning client<br>
+on-access scanning - provides real-time protection via a clamd instance<br>
+clamdtop - a resource monitoring interface for clamd</p>
+</blockquote>
+<p>ClamAVのデーモンである&quot;clamd&quot;が動いており、内部的には&quot;libclamav&quot;を利用してスキャンを実施しているようです。
+スキャン以外にも、&ldquo;clamd&quot;のリソースを見るためのclamdtopがあるようです。</p>
+<blockquote>
+<p><strong>Signature Testing and Management</strong></p>
+<p>A number of tools allow for testing and management of signatures. Of note are the following:</p>
+<p>clambc - specifically for testing bytecode<br>
+sigtool - for general signature testing and analysis<br>
+freshclam - used to update signature database sets to the latest version</p>
+</blockquote>
+<p>&ldquo;clambc&quot;はバイナリのテストを行うものです。
+これは、独自のマルウェア解析ルールなどを書いた際に、それが正しく動作するか（ClamAVが扱えるか）を検証するためのものです。
+作成・検証の対象になるのは拡張子が&rdquo;.bc&quot;のバイトコードシグネチャというやつらしいです。</p>
+<p>sigtoolはシグネチャの管理、分析をするためのツールです。
+そもそも「シグネチャってなんやねん。」みたいな話があるので、そこは後ほど見てみようと思います。</p>
+<p>&ldquo;freshclam&quot;はシグネチャデータベースの更新を行います。</p>
+<blockquote>
+<p><strong>Configuration</strong></p>
+<p>The more complex tools ClamAV provides each require some degree of configuration. ClamAV supplies two example configuration files:</p>
+<p>clamd.conf - for configuring the behavior of the ClamAV Daemon clamd and associated tools
+freschclam.conf - for configuring the behavior of the signature database update tool, freshclam</p>
+</blockquote>
+<p>設定ファイルです。</p>
+<h3 id="14clamavのウイルススキャンを覗いてみる">1.4　ClamAVのウイルススキャンを覗いてみる</h3>
+<p>メモ：
+ソースコードベースで何してるか見てみる。
+どのような検知手法があるのかとか
+シグネチャ見てしまったほうがよい？</p>
+<h2 id="2検証">2　検証</h2>
+<p>それでは、実際にClamAVを触っていきましょう。
+本記事で扱うClamAVのバージョンはClamAV 1.0.8です。</p>
+<h3 id="21インストール">2.1　インストール</h3>
+<p>まずは、ClamAVのインストールをしていきます。
+スキャンツールと合わせてデーモンの方もインストールしておきます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/security-clamav/clamav-install.png" title="/offtech.blog/security-clamav/clamav-install.png" data-thumbnail="/offtech.blog/security-clamav/clamav-install.png" data-sub-html="<h2>ClamAVのインストール</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/security-clamav/clamav-install.png"
+            data-srcset="/offtech.blog/security-clamav/clamav-install.png, /offtech.blog/security-clamav/clamav-install.png 1.5x, /offtech.blog/security-clamav/clamav-install.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/security-clamav/clamav-install.png" width="400px" height="300px" />
+    </a><figcaption class="image-caption">ClamAVのインストール</figcaption>
+    </figure>
+<p>続いて、テスト用のファイルを取得します。
+テストファイルは<a href="https://www.eicar.org/download-anti-malware-testfile/" target="_blank" rel="noopener noreffer "><strong>eicar.org</strong></a>からダウンロードした<strong>EICAR TEST FILE</strong>を利用します。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>EICARとは？<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>EICARは欧州コンピュータウイルス対策研究所 (EICAR) とコンピュータウイルス対策研究機構 (CARO) によって開発された、コンピュータウイルス対策プログラムの応答をテストするためのファイルです。
+執筆時点では以下のファイルがダウンロードできることを確認しました。</p>
+<ul>
+<li>eicar.com</li>
+<li>eicar.com.txt</li>
+<li>eicar_com.zip</li>
+<li>eicar_com2.zip</li>
+</ul></div>
+        </div>
+    </div>
+<p>テスト用ファイルの中身を見てみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/security-clamav/eicar.png" title="/offtech.blog/security-clamav/eicar.png" data-thumbnail="/offtech.blog/security-clamav/eicar.png" data-sub-html="<h2>eicar.txt</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/security-clamav/eicar.png"
+            data-srcset="/offtech.blog/security-clamav/eicar.png, /offtech.blog/security-clamav/eicar.png 1.5x, /offtech.blog/security-clamav/eicar.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/security-clamav/eicar.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">eicar.txt</figcaption>
+    </figure>
+<p>よく分からない文字列が入力されていました。中にはEICARの文字列もあります。
+ウイルス対策ソフトがシグネチャとしてこの文字列を登録しており、シグネチャベースのパターンマッチングで検知してくれる感じですかね。</p>
+<h3 id="22ウイルス定義の更新">2.2　ウイルス定義の更新</h3>
+<p>インストールが終わったところで、ウイルス定義ファイルを取得していきます。
+ClamAVにはウイルス定義ファイルをアップデートするためにfreshclamというツールが入っています。
+今回はこちらを利用してウイルス定義ファイルを取得していこうと思います。</p>
+<figure><a class="lightgallery" href="/offtech.blog/security-clamav/fresclam.png" title="/offtech.blog/security-clamav/fresclam.png" data-thumbnail="/offtech.blog/security-clamav/fresclam.png" data-sub-html="<h2>freshclamによるウイルス定義の更新</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/security-clamav/fresclam.png"
+            data-srcset="/offtech.blog/security-clamav/fresclam.png, /offtech.blog/security-clamav/fresclam.png 1.5x, /offtech.blog/security-clamav/fresclam.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/security-clamav/fresclam.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">freshclamによるウイルス定義の更新</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/security-clamav/cvd.png" title="/offtech.blog/security-clamav/cvd.png" data-thumbnail="/offtech.blog/security-clamav/cvd.png" data-sub-html="<h2>取得したウイルス定義ファイル</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/security-clamav/cvd.png"
+            data-srcset="/offtech.blog/security-clamav/cvd.png, /offtech.blog/security-clamav/cvd.png 1.5x, /offtech.blog/security-clamav/cvd.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/security-clamav/cvd.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">取得したウイルス定義ファイル</figcaption>
+    </figure>
+<p>簡単にウイルス定義ファイルを更新することができました。バージョン等も表示してくれるので、現在どの段階のウイルス定義が反映されているのかも分かり便利そうですね。</p>
+<p>取得したウイルス定義ファイルの&rdquo;.cvd&quot;は、ClamAV Virus Database の略で、ClamAVがマルウェア検出に使用するシグネチャデータベースを格納している圧縮ファイルとなっています。</p>
+<h3 id="23ウイルススキャン">2.3　ウイルススキャン</h3>
+<p>いざ、ウイルススキャンを行ってみます！</p>
+<p>ClamAVはのスキャンツールである、clamacanを利用し、2.1で取得した<strong>eicar.txt</strong>をスキャンしてみます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/security-clamav/clamscan.png" title="/offtech.blog/security-clamav/clamscan.png" data-thumbnail="/offtech.blog/security-clamav/clamscan.png" data-sub-html="<h2>ウイルススキャン</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/security-clamav/clamscan.png"
+            data-srcset="/offtech.blog/security-clamav/clamscan.png, /offtech.blog/security-clamav/clamscan.png 1.5x, /offtech.blog/security-clamav/clamscan.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/security-clamav/clamscan.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ウイルススキャン</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/security-clamav/scanlog.png" title="/offtech.blog/security-clamav/scanlog.png" data-thumbnail="/offtech.blog/security-clamav/scanlog.png" data-sub-html="<h2>スキャン結果</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/security-clamav/scanlog.png"
+            data-srcset="/offtech.blog/security-clamav/scanlog.png, /offtech.blog/security-clamav/scanlog.png 1.5x, /offtech.blog/security-clamav/scanlog.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/security-clamav/scanlog.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">スキャン結果</figcaption>
+    </figure>
+<p>正しくウイルスが検知されました。</p>
+<p>ログに記載されている以下の文字列は、正規表現でのパターンマッチングに成功したことを表しているようです。</p>
+<blockquote>
+<p>matcher_run: performing regexmatching on full map: 0 + 68 &gt;= 68</p>
+</blockquote>
+<p>また、以下の文字列はファイルのハッシュ値ベースで検知されたことを表していそうです。</p>
+<blockquote>
+<p>FP SIGNATURE: 44d886~:68:Win.Test.EICAR_HDB-1  # Name: eicar.txt, Type: CL_TYPE_TEXT_ASCII</p>
+</blockquote>
+<p>今回検知されたウイルス定義ファイルをデータベースから検索してみます。
+ClamAVに入っている&quot;sigtool&quot;というツールを利用します。</p>
+<figure><a class="lightgallery" href="/offtech.blog/security-clamav/sigtool.png" title="/offtech.blog/security-clamav/sigtool.png" data-thumbnail="/offtech.blog/security-clamav/sigtool.png" data-sub-html="<h2>検知された定義ファイル</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/security-clamav/sigtool.png"
+            data-srcset="/offtech.blog/security-clamav/sigtool.png, /offtech.blog/security-clamav/sigtool.png 1.5x, /offtech.blog/security-clamav/sigtool.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/security-clamav/sigtool.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">検知された定義ファイル</figcaption>
+    </figure>
+<p>検知ログにも出ていたウイルス定義がデータベースからも検索できました。</p>
+<p>このスキャンツールを利用すれば、cronなどで定期スキャンを実装することができそうです。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>実行時間<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>ClamAVのスキャンの実行時間をみてみます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/security-clamav/runtime.png" title="/offtech.blog/security-clamav/runtime.png" data-thumbnail="/offtech.blog/security-clamav/runtime.png" data-sub-html="<h2>実行時間</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/security-clamav/runtime.png"
+            data-srcset="/offtech.blog/security-clamav/runtime.png, /offtech.blog/security-clamav/runtime.png 1.5x, /offtech.blog/security-clamav/runtime.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/security-clamav/runtime.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">実行時間</figcaption>
+    </figure></div>
+        </div>
+    </div>
+<h3 id="24リアルタイムスキャン">2.4　リアルタイムスキャン</h3>
+<p>ClamAVのにはスキャンツールの実行によるスキャン以外にも<strong>オンアクセススキャン</strong>というものがあります。
+2025年4月現在、こちらはLinuxのみが対応しています。</p>
+<p>オンアクセススキャンは<a href="https://man7.org/linux/man-pages/man7/fanotify.7.html" target="_blank" rel="noopener noreffer "><strong>fanotify</strong></a>と呼ばれるカーネルAPIを利用します。
+これは、ファイルシステムイベントを監視＆通知するものです。
+オンアクセススキャンでは、<strong>fanotify</strong>を利用し、ファイルアクセスが起きた際に間に入って対象ファイルのウイルススキャンを行います。
+これによってファイルのリアルタイムスキャンを実現するのです。</p>
+<p>それでは、オンアクセススキャンを体験してみようと思います。
+まずは、clamdの設定ファイルであるclamd.confを書き換えます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/security-clamav/onaccessscan.png" title="/offtech.blog/security-clamav/onaccessscan.png" data-thumbnail="/offtech.blog/security-clamav/onaccessscan.png" data-sub-html="<h2>clamd.conf</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/security-clamav/onaccessscan.png"
+            data-srcset="/offtech.blog/security-clamav/onaccessscan.png, /offtech.blog/security-clamav/onaccessscan.png 1.5x, /offtech.blog/security-clamav/onaccessscan.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/security-clamav/onaccessscan.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">clamd.conf</figcaption>
+    </figure>
+<p>先程スキャンにも利用した&quot;eicar.txt&quot;を開いてみようと思います。</p>
+<p>開くのに少し時間がかかりました。
+開いたあとにClamAVのログを見るとファイルがウイルス検知されていることが分かります。<br>
+※ 今回は、検知後のアクションとして何もしませんでしたが、隔離を行うこともできるようです。
+また、他のツールと組み合わせることで、メールの受信拒否など色々できるみたいです。</p>
+<figure><a class="lightgallery" href="/offtech.blog/security-clamav/onaccessscan2.png" title="/offtech.blog/security-clamav/onaccessscan2.png" data-thumbnail="/offtech.blog/security-clamav/onaccessscan2.png" data-sub-html="<h2>リアルタイムスキャン</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/security-clamav/onaccessscan2.png"
+            data-srcset="/offtech.blog/security-clamav/onaccessscan2.png, /offtech.blog/security-clamav/onaccessscan2.png 1.5x, /offtech.blog/security-clamav/onaccessscan2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/security-clamav/onaccessscan2.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">リアルタイムスキャン</figcaption>
+    </figure>
+<h3 id="24隔離">2.4　隔離</h3>
+<p>2.3で少し話したウイルス検知後のアクションを見てみます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/security-clamav/quarantine.png" title="/offtech.blog/security-clamav/quarantine.png" data-thumbnail="/offtech.blog/security-clamav/quarantine.png" data-sub-html="<h2>ウイルスの隔離</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/security-clamav/quarantine.png"
+            data-srcset="/offtech.blog/security-clamav/quarantine.png, /offtech.blog/security-clamav/quarantine.png 1.5x, /offtech.blog/security-clamav/quarantine.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/security-clamav/quarantine.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ウイルスの隔離</figcaption>
+    </figure>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>ベストプラクティス？<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>ウイルススキャンって対象が多すぎると重いし、どうやって運用するのがベストプラクティスなのでしょうか？
+ウイルススキャンのベストプラクティスについて、個人的な意見をまとめようとます。（他に良いアイデアがあれば教えてください。）</p>
+<ul>
+<li>頻度&amp;対象<br>
+対象のリスクやシステムの可用性、リソース制約に応じて頻度や対象範囲を検討することが望ましいと思います。
+<ul>
+<li>
+<p>変更が多い場所：&quot;/home/&quot;、&quot;/tmp/&ldquo;など<br>
+変更が多かったり、マルウェアがダウンロードされる可能性が高い場所は高頻度でウイルススキャンを行うことが望ましいと思います。
+ただし、実行に少しのラグが生まれてしまったりとデメリットがあるのも事実です。
+よって、以下のどちらかの選択をとることが望ましいと思います。</p>
+<ul>
+<li>可用性が求められたり、リソース制約がある → 日次などの定期スキャン</li>
+<li>可用性が求められず、リソース制約もない → リアルタイムスキャン</li>
+</ul>
+</li>
+<li>
+<p>変更が少ない場所：&quot;/etc/&ldquo;や&rdquo;/bin&quot;など<br>
+変更が少なかったり、管理者しかアクセスできないような場所では、週1や月1でのフルスキャンも検討できるでしょう。
+また、システムに大きな変更を加えたとき等の手動スキャンも行うと良いと思います。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>※ 個人的には、「ファイルシステムに変更があった場所のみスキャンをする」とかができれば良いのにと思うのですが、どうなのでしょうか？</p>
+<ul>
+<li>
+<p>アクション<br>
+システムに求められる可用性次第でアクションを変える必要があると思います。</p>
+<ul>
+<li>
+<p>可用性が求められる場合<br>
+ファイルを隔離することにより、システムが停止してしまうことは非常に危険です。
+特に、本当にマルウェアであった場合は仕方がないとも思えますが、ご検知出会った場合は最悪です。
+このような場合は、検知だけを行い、隔離等のリアルタイムでの後続処理は行わないことが望ましいでしょう。
+アラートに応じて、調査を行い、その結果次第でシステムを停止するか判断することができます。
+※ こういう意味だと、保全目的でコピーだけしておくのが良いのかな？</p>
+</li>
+<li>
+<p>可用性が求められない場合
+隔離なり、ネットワーク遮断なり、システム停止なり、リスクとシステム停止による損失を比較して、対策を講じる。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>更新<br>
+cronとかでできるだけ頻繁に更新する感じでしょうか。
+新種のマルウェアの発見等があれば定期処理を待たずに、手動で更新をかける必要性などもありそうです。</p>
+</li>
+</ul>
+</div>
+        </div>
+    </div>
+<h2 id="3定義ファイルの作成">3　定義ファイルの作成</h2>
+<h2 id="4まとめ">4　まとめ</h2>
+<p>今回はClamAVについて、完全に理解していきました。
+ClamAVはCiscoによって管理されているOSSで、リアルタイムスキャンや隔離等も標準機能として行えることが分かりました。
+今後は、具体的にどうやってウイルスファイルを検知しているのか等も追っていきたいと思います。</p>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="https://www.synology.com/" target="_blank" rel="noopener noreffer ">ClamAV</a><br>
+[2] <a href="https://en.wikipedia.org/wiki/Antivirus_software" target="_blank" rel="noopener noreffer ">WIKIPEDIA Antivirus software</a><br>
+[3] <a href="https://docs.trellix.com/ja-JP/bundle/endpoint-security-10.6.0-threat-prevention-product-guide-windows/page/GUID-7939E36B-8FC4-42F4-BE70-46AB2B9B0954.html" target="_blank" rel="noopener noreffer ">Trellix 脅威対策の主な内容</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-22&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/c03e0cbc9b4b04377aeebe178590bacfe62fcf73" target="_blank" title="commit by root(root@kalis) c03e0cbc9b4b04377aeebe178590bacfe62fcf73: 2025062201">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>c03e0cb</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/security-clamav/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/security-clamav/" data-title="ClamAVを完全に理解する" data-hashtags="Security"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/security-clamav/" data-title="ClamAVを完全に理解する"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/security-clamav/" data-hashtag="Security"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/security-clamav/" data-title="ClamAVを完全に理解する"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/security-clamav/" data-title="ClamAVを完全に理解する"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/security-clamav/" data-title="ClamAVを完全に理解する"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/security-clamav/" data-title="ClamAVを完全に理解する" data-description="ClamAVを完全に理解する。"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fsecurity-clamav%2f&amp;text=ClamAV%e3%82%92%e5%ae%8c%e5%85%a8%e3%81%ab%e7%90%86%e8%a7%a3%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/security/">Security</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/kubernetes/" class="prev" rel="prev" title="Kubernetesを完全に理解する"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Kubernetesを完全に理解する</a>
+            <a href="/offtech.blog/linux-access-controle/" class="next" rel="next" title="Linuxのアクセス制御を完全に理解する">Linuxのアクセス制御を完全に理解する<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

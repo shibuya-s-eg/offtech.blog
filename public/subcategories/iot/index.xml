@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>IoT - subcategory - offtech.blog</title>
+        <link>http://localhost:1313/offtech.blog/subcategories/iot/</link>
+        <description>IoT - subcategory - offtech.blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>ja</language><managingEditor>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</managingEditor>
+            <webMaster>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/offtech.blog/subcategories/iot/" rel="self" type="application/rss+xml" /><item>
+    <title>自動車IoTを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/automotive-security/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/automotive-security/</guid>
+    <description><![CDATA[自動車 自動車の情報セキュリティへの取り組みガイド misra c misra c++ obd2 CAN 車載イーサネット SOM/IP DOIP こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1]]></description>
+</item>
+</channel>
+</rss>

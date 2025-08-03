@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>DNSを完全に理解する - offtech.blog</title><meta name="Description" content="DNSを完全に理解する"><meta property="og:url" content="http://localhost:1313/offtech.blog/dns/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="DNSを完全に理解する">
+  <meta property="og:description" content="DNSを完全に理解する">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-25T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-24T21:43:11+09:00">
+    <meta property="article:tag" content="Network">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="DNSを完全に理解する">
+  <meta name="twitter:description" content="DNSを完全に理解する">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/dns/" /><link rel="prev" href="http://localhost:1313/offtech.blog/daily-practice/" /><link rel="next" href="http://localhost:1313/offtech.blog/home-requirement-definition/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "DNSを完全に理解する",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/dns\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Network","wordcount":  16216 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/dns\/","datePublished": "2025-04-25T00:00:00+09:00","dateModified": "2025-06-24T21:43:11+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "DNSを完全に理解する"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/dns/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/dns/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">DNSを完全に理解する</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-25">2025-04-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;16216 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;33 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#0はじめに">0　はじめに</a></li>
+    <li><a href="#1ドメイン基礎">1　ドメイン基礎</a>
+      <ul>
+        <li><a href="#11ドメイン名とipアドレス">1.1　ドメイン名とIPアドレス</a></li>
+        <li><a href="#12ドメインの管理">1.2　ドメインの管理</a></li>
+        <li><a href="#13whois">1.3　WHOIS</a></li>
+      </ul>
+    </li>
+    <li><a href="#2dns基礎">2　DNS基礎</a>
+      <ul>
+        <li><a href="#21dnsとは">2.1　DNSとは？</a></li>
+        <li><a href="#22代表的なdns製品">2.2　代表的なDNS製品</a></li>
+      </ul>
+    </li>
+    <li><a href="#3dnsの仕組み">3　DNSの仕組み</a>
+      <ul>
+        <li><a href="#31ホストの名前解決の流れ">3.1　ホストの名前解決の流れ</a></li>
+        <li><a href="#32dnsの名前解決の流れ">3.2　DNSの名前解決の流れ</a></li>
+      </ul>
+    </li>
+    <li><a href="#3dnsレコード">3　DNSレコード</a></li>
+    <li><a href="#4運用者からみたdns">4　運用者からみたDNS</a></li>
+    <li><a href="#5dnsの通信">5　DNSの通信</a>
+      <ul>
+        <li><a href="#51ヘッダフォーマット">5.1　ヘッダフォーマット</a></li>
+        <li><a href="#52パケット解析">5.2　パケット解析</a></li>
+      </ul>
+    </li>
+    <li><a href="#6可用性">6　可用性</a>
+      <ul>
+        <li><a href="#61監視">6.1　監視</a></li>
+        <li><a href="#62負荷分散">6.2　負荷分散</a></li>
+        <li><a href="#63冗長化">6.3　冗長化</a></li>
+      </ul>
+    </li>
+    <li><a href="#7セキュリティ">7　セキュリティ</a>
+      <ul>
+        <li><a href="#71ゾーン転送要求による偵察">7.1　ゾーン転送要求による偵察</a>
+          <ul>
+            <li><a href="#72dns応答の偽造">7.2　DNS応答の偽造</a></li>
+            <li><a href="#72dos">7.2　DoS</a></li>
+            <li><a href="#73情報漏えい">7.3　情報漏えい</a></li>
+            <li><a href="#74dnsクエリの盗聴">7.4　DNSクエリの盗聴</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#8まとめ">8　まとめ</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+- TLDR
+
+-->
+<p>こんにちは、しぶやです。
+今回はDNSを完全に理解していきます。</p>
+<p>本記事では、Linuxをベースに説明を行いますが、本質的な部分はWindowsにも通じる話だと思います。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li>世の中DNSの動きを追うときはICANN、レジストリ、レジストラ、権威DNSサーバ、キャッシュDNSサーバが登場する。</li>
+<li>DNSレコードの目的と内容を理解しよう。</li>
+<li>DNSは基本的にUDP通信であるため、攻撃に利用されやすいので、それぞれの攻撃と対策を理解しよう。</li>
+</ul>
+<h2 id="0はじめに">0　はじめに</h2>
+<p>読者のみなさんはDNSについて、どこまで理解していますか？
+「名前解決してくれるやつ」くらいに思っていましたが、メールの認証で使われていたりといろいろと深い部分があるようです。
+今回はDNSについて深堀って学んでみます。</p>
+<h2 id="1ドメイン基礎">1　ドメイン基礎</h2>
+<h3 id="11ドメイン名とipアドレス">1.1　ドメイン名とIPアドレス</h3>
+<p>ドメイン名とは何でしょうか？</p>
+<blockquote>
+<p>ドメイン名とはインターネット上の住所のようなものです。</p>
+</blockquote>
+<p>よくある説明ですね。
+ドメイン名は人間が簡単にWebサイトなどにアクセスするために、IPアドレスの代わりに利用されます。</p>
+<p>ドメイン名から対応するIPアドレスを得ることを<strong>名前解決</strong>と呼びます。
+システム上でこの名前解決がうまく動作することでドメイン名を用いた検索などができます。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>IPアドレスによるメール送信<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>メール送信にもIPアドレスを利用することができます。
+その場合、**hoge@[123.123.123.123]**のように[]をつけてIPアドレスを指定します。</p>
+<p>※ gmail.comのmxレコードにあるドメインのIPアドレスを指定して送信してみましたが、アドレス不明と言われてしまいました。
+Gmail自身がIPアドレス指定を許可していないのか、指定したサーバが異なるのか。
+現状、理由は不明です。</p>
+</div>
+        </div>
+    </div>
+<h3 id="12ドメインの管理">1.2　ドメインの管理</h3>
+<p>ドメイン管理において、重要な役割を担うのは以下です。</p>
+<ul>
+<li>ICANN</li>
+<li>レジストリ</li>
+<li>レジストラ</li>
+</ul>
+<p>まず、レジストリについてです。
+レジストリは&quot;.net&quot;や&quot;.jp&quot;などのトップレベルドメインを管理・運用している組織です。
+現在1500以上のトップレベルドメインが存在し、一つのレジストリが複数のトップレベルドメインを管理・運用していたりします。</p>
+<p>続いて、レジストラについてです。
+レジストラはレジストリとユーザの間に入り、ドメイン名の登録やドメイン料金の徴収などを行います。
+有名なレジストラには&quot;お名前.com&quot;などがありますね。</p>
+<p>新たなドメイン名を利用したいときは、レジストラにドメイン登録申請を行うことで、レジストリに登録されることが分かりました。
+では、トップレベルドメインを作ることは可能なのでしょうか？
+ここで登場するのがICANNです。
+ICANNはトップレベルドメインの審査・認可やレジストリ・レジストラの認定などを行っている組織です。
+すなわちICANNがドメイン管理全体を統括しているようなイメージです。
+トップレベルドメインの作成も一定の条件とお金が揃えば、ICANNに申請することで作成できるらしいです。</p>
+<h3 id="13whois">1.3　WHOIS</h3>
+<p>&ldquo;WHOIS検索&quot;を利用したことがある人も多いと思います。
+僕も最初はWHOISっていうサービスを提供している団体がいるのだと思っていました。</p>
+<p>実は、WHOISはプロトコルの名前です。
+(仕組みのことをWHOISと呼ぶ場合もあるようです。)</p>
+<p>WHOISはTCP/43番ポートを利用するプロトコルであり、ドメイン名やIPアドレスに関する情報を取得するために利用されます。
+具体的には、登録者名や有効期限、レジストラ名、DNSサーバなどが分かります。
+Linuxのコマンドからでも利用でき、その例が以下です。</p>
+<figure><a class="lightgallery" href="/offtech.blog/dns/whois-example.png" title="/offtech.blog/dns/whois-example.png" data-thumbnail="/offtech.blog/dns/whois-example.png" data-sub-html="<h2>WHOISコマンド</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/whois-example.png"
+            data-srcset="/offtech.blog/dns/whois-example.png, /offtech.blog/dns/whois-example.png 1.5x, /offtech.blog/dns/whois-example.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/whois-example.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">WHOISコマンド</figcaption>
+    </figure>
+<p>レジストリやレジストラの情報、更新日などもも見れますね。
+続いて、WHOISのパケットも見てみましょう。</p>
+<p><figure><a class="lightgallery" href="/offtech.blog/dns/whois-packet-1.png" title="/offtech.blog/dns/whois-packet-1.png" data-thumbnail="/offtech.blog/dns/whois-packet-1.png" data-sub-html="<h2>WHOISクエリ</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/whois-packet-1.png"
+            data-srcset="/offtech.blog/dns/whois-packet-1.png, /offtech.blog/dns/whois-packet-1.png 1.5x, /offtech.blog/dns/whois-packet-1.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/whois-packet-1.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">WHOISクエリ</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/dns/whois-packet-2.png" title="/offtech.blog/dns/whois-packet-2.png" data-thumbnail="/offtech.blog/dns/whois-packet-2.png" data-sub-html="<h2>WHOIS応答</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/whois-packet-2.png"
+            data-srcset="/offtech.blog/dns/whois-packet-2.png, /offtech.blog/dns/whois-packet-2.png 1.5x, /offtech.blog/dns/whois-packet-2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/whois-packet-2.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">WHOIS応答</figcaption>
+    </figure></p>
+<p>WHOISにはDNSように様々な種類レコードがあったりしないため、クエリは非常にシンプルです。
+それに対し、応答はテキスト形式の情報をたくさん返してきています。</p>
+<p>非常にシンプルなプロトコルですね！</p>
+<p>WHOISの登録はドメインの登録を行ったレジストリやレジストラに義務付けられています。
+これにより、ドップレベルドメインのサーバへ問い合わせることでドメイン情報を取得できます。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>WHOISサーバの特定<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>実は先程のwhoisコマンド実行後、なぜか<strong>whois.nic.io</strong>にDNSクエリが送信されていました。</p>
+<figure><a class="lightgallery" href="/offtech.blog/dns/whois-packet-3.png" title="/offtech.blog/dns/whois-packet-3.png" data-thumbnail="/offtech.blog/dns/whois-packet-3.png" data-sub-html="<h2>WHOISサーバへの名前解決</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/whois-packet-3.png"
+            data-srcset="/offtech.blog/dns/whois-packet-3.png, /offtech.blog/dns/whois-packet-3.png 1.5x, /offtech.blog/dns/whois-packet-3.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/whois-packet-3.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">WHOISサーバへの名前解決</figcaption>
+    </figure>
+<p>これは、whoisクライアントにトップレベルドメインとそのwhoisサーバのドメインの対応表が登録されているためだそうです。</p>
+</div>
+        </div>
+    </div>
+<h2 id="2dns基礎">2　DNS基礎</h2>
+<h3 id="21dnsとは">2.1　DNSとは？</h3>
+<p>DNSとは何でしょうか？まずは定義を見てみましょう。</p>
+<blockquote>
+<p>DNS(ディーエヌエス: Domain Name System)は、 インターネットの重要な基盤技術の一つで、 ドメイン名とIPアドレスの対応付けや、 メールの宛先ホストを指示するためのシステムです。</p>
+</blockquote>
+<p>名前解決をするためのシステムということですね。</p>
+<p>記事にはhosts.txsからDNSへとあることからも分かりますが、&quot;/etc/hosts&quot;はDNSではないようです。
+システムではなく、テキストファイルという枠組みなのでしょう。</p>
+<p>インターネット上のDNSという意味では、世界中のDNSサーバにより名前解決の仕組みが実現されるため、世界規模の分散型データベースととらえることもできます。</p>
+<h3 id="22代表的なdns製品">2.2　代表的なDNS製品</h3>
+<p>代表的なDNS製品には以下のようなものがあります。</p>
+<ul>
+<li>
+<p>BIND<br>
+OSSの最も有名なやつです。</p>
+</li>
+<li>
+<p>Unbound&hellip;キャッシュ専用のOSSです。</p>
+</li>
+<li>
+<p>PowerDNS&hellip;SQL連携できるOSSです。</p>
+</li>
+<li>
+<p>Microsoft DNS Server</p>
+</li>
+<li>
+<p>Amazon Route 53</p>
+</li>
+<li>
+<p>Cloudflare DNS</p>
+</li>
+</ul>
+<h2 id="3dnsの仕組み">3　DNSの仕組み</h2>
+<h3 id="31ホストの名前解決の流れ">3.1　ホストの名前解決の流れ</h3>
+<p>ここで、Linuxでの名前解決を復習しましょう。Linuxではnsswitch.confで名前解決の優先度が記載されています。</p>
+<figure><a class="lightgallery" href="/offtech.blog/dns/nsswitch-conf.png" title="/offtech.blog/dns/nsswitch-conf.png" data-thumbnail="/offtech.blog/dns/nsswitch-conf.png" data-sub-html="<h2>/etc/nsswitch.conf</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/nsswitch-conf.png"
+            data-srcset="/offtech.blog/dns/nsswitch-conf.png, /offtech.blog/dns/nsswitch-conf.png 1.5x, /offtech.blog/dns/nsswitch-conf.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/nsswitch-conf.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">/etc/nsswitch.conf</figcaption>
+    </figure>
+<blockquote>
+<p>hosts: files dns</p>
+</blockquote>
+<p>これは、名前解決の方法の順番を表しています。
+アプリケーションのプロセスはlibcライブラリのgetaddrinfo()などから、名前解決を行なっています。
+このとき、上記のような設定になっていると、まず&rdquo;/etc/hosts&quot;を確認し、名前解決できなかった場合はDNSに確認しに行きます。
+ここでいうDNSは&quot;/etc/resolv.conf&quot;に記載されているものです。</p>
+<p>&ldquo;/etc/nsswitch.conf&quot;に出てくる主なものとその意味は以下です。</p>
+<ul>
+<li>files&hellip;/etc/hostsに従って名前解決を行う</li>
+<li>dns&hellip;/etc/resolv.confに従ってDNSを利用した名前解決を行う</li>
+<li>mdns4&hellip;マルチキャストDNSを使って名前解決を行う</li>
+<li>mymachines&hellip;systemdによって管理されているローカルの仮想マシンやコンテナの名前解決を行う</li>
+</ul>
+<div class="details admonition Note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>マルチキャストDNSとは<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>マルチキャストDNS（mDNS）とはその名の通り、マルチキャストで利用するDNSです。
+具体的には以下のような特徴があります。</p>
+<ul>
+<li>同一セグメント内のみで有効</li>
+<li>マルチキャスト宛に送信</li>
+<li>受け取ったノードが応答を返す</li>
+</ul></div>
+        </div>
+    </div>
+<h3 id="32dnsの名前解決の流れ">3.2　DNSの名前解決の流れ</h3>
+<p>DNSには大きく2つの種類があります。</p>
+<ul>
+<li>権威DNSサーバ</li>
+<li>キャッシュDNSサーバ</li>
+</ul>
+<p>権威DNSサーバはゾーンファイルを持っています。
+ゾーンファイルには、名前解決に必要なドメイン名とIPアドレスの組を始め、いくつかの情報を持っています。
+権威DNSサーバはこのゾーンファイルの情報を利用し、名前解決に対し応答を行っています。</p>
+<p>一方で、キャッシュDNSサーバはゾーンファイルを持ちません。
+キャッシュDNSはDNS要求を受け取り、クライアントの変わりに再帰的に権威DNSサーバなどに名前解決を行い、結果をクライアントに返します。
+キャッシュという名前にもある通り、過去のデータはキャッシュに保存しており、DNS要求を受け取った際にキャッシュにレコードを持っていれば、再起問い合わせなしにそのままクライアントに返すことができます。</p>
+<p>DNSの種類が分かったところで、世の中のDNSの動きを見てみたいと思います。</p>
+<figure><a class="lightgallery" href="/offtech.blog/dns/resolv-conf.png" title="/offtech.blog/dns/resolv-conf.png" data-thumbnail="/offtech.blog/dns/resolv-conf.png" data-sub-html="<h2>/etc/resolv.conf</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/resolv-conf.png"
+            data-srcset="/offtech.blog/dns/resolv-conf.png, /offtech.blog/dns/resolv-conf.png 1.5x, /offtech.blog/dns/resolv-conf.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/resolv-conf.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">/etc/resolv.conf</figcaption>
+    </figure>
+<p>上の図は実際に名前解決をする流れです。</p>
+<ol start="0">
+<li>
+<p>ローカルでの名前解決<br>
+Webサイト訪問でも何でも良いですが、クライアントがドメイン名を利用し通信を行おうとした際、1.1で説明した&rdquo;/etc/nsswitch.conf&quot;に従った名前解決の方法で名前解決を試みます。</p>
+</li>
+<li>
+<p>クライアントがDNSキャッシュサーバへDNS要求<br>
+&ldquo;/etc/nsswitch.conf&quot;でDNSの順番が来た際は、&quot;/etc/resolv.conf&quot;に記載されたDNSサーバに対し順番に名前解決を試みます。
+一般的なPC利用をしている場合はキャッシュDNSサーバに問い合わせが行われるはずです。</p>
+</li>
+<li>
+<p>キャッシュDNSサーバによる名前解決<br>
+クライアントからのDNS要求に対し、キャッシュを持っていればそれをそのまま返します。
+キャッシュを持っていない場合は、ルートDNSサーバに再起問い合わせを行います。</p>
+</li>
+<li>
+<p>ルートDNSサーバによる名前解決<br>
+キャッシュDNSサーバからDNS要求を受け取った際、ルートDNSサーバは受け取ったDNS要求の上位ドメインのDNSサーバの情報を返します。
+上の例で言うと、「jpドメインの情報ならhoge.dns.jpが持っているよ〜」みたいな感じです。</p>
+</li>
+<li>
+<p>権威DNSサーバによる名前解決<br>
+受け取ったDNS要求に対し、自身がゾーン情報を持っている場合はその情報を返します。
+3と同じように、DNS要求を受けたドメイン情報を持つ、さらに下位のDNSサーバの情報を返す場合もあります。</p>
+</li>
+</ol>
+<p>以上がDNSの仕組みです。
+世の中での動きが分かると理解が深まりますね。</p>
+<div class="details admonition Note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>キャッシュDNSサーバの登録<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>普段キャッシュDNSサーバなんて意識せずに利用できています。
+これはなぜでしょうか？</p>
+<p>答えはDHCPプロトコルにあります。
+PCはWifiなどに接続した際、DCHPによりIPアドレスやデフォルトGWの情報を受けとります。
+実はこの際に、DNSサーバの情報も受け取ることが多いのです。
+これにより、DNSサーバを自ら設定する必要がなくなります。</p>
+<p>家庭用のルータを利用した際は、ルータ自身がキャッシュDNSとしての機能を持っていたり、ISPのキャッシュDNSが利用されていたりします。</p>
+</div>
+        </div>
+    </div>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>ルートDNS<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>ルートDNSサーバは世界に13個あります。
+日本にも存在し、m.root-servers.netがJPRS（株式会社日本レジストリサービス）によって運用されています。</p>
+<p>※ 昔は僕の母校にもおいてあったらしい。。（驚）</p>
+</div>
+        </div>
+    </div>
+<h2 id="3dnsレコード">3　DNSレコード</h2>
+<p>では、DNSのゾーンファイルとはどのようなものでしょうか？
+以下はOSSのDNSであるbind vにデフォルトで組み込まれたゾーンファイルのテンプレートです。</p>
+<p>具体的なレコードについて例と一緒に見ていきましょう。</p>
+<p>＊ Aレコード</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>example.com. IN A 192.168.0.1</code></pre></div>
+<p>最も一般的なレコードです。ドメイン名に対するIPアドレスを設定し、名前解決に利用されます。</p>
+<p>＊ AAAAレコード</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>example.com. IN AAAA 2001:db8::1</code></pre></div>
+<p>IPv6用のAレコードです。</p>
+<p>＊ CNAMEレコード</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>www.example.com. IN CNAME example.com.</code></pre></div>
+<p>ドメイン名のエイリアスを設定するためのレコードです。
+最も簡単な例が上記のwww.example.comに訪れても、example.comに訪れるようにするという設定です。</p>
+<p>なんとなく想像はつくかもしれませんが、クライアント（基本的にはキャッシュDNSサーバ）の動きとしては、返されたCNAMEに対し再びDNSクエリを送信します。</p>
+<p>他にも以下のような例があります。</p>
+<p><a href="https://www.example.com" target="_blank" rel="noopener noreffer ">www.example.com</a>のDNSクエリはCNAMEとしてlb.example.comを返します。lb.example.comは複数のAレコードを持っており、DNSクエリに応じて返すIPアドレスを変えることで負荷分散を行います。</p>
+<p>＊ NSレコード</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>example.com. IN CNAME ns1.example.com</code></pre></div>
+<p>NSレコードはドメインを権威DNSサーバに委任するためのレコードです。
+すなわち、example.comのドメイン情報はns1.example.comが持っているよーを返すためのレコードです。
+CNAMEと同じようにクライアント(キャッシュDNSサーバ)はNSレコードを元に再度DNSクエリを送信します。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>ルートDNSサーバのゾーンファイル<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">ルートDNSサーバはトップレベルドメインのDNSサーバの情報を持っています。これにより、DNS要求を各トップレベルドメインのDNSサーバに委任するのです。
+具体的なゾーンファイルは以下のようになっているみたいです。</div>
+        </div>
+    </div>
+<p>＊ MXレコード</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>example.com. IN MX 10 mail.example.com</code></pre></div>
+<p>MXレコードは送信先ドメインのメールサーバのドメインを得るためのレコードです。
+メール送信時の流れは以下です。</p>
+<ol>
+<li>送信側のサーバはまずDNSに問い合わせてMXレコードを探す。</li>
+<li>見つかったMXレコードに記載されているメールサーバのドメインの名前解決を行う。<br>
+※ すなわち、MXレコードで指定したドメインのAレコード/AAAAレコードも必要です。</li>
+<li>2で解決したIPアドレスにメールを送信する。</li>
+</ol>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>DNSクエリのQuestion<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>DNSクエリに対し、IPアドレスを返す場合もあれば、メールサーバのドメイン名を返す場合もあると思います。
+クライアントはこれをどのように要求し、DNSはどう見分けて返しているのでしょうか？</p>
+<p>答えはDNSクエリの中にあります。
+DNSエリにはQuestionセクションというセクションがあり、その中のTypeで要求するレコードタイプを指定します。
+これにより、DNSは応答するレコードを判断しているのです。</p>
+</div>
+        </div>
+    </div>
+<ul>
+<li>TXTレコード</li>
+</ul>
+<p>DNSのTXTレコードはドメインの情報を自由に記述するレコードです。
+TXTレコードを利用したものとして、メールで利用されるSPFレコードやDKIMレコードが有名です。</p>
+<ul>
+<li>
+<p>SPFレコード、DKIMレコード、DMARCレコード
+この辺りはメールの送信ドメイン認証のために使われるレコードです。DNSのレコードタイプとしてはTXTです。
+これらの詳細は「メールを完全に理解する」で確認しようと思います。今はテキストとしてメールのドメイン認証に使うレコードを持っているんだなくらいに思っておきましょう。</p>
+</li>
+<li>
+<p>SOAレコード</p>
+</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>example.com. IN SOA ns1.example.com. hostmaster.example.com. (
+2025041601 ; serial
+3600 ; refresh
+600 ; retry
+604800 ; expire
+86400 ; minimum
+)</code></pre></div>
+<p>SOAとは「Start of Authority」の略です。権威の起点を示しています。
+SOAレコードはゾーンに必ずに一つだけ存在し、ゾーンに関する様々な情報を保持しています。</p>
+<p>上記の例の意味は以下です。
+＊ ns1.example.com. &hellip; プライマリDNSサーバ
+＊ hostmaster.example.com. &hellip; 管理者メールアドレス
+＊ serial &hellip; シリアル番号
+＊ reflesh &hellip; リフレッシュ間隔(秒)
+＊ retry &hellip; リトライ間隔(秒)
+＊ expire &hellip; 有効期限(秒)
+＊ minimum &hellip; キャッシュ最小TTL</p>
+<ul>
+<li>SRVレコード</li>
+</ul>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>_ldap._tcp.example.com. 3600 IN SRV 10 5 389 ldapserver.example.com.</code></pre></div>
+<p>SRVレコードでは、接続先のサービス情報を提供します。
+上の例からは、以下のようなサービス情報が分かります。</p>
+<ul>
+<li>
+<p>LDAPサーバ</p>
+</li>
+<li>
+<p>L4プロトコルはTCP</p>
+</li>
+<li>
+<p>対象ドメインはexample.com</p>
+</li>
+<li>
+<p>ポート番号389</p>
+</li>
+<li>
+<p>ホスト名はldapserver.example.com</p>
+</li>
+<li>
+<p>CAAレコード</p>
+</li>
+</ul>
+<p>不正な証明書発行を防ぐためのものです。
+詳細は7章のセキュリティの文脈で説明します。</p>
+<ul>
+<li>RSIGレコード</li>
+</ul>
+<p>ドメイン認証に利用されるレコードです。
+詳細は7章のセキュリティの文脈で説明します。</p>
+<h2 id="4運用者からみたdns">4　運用者からみたDNS</h2>
+<p>ここで、よりイメージを具体化するためにDNS/ドメインの運用を見てみましょう。
+ここでは、適当に立てたWebサーバを外部に公開し、ドメイン名でアクセスできるようにするケースを考えます。</p>
+<ol start="0">
+<li>
+<p>公開Webサーバの準備
+ここでは詳しい説明は飛ばします。Webサーバを立て、外部からIPアドレスでアクセスできるようにします。</p>
+</li>
+<li>
+<p>ドメインの取得
+まずはドメインを取得します。
+この時に利用するのがレジストラです。
+有名なレジストラとしては&quot;お名前.com&quot;などがありますね。
+以下はお名前.comでドメインを取得するときの画面です。</p>
+</li>
+</ol>
+<figure><a class="lightgallery" href="/offtech.blog/dns/onamaecom-domain.png" title="/offtech.blog/dns/onamaecom-domain.png" data-thumbnail="/offtech.blog/dns/onamaecom-domain.png" data-sub-html="<h2>お名前.comの写真</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/onamaecom-domain.png"
+            data-srcset="/offtech.blog/dns/onamaecom-domain.png, /offtech.blog/dns/onamaecom-domain.png 1.5x, /offtech.blog/dns/onamaecom-domain.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/onamaecom-domain.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">お名前.comの写真</figcaption>
+    </figure>
+<p>このように、ドメイン名によっては無料で取得できるものも多くあります。アカウントさえ登録すれば、簡単にドメインを取得できます。</p>
+<ol start="2">
+<li>DNSへの登録
+前節であったようなレコードをDNSにサーバに登録する必要があります。DNSサーバの登録では大きく2つの分岐があります。</li>
+</ol>
+<p>＊ 自前DNSサーバを利用する<br>
+自分でDNSサーバを用意し、そこにゾーンファイルを置きます。
+＊ 他社のDNSに相乗りする<br>
+他社のDNSにレコードを登録します。今回の例だと簡単なのはレジストラが提供しているDNSサーバを利用する方法です。
+以下がお名前.comのDNSサーバの登録画面です。</p>
+<figure><a class="lightgallery" href="/offtech.blog/dns/onamaecom-dns.png" title="/offtech.blog/dns/onamaecom-dns.png" data-thumbnail="/offtech.blog/dns/onamaecom-dns.png" data-sub-html="<h2>お名前.comの登録画面</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/onamaecom-dns.png"
+            data-srcset="/offtech.blog/dns/onamaecom-dns.png, /offtech.blog/dns/onamaecom-dns.png 1.5x, /offtech.blog/dns/onamaecom-dns.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/onamaecom-dns.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">お名前.comの登録画面</figcaption>
+    </figure>
+<p>レジストラが提供するDNSサーバ以外の例として、クラウドが提供するDNSサーバがあります。
+クラウドでWebサーバを構築している場合はそちらに登録するのが良いと思います。</p>
+<ol start="3">
+<li>DNSレコードの伝播/アクセス確認</li>
+</ol>
+<p>DNSレコードの伝播には時間がかかる可能性があります。
+これはキャッシュDNSサーバが古いレコードの情報を持っている可能性があるためです。
+DNSキャッシュサーバはDNSレコードに記載されているTTL(Time to Live)の時間が経つまでは再起問い合わせを行わずキャッシュのデータを返します。
+このためDNSキャッシュサーバのキャッシュが更新されるまで待つ必要があるのです。</p>
+<p>DNSレコードの伝播が終われば、アクセス確認をして終わりです。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>DDNS<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>DDNSとはDynamic DNSの略です。自宅鯖とかでよく見ますね。
+DDNSは、ISPから割り当てられた動的IPアドレスをドメインに紐づけるためにあります。これにより、サーバのIPアドレスが変わっても同じドメインでアクセスできるようになります。</p>
+<p>仕組みとしては単純です。サーバ側でWAN側IPが変わった時にDDNSサーバに対し、IPアドレスが変わったことを通知し、DDNSがドメインに対応するIPを書き換えるのです。ここでは主にHTTPリクエストでAPIを叩く方式が利用されているようです。</p>
+</div>
+        </div>
+    </div>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>IDNAとは<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>IDNAは日本語ドメイン名などの非ASCII文字をドメイン名として使えるようにする仕組みです。
+具体的には、日本語などの非ASCII文字を**Punycode（ピュニコード）**と呼ばれる特殊なASCII文字列に変換してDNSクエリを送信します。</p>
+<p>実際にJPRSのIDNテスト用ドメインの名前解決をした例が以下です。</p>
+<figure><a class="lightgallery" href="/offtech.blog/dns/idna.png" title="/offtech.blog/dns/idna.png" data-thumbnail="/offtech.blog/dns/idna.png" data-sub-html="<h2>日本語ドメインの検索</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/idna.png"
+            data-srcset="/offtech.blog/dns/idna.png, /offtech.blog/dns/idna.png 1.5x, /offtech.blog/dns/idna.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/idna.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">日本語ドメインの検索</figcaption>
+    </figure>
+</div>
+        </div>
+    </div>
+<div class="details admonition Note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>運用目線でのDNSの種類<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>DNSを運用する際、大きく以下の種類に分類できます。</p>
+<ul>
+<li>Internal DNS
+<ul>
+<li>内部ネットワークに配置</li>
+<li>内部ドメインの名前解決</li>
+<li>インターネットへの名前解決</li>
+</ul>
+</li>
+<li>Forwarder DNS
+<ul>
+<li>Internal DNSからインターネットへの名前解決</li>
+</ul>
+</li>
+<li>External DNS
+<ul>
+<li>自社ドメイン宛の名前解決</li>
+</ul>
+</li>
+<li>Hidden Primary DNS
+<ul>
+<li>全DNSのマスタデータを保持</li>
+</ul>
+</li>
+</ul></div>
+        </div>
+    </div>
+<h2 id="5dnsの通信">5　DNSの通信</h2>
+<h3 id="51ヘッダフォーマット">5.1　ヘッダフォーマット</h3>
+<p>DNSはクエリとレスポンスが同じフォーマットを利用します。</p>
+<p>大きく分けると以下のセクションに分割されます。</p>
+<table>
+<thead>
+<tr>
+<th>セクション</th>
+<th>サイズ</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Header</td>
+<td>12バイト</td>
+<td>クエリ/応答に関する情報</td>
+</tr>
+<tr>
+<td>Question</td>
+<td>可変</td>
+<td>対象のドメイン名とレコードタイプの指定</td>
+</tr>
+<tr>
+<td>Answer</td>
+<td>可変</td>
+<td>リクエストに応じたレコード</td>
+</tr>
+<tr>
+<td>Authority</td>
+<td>可変</td>
+<td>再起問い合わせで使用されるNSレコードのリスト</td>
+</tr>
+<tr>
+<td>Additional</td>
+<td>可変</td>
+<td>追加のレコード(NSレコードに対するAレコードなど)</td>
+</tr>
+</tbody>
+</table>
+<p>Headerセクションは以下です。</p>
+<table>
+<thead>
+<tr>
+<th>RFC名</th>
+<th>名前</th>
+<th>サイズ</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td>Packet Identifier</td>
+<td>16ビット</td>
+<td>ランダムなID</td>
+</tr>
+<tr>
+<td>QR</td>
+<td>Query Response</td>
+<td>1ビット</td>
+<td>リクエストは0、レスポンスは1</td>
+</tr>
+<tr>
+<td>OPCODE</td>
+<td>Operation Code</td>
+<td>4ビット</td>
+<td>問い合わせの種類であり、通常は0（Notifyが4、Updateが5だったりするらしい）</td>
+</tr>
+<tr>
+<td>AA</td>
+<td>Authoritative Answer</td>
+<td>1ビット</td>
+<td>応答するサーバが権威サーバであれば1</td>
+</tr>
+<tr>
+<td>TC</td>
+<td>Truncated Message</td>
+<td>1ビット</td>
+<td>パケットサイズが512を超えるならば1</td>
+</tr>
+<tr>
+<td>RD</td>
+<td>Recursion Desired</td>
+<td>1ビット</td>
+<td>再帰的な名前解決をするかリクエストの送信側が指定する</td>
+</tr>
+<tr>
+<td>RA</td>
+<td>Recursion Available</td>
+<td>1ビット</td>
+<td>再帰的な名前解決が可能ならば1</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>Reserved</td>
+<td>1ビット</td>
+<td>予約</td>
+</tr>
+<tr>
+<td>AD</td>
+<td>Authentic Data</td>
+<td>1ビット</td>
+<td>DNSSECの検証成功時に1</td>
+</tr>
+<tr>
+<td>CD</td>
+<td>Checking Disabled</td>
+<td>1ビット</td>
+<td>DNSSECの検証成功時に1</td>
+</tr>
+<tr>
+<td>RCode</td>
+<td>Response Code</td>
+<td>4ビット</td>
+<td>サーバがレスポンスの状態をクライアントに提示するためのコード</td>
+</tr>
+<tr>
+<td>QDCOUNT</td>
+<td>Question Count</td>
+<td>16ビット</td>
+<td>Questionセクションのエントリ数</td>
+</tr>
+<tr>
+<td>ANCOUNT</td>
+<td>Answer Count</td>
+<td>16ビット</td>
+<td>ANCOUNTセクションのエントリ数</td>
+</tr>
+<tr>
+<td>NSCOUNT</td>
+<td>Authority Count</td>
+<td>16ビット</td>
+<td>NSCOUNTセクションのエントリ数</td>
+</tr>
+<tr>
+<td>ARCOUNT</td>
+<td>Additional Count</td>
+<td>16ビット</td>
+<td>ARCOUNTセクションのエントリ数</td>
+</tr>
+</tbody>
+</table>
+<p>Questionセクションは以下です。</p>
+<table>
+<thead>
+<tr>
+<th>フィールド名</th>
+<th>サイズ</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>可変</td>
+<td>ドメイン名</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>2バイト</td>
+<td>レコードタイプ</td>
+</tr>
+<tr>
+<td>Class</td>
+<td>2バイト</td>
+<td>クラス（基本的には1）</td>
+</tr>
+</tbody>
+</table>
+<p>Anser/Authority/Additionalセクションは以下です。</p>
+<table>
+<thead>
+<tr>
+<th>フィールド名</th>
+<th>サイズ</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>可変</td>
+<td>ドメイン名</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>2バイト</td>
+<td>レコードタイプ</td>
+</tr>
+<tr>
+<td>Class</td>
+<td>2バイト</td>
+<td>クラス（基本的には1）</td>
+</tr>
+<tr>
+<td>TTL</td>
+<td>4バイト</td>
+<td>レコードのキャッシュ時間</td>
+</tr>
+<tr>
+<td>Len</td>
+<td>2バイト</td>
+<td>レコード長</td>
+</tr>
+</tbody>
+</table>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>レコードのクラス<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>DNSのパケットにクラスがでてきました。</p>
+<p>これは下のようなゾーンファイルでもでてくる&quot;IN&quot;のことです。</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>example.com. IN MX 10 mail.example.com</code></pre></div>
+<p>&ldquo;IN&quot;はインターネットを表し、インターネットで使われることを意味します。
+他にも、&ldquo;CH&quot;や&quot;HS&quot;がありますが、&ldquo;CH&quot;は歴史的なもの、&ldquo;HS&quot;は特殊用途で利用されるものであるため、&ldquo;IN&quot;以外を見ることはまずないといえます。</p>
+</div>
+        </div>
+    </div>
+<h3 id="52パケット解析">5.2　パケット解析</h3>
+<p>では、実際にnslookupコマンドやdigコマンドでDNSパケットを見てみましょう。</p>
+<p>nslookupでgithub.ioの名前解決をしてみます。
+nslookupではデフォルトでA/AAAAレコードを指定してDNSクエリを送信します。</p>
+<p><figure><a class="lightgallery" href="/offtech.blog/dns/dns-query-a-record.png" title="/offtech.blog/dns/dns-query-a-record.png" data-thumbnail="/offtech.blog/dns/dns-query-a-record.png" data-sub-html="<h2>nslookup</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/dns-query-a-record.png"
+            data-srcset="/offtech.blog/dns/dns-query-a-record.png, /offtech.blog/dns/dns-query-a-record.png 1.5x, /offtech.blog/dns/dns-query-a-record.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/dns-query-a-record.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">nslookup</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/dns/dns-packet-a-record-1.png" title="/offtech.blog/dns/dns-packet-a-record-1.png" data-thumbnail="/offtech.blog/dns/dns-packet-a-record-1.png" data-sub-html="<h2>A/AAAAレコードのDNSクエリ</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/dns-packet-a-record-1.png"
+            data-srcset="/offtech.blog/dns/dns-packet-a-record-1.png, /offtech.blog/dns/dns-packet-a-record-1.png 1.5x, /offtech.blog/dns/dns-packet-a-record-1.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/dns-packet-a-record-1.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">A/AAAAレコードのDNSクエリ</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/dns/dns-packet-a-record-2.png" title="/offtech.blog/dns/dns-packet-a-record-2.png" data-thumbnail="/offtech.blog/dns/dns-packet-a-record-2.png" data-sub-html="<h2>A/AAAAレコードのDNS応答</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/dns-packet-a-record-2.png"
+            data-srcset="/offtech.blog/dns/dns-packet-a-record-2.png, /offtech.blog/dns/dns-packet-a-record-2.png 1.5x, /offtech.blog/dns/dns-packet-a-record-2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/dns-packet-a-record-2.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">A/AAAAレコードのDNS応答</figcaption>
+    </figure></p>
+<p>次に、digでANYを指定してDNSクエリを送信してみます。</p>
+<p><figure><a class="lightgallery" href="/offtech.blog/dns/dns-dig.png" title="/offtech.blog/dns/dns-dig.png" data-thumbnail="/offtech.blog/dns/dns-dig.png" data-sub-html="<h2>dig</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/dns-dig.png"
+            data-srcset="/offtech.blog/dns/dns-dig.png, /offtech.blog/dns/dns-dig.png 1.5x, /offtech.blog/dns/dns-dig.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/dns-dig.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">dig</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/dns/dns-packet-dig-1.png" title="/offtech.blog/dns/dns-packet-dig-1.png" data-thumbnail="/offtech.blog/dns/dns-packet-dig-1.png" data-sub-html="<h2>ANY指定のDNSクエリ</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/dns-packet-dig-1.png"
+            data-srcset="/offtech.blog/dns/dns-packet-dig-1.png, /offtech.blog/dns/dns-packet-dig-1.png 1.5x, /offtech.blog/dns/dns-packet-dig-1.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/dns-packet-dig-1.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ANY指定のDNSクエリ</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/dns/dns-packet-dig-2.png" title="/offtech.blog/dns/dns-packet-dig-2.png" data-thumbnail="/offtech.blog/dns/dns-packet-dig-2.png" data-sub-html="<h2>ANY指定のDNS応答</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/dns-packet-dig-2.png"
+            data-srcset="/offtech.blog/dns/dns-packet-dig-2.png, /offtech.blog/dns/dns-packet-dig-2.png 1.5x, /offtech.blog/dns/dns-packet-dig-2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/dns-packet-dig-2.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ANY指定のDNS応答</figcaption>
+    </figure></p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>ANYレコードの制限<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">最近のDNSサーバではANYクエリに対する応答に制限をかけていることが多いです。
+これは、反射型DoSに利用されることを防止するためや負荷対策のためです。
+DNS通信にはUDPが利用され、送信元を偽造できる他、応答のレコードが多いとデータ量が数十倍から数百倍になります。
+このため、効率よくDoS攻撃に利用することができるのです。</div>
+        </div>
+    </div>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>DNS Cookie<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>先程のDNSパケットに含まれていたDNS Cookieとは何でしょうか？
+僕もこの記事を書くまでは存在すら知りませんでした。
+DNSはUDPでステートレスなのになぜCookie？という感じの人も多いと思います。</p>
+<figure><a class="lightgallery" href="/offtech.blog/dns/dns-cookie.png" title="/offtech.blog/dns/dns-cookie.png" data-thumbnail="/offtech.blog/dns/dns-cookie.png" data-sub-html="<h2>DNS Cookie</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/dns-cookie.png"
+            data-srcset="/offtech.blog/dns/dns-cookie.png, /offtech.blog/dns/dns-cookie.png 1.5x, /offtech.blog/dns/dns-cookie.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/dns-cookie.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">DNS Cookie</figcaption>
+    </figure>
+<p>DNS Cookieとは、その名の通りDNSパケットに付与するCookieのことです。
+これにより、クエリを送信したユーザを識別します。
+これには、以下のようなメリットがあります。</p>
+<ul>
+<li>反復型DoS攻撃の防止<br>
+DNSはANYレコードの件でも述べたとおり反復型DoS攻撃に利用されやすいです。
+この場合、送信者は送信元を偽造するためサーバ側のCookieを知ることはできません。
+この性質を利用して、サーバ側では同じ送信元の2回目以降のクエリに対し、Cookieが入っていない場合はパケットを破棄するという処理を行うことができます。
+これにより、反復型DoS攻撃への利用を防ぐことができます。</li>
+<li>キャッシュポイズニング<br>
+DNSキャッシュサーバは権威DNSサーバにCookie付きでDNSクエリを送信し、応答にCookieが含まれているかを確認することで、キャッシュポイズニングを防止することができます。</li>
+</ul>
+</div>
+        </div>
+    </div>
+<h2 id="6可用性">6　可用性</h2>
+<h3 id="61監視">6.1　監視</h3>
+<p>DNSに限らず一般的な話です。
+正常性を監視し、以上があれば別のサーバにトラフィックを切り替えたりします。</p>
+<h3 id="62負荷分散">6.2　負荷分散</h3>
+<p>地理的に異なる場所にDNSサーバを配置し、Anycastなどを用いて、地理的に近いDNSサーバで応答させ、負荷分散を図ります。
+他にも、単純にサーバを複数用意するなどして負荷分散を図ります。</p>
+<h3 id="63冗長化">6.3　冗長化</h3>
+<p>DNSの可用性確保の大きな方針として冗長化が挙げられます。</p>
+<p>DNSサーバではプライマリDNSサーバとセカンダリDNSサーバなど複数のDNSサーバを用意し、ゾーンファイルを同期させることで、単一障害点をなくすことが一般的です。
+これにより、プライマリDNSサーバが落ちたとしても、セカンダリDNSサーバがDNS応答を行ってくれます。</p>
+<p>ゾーン情報の同期はセカンダリDNSサーバがプライマリDNSサーバに定期的にゾーン転送要求を行うことで行われます。</p>
+<p>ゾーン転送には以下の2種類があります。</p>
+<ul>
+<li>フルゾーン転送（AXFR）&hellip;DNSゾーン全体を転送</li>
+<li>インクリメンタルゾーン転送（IXFR）&hellip;前回の転送以降に変更されたレコードのみを転送</li>
+</ul>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>ゾーンファイル転送のプロトコル<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>ゾーン転送にもDNSクエリと同じDNSプロトコルが利用されているのでしょうか？
+基本的にゾーン転送は許可されたDNSサーバへしか許可されていないので、ここでは教育目的などで公開されている
+<strong>zonetransfer.me</strong>に対し、クライアントPCからゾーン転送要求を送信してみます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/dns/dns-axfr-1.png" title="/offtech.blog/dns/dns-axfr-1.png" data-thumbnail="/offtech.blog/dns/dns-axfr-1.png" data-sub-html="<h2>ゾーンファイル要求</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/dns-axfr-1.png"
+            data-srcset="/offtech.blog/dns/dns-axfr-1.png, /offtech.blog/dns/dns-axfr-1.png 1.5x, /offtech.blog/dns/dns-axfr-1.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/dns-axfr-1.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ゾーンファイル要求</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/dns/dns-axfr-2.png" title="/offtech.blog/dns/dns-axfr-2.png" data-thumbnail="/offtech.blog/dns/dns-axfr-2.png" data-sub-html="<h2>ソーンファイル応答</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/dns-axfr-2.png"
+            data-srcset="/offtech.blog/dns/dns-axfr-2.png, /offtech.blog/dns/dns-axfr-2.png 1.5x, /offtech.blog/dns/dns-axfr-2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/dns-axfr-2.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ソーンファイル応答</figcaption>
+    </figure>
+<p>DNSにおけるゾーンファイルのやりとりにはDNSクエリと同じDNSプロトコルが利用され、以下の拡張仕様が利用されます。</p>
+<ul>
+<li>AXFR(Full Zone Transfer)<br>
+ゾーン全体を一括で転送する。</li>
+<li>IXFR(Incremental Zone Transfer)<br>
+差分のみを転送する。</li>
+</ul>
+<p>これらの仕様ではパケットサイズがおおきくなるためTCPが利用されています。</p>
+</div>
+        </div>
+    </div>
+<h2 id="7セキュリティ">7　セキュリティ</h2>
+<p>DNSのセキュリティについて、攻撃と防御という観点でまとめていきます。</p>
+<h3 id="71ゾーン転送要求による偵察">7.1　ゾーン転送要求による偵察</h3>
+<p>DNSを利用した標的の偵察活動として、<strong>ゾーン転送要求</strong>があります。</p>
+<p>権威サーバのゾーンファイルには、公開しているレコード以外にも、内部向けのホスト名などレコードなどが含まれます。
+攻撃者はゾーン転送要求によりゾーンファイルを取得することで、標的のネットワーク構成やプライベートなホスト名などを知ることができます。</p>
+<p>基本的な対策としては、ゾーン転送の送信相手を制限することです。
+具体的には、以下のような対策があります。</p>
+<ul>
+<li>アクセス許可リスト<br>
+DNSサーバの設定として、アクセス制御をかけることができます。<br>
+※ Bindだと&quot;acl&quot;や&quot;allow-transfer&quot;などがあります。</li>
+<li>TSIG<br>
+共通鍵暗号によりDNSサーバ間の通信にHMAC署名を加えることで改ざんと偽造を防ぎます。</li>
+</ul>
+<div class="details admonition Note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>TSIG<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>TSIGはTransaction Signatureの略で事前共有鍵によるHMACベースの署名を行うものです。
+具体的には、</p>
+<ol>
+<li>送信者はゾーンファイルなどの平分に対し、事前共有鍵を用いてメッセージ認証コードを計算し、メッセージと一緒に送信します。</li>
+<li>受信者は受信したメッセージに対し、同じように事前共有鍵でメッセージ認証コードを計算し、受信したメッセージ認証コードと一致するかを確認します。</li>
+</ol>
+<p>事前共有鍵を持っていない場合は正しいメッセージ認証コードを作成できないため、以下を実現できます。</p>
+<ul>
+<li>認証</li>
+<li>改ざん防止</li>
+<li>アクセス制御</li>
+</ul>
+<p>以下は、実際にTSIGを利用する際のマスターDNSの設定です。</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>key &#34;tsig-key&#34; {
+    algorithm hmac-sha256;
+    secret &#34;VHJhbnNhY3Rpb24gU2lnbmF0dXJl&#34;;
+};
+
+zone &#34;example.com&#34; IN {
+    type master;
+    file &#34;example.com.zone&#34;;
+    allow-transfer { key tsig-key; 192.0.1.1; };
+};</code></pre></div>
+</div>
+        </div>
+    </div>
+<h4 id="72dns応答の偽造">7.2　DNS応答の偽造</h4>
+<p>基本的に人間はドメイン名による検索を行います。
+この際に名前解決が発生するわけですが、DNSの情報が改ざんされるなどした場合、ユーザはフィッシングのように偽のサイトに誘導されてしまいます。
+このような攻撃を<strong>ファーミング</strong>と呼びます。</p>
+<p>ここではファーミングの手法として、<strong>DNSキャッシュポイズニング</strong>を紹介します。</p>
+<p>DNSキャッシュポイズニングはDNSキャッシュサーバに不正なキャッシュを保存させ、名前解決時に悪意のあるサイトに誘導する攻撃です。</p>
+<p>DNSキャッシュポイズニングの1例として、権威サーバからのキャッシュサーバへの応答偽装があります。DNSの通信はUDPで行われるため、キャッシュサーバから権威サーバへのDNSクエリの応答を権威サーバより早く返すことができれば、DNSキャッシュサーバに悪意のあるドメイン情報を保存することができます。</p>
+<p>DNSキャッシュポイズニングの具体的な攻撃手法としてカミンスキー攻撃があります。5.1節でdnsパケットのヘッダセクションには&quot;packet identioier&quot;が含まれていたことを覚えているでしょうか？DNSキャッシュサーバは権威サーバからのDNS応答の正当性をDNSクエリに含めた&quot;packet identifier&quot;と同じものがDNS応答に付与されているかで判断します。しかし、DNSプロトコルの&quot;packet identifier&quot;は16ビットであり、65536通りしか存在しません。これにより、IDを総当たりで試していけば高速で&quot;packet idntifier&quot;を一致させたDNS応答を送信することができます。カミンスキー攻撃はDNSプロトコルの脆弱性を利用した攻撃と言えます。</p>
+<p>具体的なカミンスキー攻撃の流れを以下に示します。</p>
+<p>カミンスキー攻撃の流れは以下です。</p>
+<ol>
+<li>キャッシュDNSサーバに対し、キャッシュがないレコードのDNSクエリを送信する。</li>
+<li>1の応答として、偽のDNS応答を&quot;packet identifier&quot;を総当たりで変えながらキャッシュDNSサーバに送信する。</li>
+<li>1,2を大量に繰り返す。</li>
+</ol>
+<div class="details admonition Note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>ソースポートランダマイゼーション<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>カミンスキー攻撃の対策として、ソースポートランダマイゼーションがあります。</p>
+<p>ソースポートランダマイゼーションはその名の通り、送信元のポート番号をランダムに変更する手法です。
+キャッシュDNSサーバが送信元ポート番号をランダムに変えながら権威DNSサーバにDNSクエリを送信することで、攻撃者は&quot;packet identifier&quot;以外にポート番号も当てる必要があります。</p>
+<p>ソースポートランダマイゼーションが適用されたキャッシュDNSサーバに対し攻撃を成功させるためには、&ldquo;packet identifier&quot;とポート番号の組み合わせの32ビット分を一致させたDNS応答を権威DNSサーバからの応答より早くキャッシュDNSサーバに送信する必要があります。</p>
+</div>
+        </div>
+    </div>
+<div class="details admonition Note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>DNSSEC<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>DNSSEC（Domain Name System Security Extension）とは、電子署名によりDNS応答の改ざんや偽造を防止する機能です。
+具体的には、権威DNSサーバがDNSのレコードに対し電子署名を付与し、DNSレコードを取得したキャッシュDNSサーバなどが署名を検証することで正しいレコードであることを確認します。
+DNSSECは署名によりレコードの改ざんや偽造を防止できるため、DNSキャッシュポイズニングの根本的な対策として有効です。</p>
+<p>先に、署名がどのようなものなのか見てみましょう。
+&ldquo;cloudflare.com&quot;のAレコードとそのRRSIGレコードを取得してみます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/dns/rrsig.png" title="/offtech.blog/dns/rrsig.png" data-thumbnail="/offtech.blog/dns/rrsig.png" data-sub-html="<h2>RRSIGレコード</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/rrsig.png"
+            data-srcset="/offtech.blog/dns/rrsig.png, /offtech.blog/dns/rrsig.png 1.5x, /offtech.blog/dns/rrsig.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/rrsig.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">RRSIGレコード</figcaption>
+    </figure>
+<p>以下の部分が署名です。（Base64でエンコードされています。）
+これを検証することでDNSレコードの正当性を確認できます。</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>5hxMxgVw61o68xcQvUFXbPXpVO5ErWKZgU+IOAA8ArN87vkykItKLX/d uk49LZ90TprobmOmZ9d1B2zs0TMnKQ==</code></pre></div>
+<p>具体的な署名を確認したところで、DNSSECの署名検証について全体の動きを見てみましょう。</p>
+<ol>
+<li>キャッシュDNSサーバが権威DNSサーバにDNSクエリを送信する。</li>
+<li>権威DNSサーバはキャッシュDNSサーバにAレコードとRRSIGレコードを返す。</li>
+<li>キャッシュDNSサーバはRRSIGレコードを検証するための公開鍵を得るために権威DNSサーバにDNSKEYレコードを問い合わせる。</li>
+<li>DNSKEYの正当性を検証するために親ゾーンのDSレコードを取得し、DNSKEYから計算したハッシュ値と比較する。</li>
+<li>同様に親ゾーンのレコードを検証。</li>
+<li>最後にルートゾーンの公開鍵をあらかじめインスールされているものと比較する。</li>
+</ol>
+<p>上記のように、DNSSECの検証では、レコードの署名を検証する際の公開鍵に対し、上位のDNSサーバが正しさを証明し、最終的にルートDNSサーバの公開鍵と比較することで正当性を確認します。
+これを信頼の連鎖と呼びます。</p>
+<p>実際に先程の&quot;cloudflare.com&quot;のRRSIGを検証する流れを見てみます。</p>
+<p>まずは、RRSIGレコードにある署名を検証するために、公開鍵を取得します。</p>
+<figure><a class="lightgallery" href="/offtech.blog/dns/dnskey.png" title="/offtech.blog/dns/dnskey.png" data-thumbnail="/offtech.blog/dns/dnskey.png" data-sub-html="<h2>DNSKEYレコード</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/dnskey.png"
+            data-srcset="/offtech.blog/dns/dnskey.png, /offtech.blog/dns/dnskey.png 1.5x, /offtech.blog/dns/dnskey.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/dnskey.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">DNSKEYレコード</figcaption>
+    </figure>
+<p>キャッシュDNSサーバはこのDNSKEYで先程のAレコードのRRSIGレコードを検証します。
+これにより、Aレコードの正当性を確認できます。
+DNSKEYにもRRSIGがあります。</p>
+<p>次に、そもそもDNSKEYが正しいかを確認します。</p>
+<figure><a class="lightgallery" href="/offtech.blog/dns/ds.png" title="/offtech.blog/dns/ds.png" data-thumbnail="/offtech.blog/dns/ds.png" data-sub-html="<h2>DSレコード</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/ds.png"
+            data-srcset="/offtech.blog/dns/ds.png, /offtech.blog/dns/ds.png 1.5x, /offtech.blog/dns/ds.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/ds.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">DSレコード</figcaption>
+    </figure>
+<p>&ldquo;@a.gtld-servers.net&quot;は.comの権威DNSサーバの一つです。
+取得したDSレコードと先程のDNSKEYのハッシュ値を比較することで、DNSKEYの正当性を確認します。</p>
+<p>以降は、DSレコードのRRSIGレコードをDNSKEYで検証し、そのDNSKEYをルートDNSサーバのDSレコードと比較するといった流れです。</p>
+</div>
+        </div>
+    </div>
+<h4 id="72dos">7.2　DoS</h4>
+<p>権威DNSサーバへのDoS攻撃として、**ランダムサブドメイン攻撃（DNS水攻め攻撃）**があります。
+これは、標的となる権威DNSサーバに対し、キャッシュDNSサーバにキャッシュがないサブドメインを大量に問い合わせることで、権威DNSサーバに負荷をかける攻撃です。</p>
+<p>具体的には、&ldquo;example.com&quot;の権威DNSサーバを攻撃しようとした際は、&ldquo;hoge.example.com&quot;や&quot;huga.example.com&quot;といったキャッシュDNSサーバに
+キャッシュが存在しないサブドメインをキャッシュDNSサーバに問い合わせることで、権威DNSサーバに大量の問い合わせを集中させます。</p>
+<p>ランダムサブとメイン攻撃への対策としては以下のようなものがあります。</p>
+<ul>
+<li>レートリミット<br>
+一定時間内の同じクライアントからのリクエストを制限する</li>
+<li>NXDOMAINキャッシュ<br>
+「レコードがない」という応答をキャッシュさせる。</li>
+<li>DNS Cookieの強制<br>
+応答を正当なクライアントのみに制限する。</li>
+</ul>
+<p>DoS攻撃については、DNS自身への攻撃の他にDNSを利用された外部へのDoS攻撃があります。
+<strong>DNSリフレクション（アンプ）攻撃</strong>がその一つです。</p>
+<p>DNSアンプ攻撃は、応答が大きくなるようなDNSクエリを送信元を標的のアドレスにした上で大量に送信し、DNS応答で標的サーバに負荷をかける攻撃です。</p>
+<p>この攻撃が成立する一つの原因として、DNSがUDPを利用した通信であるため、送信元を偽造できることがあります。
+また、DNSの「リクエストに対しレスポンスを大きくしやすい」という性質もこの攻撃を後押しする原因の一つです。
+ANYレコードやDNSSEC関連のレコードなどはリクエストに対しレスポンスが大きくなり、効率的にDoS攻撃に利用することができます。</p>
+<p>では、DNSリフレクション（アンプ）攻撃の対策はどうすれば良いのでしょうか？
+根本的な対策は以下です。</p>
+<ul>
+<li>社内のキャッシュサーバを公開しない</li>
+<li>権威サーバでは再帰問い合わせを許可しない</li>
+</ul>
+<p>しかし、DNSサーバには利用者を限定しない公開する目的で運用される場合も多くあります。
+この場合の対策としては以下が考えられます。</p>
+<ul>
+<li>レートリミット<br>
+一定時間内の同じクライアントからのリクエストを制限する</li>
+<li>応答サイズの制限<br>
+&ldquo;minimal-response&quot;を設定することで必要最低限の応答しか返さないようにしたり、
+EDNSサイズを制限することでUDPで応答可能な最大サイズを小さくしたりする。</li>
+<li>プロバイダのDoS対策<br>
+BGPのフィルタリングやUDPレートの制限などプロバイダ側で対策してもらう。</li>
+<li>DNS Cookie<br>
+DNS Cookieにより、複数回のクエリにはCookieを求めることで送信元が偽造されたパケットには応答しないようにする。</li>
+</ul>
+<h4 id="73情報漏えい">7.3　情報漏えい</h4>
+<p>DNSを利用した情報漏えい手法に<strong>DNSトンネリング</strong>があります。
+DNSトンネリングの流れは以下です。</p>
+<ol>
+<li>攻撃者がドメインをレジストラに登録</li>
+<li>攻撃者が権威DNSサーバを構築</li>
+<li>攻撃者（内部不正など）やマルウェアに感染した端末が機密情報を1で登録したドメインのサブドメインとして付与し、DNSクエリとして送信。</li>
+<li>2の権威DNSサーバで受信したDNSクエリから3の機密情報を取得</li>
+</ol>
+<p>DNSトンネリングはサーバと直接通信するわけではないため、DNSホワイトリストなどのフィルタリングにも検知されず情報漏えいに効果的です。
+これを防ぐためにはDNSクエリを監視する必要があります。</p>
+<h4 id="74dnsクエリの盗聴">7.4　DNSクエリの盗聴</h4>
+<p>通常、DNSクエリはUDP上で平文で流れるため、ユーザがどこのサイトに訪れているかなどが通信から見られてしまいます。
+ここで、DNSクエリを暗号化するのが<strong>DNS over TLS</strong>です。</p>
+<p>DoT（DNS over TLS）はDNSの名前解決をHTTPSで行います。
+これにより、DNSクエリを暗号化できるほか通常のHTTPSと同じく、通信相手（サーバ）の認証や改ざん対策にもなります。</p>
+<p>それでは、実際にDoT通信を見てみましょう。
+digコマンドではDoTに対応した名前解決ができないため、kdigコマンドを利用します。
+<figure><a class="lightgallery" href="/offtech.blog/dns/kdig.png" title="/offtech.blog/dns/kdig.png" data-thumbnail="/offtech.blog/dns/kdig.png" data-sub-html="<h2>kdigコマンド</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/kdig.png"
+            data-srcset="/offtech.blog/dns/kdig.png, /offtech.blog/dns/kdig.png 1.5x, /offtech.blog/dns/kdig.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/kdig.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">kdigコマンド</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/dns/secure-dns-packet.png" title="/offtech.blog/dns/secure-dns-packet.png" data-thumbnail="/offtech.blog/dns/secure-dns-packet.png" data-sub-html="<h2>DoTを適用したDNSクエリ</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/secure-dns-packet.png"
+            data-srcset="/offtech.blog/dns/secure-dns-packet.png, /offtech.blog/dns/secure-dns-packet.png 1.5x, /offtech.blog/dns/secure-dns-packet.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/secure-dns-packet.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">DoTを適用したDNSクエリ</figcaption>
+    </figure></p>
+<p>DNSサーバとして指定した&quot;1.1.1.1&quot;のサーバ（CloudFlareのDNSサーバ）との通信がTLSになっていることが分かります。
+これにより訪問したサイトもばれずにすみます！</p>
+<p>ChromeでもSecure DNSの設定がありました。
+<figure><a class="lightgallery" href="/offtech.blog/dns/secure-dns-setting.png" title="/offtech.blog/dns/secure-dns-setting.png" data-thumbnail="/offtech.blog/dns/secure-dns-setting.png" data-sub-html="<h2>ブラウザでのDoTの設定</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/dns/secure-dns-setting.png"
+            data-srcset="/offtech.blog/dns/secure-dns-setting.png, /offtech.blog/dns/secure-dns-setting.png 1.5x, /offtech.blog/dns/secure-dns-setting.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/dns/secure-dns-setting.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ブラウザでのDoTの設定</figcaption>
+    </figure></p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>パッシブDNS<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>パッシブDNSとは、<strong>過去のドメインとIPアドレスの対応状況</strong>を記録・保存しておく仕組みです。
+仕組みとしては、定期的に名前解決を行い対応表を作るわけではなく、キャッシュDNSサーバのクライアントへの応答を記録しておく形です。</p>
+<p>パッシブDNSはセキュリティ調査で利用され、怪しい名前解決からマルウェアの通信先の履歴をたどることなどができます。</p>
+</div>
+        </div>
+    </div>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>Fast FluxとDomain Flux<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>攻撃に利用されるDNSに関連した技術として<strong>Fast Flux</strong>と<strong>Domain Flux</strong>があります。</p>
+<ul>
+<li>Fast Flux<br>
+一つのドメイン名に対し、IPアドレスを高速で次々に変える仕組みです。
+仕組みとしては、攻撃者が権威DNSサーバを用意し、名前解決に対する応答を大量のボットなどのIPから都度変えながら返します。
+これにより、ボットなどのサーバをプロキシとして利用するなどして、C&amp;Cサーバの場所を特定しにくくします。</li>
+<li>Domain Flux<br>
+一つのIPアドレスに対し、ドメインを高速で次々に変える仕組みです。
+仕組みとしては、大量のドメインを登録しておき、時間やその他の規則ベースでマルウェアなどの接続先ドメイン名を変更します。
+これにより、企業のブラックリストなどを回避します。</li>
+</ul></div>
+        </div>
+    </div>
+<h2 id="8まとめ">8　まとめ</h2>
+<p>今回はDNSについて、世の中の名前解決の動きや通信から学習しました。
+セキュリティについては詳しく学びましたが、その他の部分はあまり深掘れていないので、時間があるときに追加で執筆しようと思います。
+bindを触ってみる内容の記事もいずれ書きたいと思います。</p>
+<div class="details admonition Note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>（補足）NIST SP 800-81r3<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>NISTがDNSのベストプラクティスを公開しているようです。</p>
+<ul>
+<li><a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-81r3.ipd.pdf" target="_blank" rel="noopener noreffer ">Secure Domain Name System (DNS) Deployment Guide</a>
+私も時間を見つけて読もうと思います。</li>
+</ul></div>
+        </div>
+    </div>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="https://www.nic.ad.jp/ja/newsletter/No22/080.html" target="_blank" rel="noopener noreffer ">インターネット10分講座：DNS</a>
+[2] <a href="https://github.com/EmilHernvall/dnsguide/tree/master" target="_blank" rel="noopener noreffer ">Building a DNS server in Rust</a>
+[3] <a href="https://zenn.dev/gorogoroumaru/articles/00ca59c178535e" target="_blank" rel="noopener noreffer ">バイナリを読み解いて学ぶDNSパケットの構造</a>
+[4] <a href="https://www.akamai.com/ja/glossary/what-is-dns-tunneling#:~:text=DNS%20%E3%83%88%E3%83%B3%E3%83%8D%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AF%E3%80%81%E3%83%8F%E3%83%83%E3%82%AB%E3%83%BC%E3%81%8C,%E5%9B%9E%E9%81%BF%E3%81%A7%E3%81%8D%E3%82%8B%E3%81%93%E3%81%A8%E3%81%8C%E3%82%88%E3%81%8F%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%E3%80%82" target="_blank" rel="noopener noreffer ">DNS トンネリングとは</a>
+[5] <a href="https://www.cloudflare.com/ja-jp/learning/dns/dns-over-tls/" target="_blank" rel="noopener noreffer ">DNS over TLS vs. DNS over HTTPS | 安全なDNS</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-24&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/cdff6142bd227c739dffa3e57981347795afc22b" target="_blank" title="commit by shibuya-s-eg(shibuya.s.eg@gmail.com) cdff6142bd227c739dffa3e57981347795afc22b: Update-20250624-00">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>cdff614</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/dns/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/dns/" data-title="DNSを完全に理解する" data-hashtags="Network"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/dns/" data-title="DNSを完全に理解する"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/dns/" data-hashtag="Network"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/dns/" data-title="DNSを完全に理解する"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/dns/" data-title="DNSを完全に理解する"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/dns/" data-title="DNSを完全に理解する"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/dns/" data-title="DNSを完全に理解する" data-description="DNSを完全に理解する"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fdns%2f&amp;text=DNS%e3%82%92%e5%ae%8c%e5%85%a8%e3%81%ab%e7%90%86%e8%a7%a3%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/network/">Network</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/daily-practice/" class="prev" rel="prev" title="2025年6月"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>2025年6月</a>
+            <a href="/offtech.blog/home-requirement-definition/" class="next" rel="next" title="自宅鯖環境を構築する~要件定義編~">自宅鯖環境を構築する~要件定義編~<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

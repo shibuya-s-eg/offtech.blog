@@ -1,0 +1,79 @@
+{{ define "title" }}
+  カテゴリ一覧 - {{ .Site.Title }}
+{{ end }}
+
+{{ define "content" }}
+<div class="page archive">
+  <h2 class="single-title animate__animated animate__pulse animate__faster">カテゴリ一覧</h2>
+
+  {{ range $catName, $catPages := .Site.Taxonomies.categories }}
+    <div class="card-item">
+      <div class="card-item-wrapper">
+        {{/* 1階層目: カテゴリ */}}
+        <h3 class="card-item-title">
+          <a href="{{ "/offtech.blog/categories/" | relLangURL }}{{ urlize $catName }}/">
+            <i class="far fa-folder fa-fw" aria-hidden="true"></i>&nbsp;{{ $catName }}
+          </a>
+        </h3>
+
+        {{/* サブカテゴリ名をユニークに集める */}}
+        {{ $subcatNames := slice }}
+
+        {{ range $catPages.Pages }}
+          {{ $subcats := .Params.subcategories }}
+          {{ if $subcats }}
+            {{ $asSlice := (cond (reflect.IsSlice $subcats) $subcats (slice $subcats)) }}
+            {{ range $asSlice }}
+              {{ if not (in $subcatNames .) }}
+                {{ $subcatNames = $subcatNames | append . }}
+              {{ end }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+
+        {{/* 2階層目: サブカテゴリ別記事一覧 */}}
+        {{ range $subcat := $subcatNames }}
+          <div style="margin-left: 1.5em;">
+            <h4 class="subcat-title">
+              <a href="{{ "/offtech.blog/subcategories/" | relLangURL }}{{ urlize $subcat }}/">
+                <i class="far fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;{{ $subcat }}
+              </a>
+            </h4>
+            {{ $filteredPages := where $catPages.Pages "Params.subcategories" "intersect" (slice $subcat) }}
+            {{ range first 5 $filteredPages }}
+              <article class="archive-item" style="margin-left: 2em;">
+                <a href="{{ .RelPermalink }}" class="archive-item-link">{{ .Title | emojify }}</a>
+              </article>
+            {{ end }}
+            {{ if gt (len $filteredPages) 5 }}
+              <span class="more-post" style="margin-left: 2em;">
+                <a href="{{ "/offtech.blog/subcategories/" | relLangURL }}{{ urlize $subcat }}/" class="more-single-link">もっと見る >></a>
+              </span>
+            {{ end }}
+          </div>
+        {{ end }}
+
+        {{/* 3階層目: サブカテゴリがない記事（未分類） */}}
+        {{ $noSubcatPages := where $catPages.Pages "Params.subcategories" "==" nil }}
+        {{ if gt (len $noSubcatPages) 0 }}
+          <div style="margin-left: 1.5em;">
+            <h4 class="subcat-title">
+              <i class="far fa-folder-open fa-fw" aria-hidden="true"></i>&nbsp;未分類
+            </h4>
+            {{ range first 5 $noSubcatPages }}
+              <article class="archive-item" style="margin-left: 2em;">
+                <a href="{{ .RelPermalink }}" class="archive-item-link">{{ .Title | emojify }}</a>
+              </article>
+            {{ end }}
+            {{ if gt (len $noSubcatPages) 5 }}
+              <span class="more-post" style="margin-left: 2em;">
+                <a href="{{ "/offtech.blog/categories/" | relLangURL }}{{ urlize $catName }}/misc/" class="more-single-link">もっと見る >></a>
+              </span>
+            {{ end }}
+          </div>
+        {{ end }}
+      </div>
+    </div>
+  {{ end }}
+</div>
+{{ end }}

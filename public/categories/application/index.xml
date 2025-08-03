@@ -1,0 +1,24 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Application - Category - offtech.blog</title>
+        <link>http://localhost:1313/offtech.blog/categories/application/</link>
+        <description>Application - Category - offtech.blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>ja</language><managingEditor>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</managingEditor>
+            <webMaster>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/offtech.blog/categories/application/" rel="self" type="application/rss+xml" /><item>
+    <title>HTTPを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/application-http/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/application-http/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 hoge 1.1 hoge 参考 [1]]]></description>
+</item>
+<item>
+    <title>メールシステムを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/application-mail/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/application-mail/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はメールシステムを完全に理解していきます。 TL;DR 0 はじめに 1 メールの仕組み 1.1 メールシステムの構成 1.2 メール送受信の流れ]]></description>
+</item>
+</channel>
+</rss>

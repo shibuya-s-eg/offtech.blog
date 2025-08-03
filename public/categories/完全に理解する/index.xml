@@ -1,0 +1,88 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>完全に理解する - Category - offtech.blog</title>
+        <link>http://localhost:1313/offtech.blog/categories/%E5%AE%8C%E5%85%A8%E3%81%AB%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B/</link>
+        <description>完全に理解する - Category - offtech.blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>ja</language><managingEditor>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</managingEditor>
+            <webMaster>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/offtech.blog/categories/%E5%AE%8C%E5%85%A8%E3%81%AB%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B/" rel="self" type="application/rss+xml" /><item>
+    <title>コンテナとDockerを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/virtualization-docker/</link>
+    <pubDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/virtualization-docker/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 学生時代の研究から始まり、社会人になってからも愛用しているDockerとそもそものコンテナについて、気合をいれてまと]]></description>
+</item>
+<item>
+    <title>DNSを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/network-dns/</link>
+    <pubDate>Fri, 25 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/network-dns/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はDNSを完全に理解していきます。 本記事では、Linuxをベースに説明を行いますが、本質的な部分はWindows]]></description>
+</item>
+<item>
+    <title>ACLを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/network-acl/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/network-acl/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに 1.1 なぜACLが重要なのか 1.2 本記事の目的と読者層 1.3 ACLの概要と誤解されが]]></description>
+</item>
+<item>
+    <title>BFDを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/network-bfd/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/network-bfd/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに 1.1 なぜBFDが必要なのか 1.2 高速な障害検出が重要なユースケース 2 BFDとは]]></description>
+</item>
+<item>
+    <title>BGPを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/network-bgp/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/network-bgp/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに なぜBGPを理解することが重要なのか BGPの基本的な役割と位置付け（AS]]></description>
+</item>
+<item>
+    <title>CEFを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/network-cef/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/network-cef/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに 1.1 CEFとは何か CEF（Cisco Express Forwarding）の目的と誕生背]]></description>
+</item>
+<item>
+    <title>EIGRPを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/network-eigrp/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/network-eigrp/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに なぜEIGRPを理解することが重要なのか OSPFやRIPとの違いと位置づ]]></description>
+</item>
+<item>
+    <title>HSRPを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/network-hsrp/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/network-hsrp/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに 1.1 HSRPとは何か Cisco独自のファーストホップ冗長化プロトコルである]]></description>
+</item>
+<item>
+    <title>HTTPを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/application-http/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/application-http/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 hoge 1.1 hoge 参考 [1]]]></description>
+</item>
+<item>
+    <title>IPを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/network-ip/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/network-ip/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに 1.1 本記事の目的 1.2 対象読者と前提知識 1.3 本記事の全体構成 2 IPとは何か 2.1 IP]]></description>
+</item>
+</channel>
+</rss>

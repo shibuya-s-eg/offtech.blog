@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>RIPを完全に理解する - offtech.blog</title><meta name="Description" content="RIPを完全に理解する"><meta property="og:url" content="http://localhost:1313/offtech.blog/network-rip/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="RIPを完全に理解する">
+  <meta property="og:description" content="RIPを完全に理解する">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-13T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-22T13:54:21+09:00">
+    <meta property="article:tag" content="Network">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="RIPを完全に理解する">
+  <meta name="twitter:description" content="RIPを完全に理解する">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/network-rip/" /><link rel="prev" href="http://localhost:1313/offtech.blog/network-sdn/" /><link rel="next" href="http://localhost:1313/offtech.blog/network-rag/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "RIPを完全に理解する",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/network-rip\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Network","wordcount":  1030 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/network-rip\/","datePublished": "2025-04-13T00:00:00+09:00","dateModified": "2025-06-22T13:54:21+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "RIPを完全に理解する"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/network-rip/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/network-rip/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">RIPを完全に理解する</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-13">2025-04-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1030 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#1はじめに">1　はじめに</a></li>
+    <li><a href="#2ripの概要">2　RIPの概要</a>
+      <ul>
+        <li><a href="#21ripとは何か">2.1　RIPとは何か</a></li>
+        <li><a href="#22歴史的背景と仕様">2.2　歴史的背景と仕様</a></li>
+        <li><a href="#23利用されるシーン">2.3　利用されるシーン</a></li>
+      </ul>
+    </li>
+    <li><a href="#3ripの基本的な仕組み">3　RIPの基本的な仕組み</a>
+      <ul>
+        <li><a href="#31距離ベクトル型ルーティングとは">3.1　距離ベクトル型ルーティングとは</a></li>
+        <li><a href="#32メトリックとホップ数">3.2　メトリックとホップ数</a></li>
+        <li><a href="#33ルーティングテーブルの構築と更新">3.3　ルーティングテーブルの構築と更新</a></li>
+        <li><a href="#34使用プロトコルとポート">3.4　使用プロトコルとポート</a></li>
+      </ul>
+    </li>
+    <li><a href="#4ripのパケット構造と通信の流れ">4　RIPのパケット構造と通信の流れ</a>
+      <ul>
+        <li><a href="#41メッセージタイプ">4.1　メッセージタイプ</a></li>
+        <li><a href="#42ripパケットの構造">4.2　RIPパケットの構造</a></li>
+        <li><a href="#43通信フロー">4.3　通信フロー</a></li>
+        <li><a href="#44パケットキャプチャ例の解説">4.4　パケットキャプチャ例の解説</a></li>
+      </ul>
+    </li>
+    <li><a href="#5ルーティングループとその防止策">5　ルーティングループとその防止策</a>
+      <ul>
+        <li><a href="#51ルーティングループとは">5.1　ルーティングループとは</a></li>
+        <li><a href="#52ループ防止メカニズム">5.2　ループ防止メカニズム</a></li>
+      </ul>
+    </li>
+    <li><a href="#6rip-v1とv2の違い">6　RIP v1とv2の違い</a>
+      <ul>
+        <li><a href="#61rip-v1の特徴">6.1　RIP v1の特徴</a></li>
+        <li><a href="#62rip-v2の特徴">6.2　RIP v2の特徴</a></li>
+        <li><a href="#63ripngとipv6対応">6.3　RIPngとIPv6対応</a></li>
+      </ul>
+    </li>
+    <li><a href="#7ripの設計思想と限界">7　RIPの設計思想と限界</a>
+      <ul>
+        <li><a href="#71設計思想">7.1　設計思想</a></li>
+        <li><a href="#72スケーラビリティの課題">7.2　スケーラビリティの課題</a></li>
+        <li><a href="#73他プロトコルとの比較">7.3　他プロトコルとの比較</a></li>
+      </ul>
+    </li>
+    <li><a href="#8現代におけるripの位置付け">8　現代におけるRIPの位置付け</a>
+      <ul>
+        <li><a href="#81実用例と教育用途">8.1　実用例と教育用途</a></li>
+        <li><a href="#82ネットワークシミュレーターでの活用">8.2　ネットワークシミュレーターでの活用</a></li>
+      </ul>
+    </li>
+    <li><a href="#9ripの実践設定と検証">9　RIPの実践：設定と検証</a>
+      <ul>
+        <li><a href="#91cisco-iosでのrip設定例">9.1　Cisco IOSでのRIP設定例</a></li>
+        <li><a href="#92linux-frrouting--quagga-での構築例">9.2　Linux (FRRouting / Quagga) での構築例</a></li>
+        <li><a href="#93ルーティングテーブルとパケットの確認">9.3　ルーティングテーブルとパケットの確認</a></li>
+      </ul>
+    </li>
+    <li><a href="#10おわりに">10　おわりに</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+- TLDR
+
+-->
+<p>こんにちは、しぶやです。
+今回はを完全に理解していきます。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+<h2 id="1はじめに">1　はじめに</h2>
+<ul>
+<li>なぜ今RIPを学ぶのか（古典だがルーティングの基本を学ぶのに最適）</li>
+<li>この記事の目的（表面的な知識ではなく、設計思想・内部動作・パケット構造まで深く理解する）</li>
+</ul>
+<h2 id="2ripの概要">2　RIPの概要</h2>
+<h3 id="21ripとは何か">2.1　RIPとは何か</h3>
+<ul>
+<li>Routing Information Protocolの定義と概要</li>
+</ul>
+<h3 id="22歴史的背景と仕様">2.2　歴史的背景と仕様</h3>
+<ul>
+<li>RFC1058、RFC2453、RIPng など</li>
+</ul>
+<h3 id="23利用されるシーン">2.3　利用されるシーン</h3>
+<ul>
+<li>中小規模ネットワーク、教育、実験環境など</li>
+</ul>
+<h2 id="3ripの基本的な仕組み">3　RIPの基本的な仕組み</h2>
+<h3 id="31距離ベクトル型ルーティングとは">3.1　距離ベクトル型ルーティングとは</h3>
+<ul>
+<li>各ルーターが隣接ルーターから得た情報をもとにテーブルを更新</li>
+</ul>
+<h3 id="32メトリックとホップ数">3.2　メトリックとホップ数</h3>
+<ul>
+<li>ホップ数を使用する理由と「最大15ホップ」の意味</li>
+</ul>
+<h3 id="33ルーティングテーブルの構築と更新">3.3　ルーティングテーブルの構築と更新</h3>
+<ul>
+<li>送信間隔、テーブルの保持期間、削除のタイミング</li>
+</ul>
+<h3 id="34使用プロトコルとポート">3.4　使用プロトコルとポート</h3>
+<ul>
+<li>UDP/520を使用</li>
+</ul>
+<h2 id="4ripのパケット構造と通信の流れ">4　RIPのパケット構造と通信の流れ</h2>
+<h3 id="41メッセージタイプ">4.1　メッセージタイプ</h3>
+<ul>
+<li>Request / Response メッセージの役割</li>
+</ul>
+<h3 id="42ripパケットの構造">4.2　RIPパケットの構造</h3>
+<ul>
+<li>Command、Version、RTE (Routing Table Entry) などの詳細</li>
+</ul>
+<h3 id="43通信フロー">4.3　通信フロー</h3>
+<ul>
+<li>30秒ごとの定期送信、ブロードキャスト/マルチキャスト送信の違い</li>
+</ul>
+<h3 id="44パケットキャプチャ例の解説">4.4　パケットキャプチャ例の解説</h3>
+<ul>
+<li>Wireshark等での実際のRIP通信例</li>
+</ul>
+<h2 id="5ルーティングループとその防止策">5　ルーティングループとその防止策</h2>
+<h3 id="51ルーティングループとは">5.1　ルーティングループとは</h3>
+<ul>
+<li>Count to Infinity問題と発生例</li>
+</ul>
+<h3 id="52ループ防止メカニズム">5.2　ループ防止メカニズム</h3>
+<ul>
+<li>スプリットホライズン</li>
+<li>ポイズンリバース</li>
+<li>ホールドダウンタイマ</li>
+<li>TTLとホップ数の制限</li>
+</ul>
+<h2 id="6rip-v1とv2の違い">6　RIP v1とv2の違い</h2>
+<h3 id="61rip-v1の特徴">6.1　RIP v1の特徴</h3>
+<ul>
+<li>クラスフルルーティング、ブロードキャスト送信</li>
+</ul>
+<h3 id="62rip-v2の特徴">6.2　RIP v2の特徴</h3>
+<ul>
+<li>クラスレス、マルチキャスト対応、CIDR対応、認証機能の追加</li>
+</ul>
+<h3 id="63ripngとipv6対応">6.3　RIPngとIPv6対応</h3>
+<ul>
+<li>RIPngの基本とRIP v2との違い</li>
+</ul>
+<h2 id="7ripの設計思想と限界">7　RIPの設計思想と限界</h2>
+<h3 id="71設計思想">7.1　設計思想</h3>
+<ul>
+<li>シンプルさ重視、低リソース環境向け</li>
+</ul>
+<h3 id="72スケーラビリティの課題">7.2　スケーラビリティの課題</h3>
+<ul>
+<li>ホップ数制限、収束時間の遅さ</li>
+</ul>
+<h3 id="73他プロトコルとの比較">7.3　他プロトコルとの比較</h3>
+<ul>
+<li>RIP vs OSPF vs EIGRP：思想・性能・用途の違い</li>
+</ul>
+<h2 id="8現代におけるripの位置付け">8　現代におけるRIPの位置付け</h2>
+<h3 id="81実用例と教育用途">8.1　実用例と教育用途</h3>
+<ul>
+<li>現代での利用シーン</li>
+</ul>
+<h3 id="82ネットワークシミュレーターでの活用">8.2　ネットワークシミュレーターでの活用</h3>
+<ul>
+<li>GNS3、Packet Tracerなどでの学習用途</li>
+</ul>
+<h2 id="9ripの実践設定と検証">9　RIPの実践：設定と検証</h2>
+<h3 id="91cisco-iosでのrip設定例">9.1　Cisco IOSでのRIP設定例</h3>
+<ul>
+<li><code>router rip</code>, <code>network</code>, <code>version</code>などの使用例</li>
+</ul>
+<h3 id="92linux-frrouting--quagga-での構築例">9.2　Linux (FRRouting / Quagga) での構築例</h3>
+<ul>
+<li>実践的な設定ファイルと構成例</li>
+</ul>
+<h3 id="93ルーティングテーブルとパケットの確認">9.3　ルーティングテーブルとパケットの確認</h3>
+<ul>
+<li><code>show ip route</code>, <code>tcpdump</code>, Wiresharkなどの活用</li>
+</ul>
+<h2 id="10おわりに">10　おわりに</h2>
+<ul>
+<li>RIPを学ぶ価値とネットワーク理解への貢献</li>
+<li>次のステップ（OSPFやBGPなど）への足がかり</li>
+</ul>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="" rel=""></a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-22&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/c03e0cbc9b4b04377aeebe178590bacfe62fcf73" target="_blank" title="commit by root(root@kalis) c03e0cbc9b4b04377aeebe178590bacfe62fcf73: 2025062201">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>c03e0cb</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/network-rip/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/network-rip/" data-title="RIPを完全に理解する" data-hashtags="Network"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/network-rip/" data-title="RIPを完全に理解する"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/network-rip/" data-hashtag="Network"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/network-rip/" data-title="RIPを完全に理解する"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/network-rip/" data-title="RIPを完全に理解する"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/network-rip/" data-title="RIPを完全に理解する"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/network-rip/" data-title="RIPを完全に理解する" data-description="RIPを完全に理解する"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fnetwork-rip%2f&amp;text=RIP%e3%82%92%e5%ae%8c%e5%85%a8%e3%81%ab%e7%90%86%e8%a7%a3%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/network/">Network</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/network-sdn/" class="prev" rel="prev" title="SDNを完全に理解する"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>SDNを完全に理解する</a>
+            <a href="/offtech.blog/network-rag/" class="next" rel="next" title="RAGを完全に理解する">RAGを完全に理解する<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

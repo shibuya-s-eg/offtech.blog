@@ -1,0 +1,88 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>All Posts - offtech.blog</title>
+        <link>http://localhost:1313/offtech.blog/posts/</link>
+        <description>All Posts | offtech.blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>ja</language><managingEditor>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</managingEditor>
+            <webMaster>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/offtech.blog/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>コンテナとDockerを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/docker/</link>
+    <pubDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/docker/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 学生時代の研究から始まり、社会人になってからも愛用しているDockerとそもそものコンテナについて、気合をいれてまと]]></description>
+</item>
+<item>
+    <title>自作キーボードデビューする</title>
+    <link>http://localhost:1313/offtech.blog/keyboard/</link>
+    <pubDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/keyboard/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 最近、キーボードの自作を始めたので、その様子を紹介したいと思います。 TL;DR キーボードを初めて自作しました。 初心者でも頑張]]></description>
+</item>
+<item>
+    <title>自宅鯖環境を構築する~概要編~</title>
+    <link>http://localhost:1313/offtech.blog/home-intro/</link>
+    <pubDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/home-intro/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 この度、本ブログを含めたシステムを自宅に構築することを決意しました。 本記事では、目的や方針、構築の進め方などを雑多に]]></description>
+</item>
+<item>
+    <title>自宅鯖環境を構築する~要件定義編~</title>
+    <link>http://localhost:1313/offtech.blog/home-requirement-definition/</link>
+    <pubDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/home-requirement-definition/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 最近、キーボードの自作を始めたので、その様子を紹介したいと思います。 TL;DR キーボードを初めて自作しました。 初心者でも頑張]]></description>
+</item>
+<item>
+    <title>DNSを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/dns/</link>
+    <pubDate>Fri, 25 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/dns/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はDNSを完全に理解していきます。 本記事では、Linuxをベースに説明を行いますが、本質的な部分はWindows]]></description>
+</item>
+<item>
+    <title>2025年6月</title>
+    <link>http://localhost:1313/offtech.blog/daily-practice/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/daily-practice/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 2025年6月 1.1 23日 What were you doing just now? さっきまで何してたの？ Today is my first day on Native Camp. 今日はN]]></description>
+</item>
+<item>
+    <title>ACLを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/acl/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/acl/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はACL（Access Controle List）を完全に理解していきます。 TL;DR 1 はじめに 1.1 ACLとは ACLとはAccess Controle Li]]></description>
+</item>
+<item>
+    <title>BFDを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/bfd/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/bfd/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はBFD（Bidirectional Forwarding Detection）を完全に理解していきます。 TL;DR 1 はじめに 1.1 BFDとは BF]]></description>
+</item>
+<item>
+    <title>BGPを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/bgp/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/bgp/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はをBGP ( Border Gateway Protocol )を完全に理解していきます。 TL;DR 1 はじめに ### 1.1 BGPとは BGPとは、Border Gateway Protoco]]></description>
+</item>
+<item>
+    <title>CEFを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/cef/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/cef/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに 1.1 CEFとは何か CEF（Cisco Express Forwarding）の目的と誕生背]]></description>
+</item>
+</channel>
+</rss>

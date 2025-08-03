@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Database, Storage - Tags - offtech.blog</title>
+        <link>http://localhost:1313/offtech.blog/tags/database-storage/</link>
+        <description>Database, Storage - Tags - offtech.blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>ja</language><managingEditor>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</managingEditor>
+            <webMaster>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 16 Mar 2025 00:00:00 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/offtech.blog/tags/database-storage/" rel="self" type="application/rss+xml" /><item>
+    <title>NASを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/nas/</link>
+    <pubDate>Sun, 16 Mar 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/nas/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 最近、Synologyのnasを中古で安く仕入れたので、これを機にNASを「完全に理解」していきたいと思います。 TL;DR N]]></description>
+</item>
+</channel>
+</rss>

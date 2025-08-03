@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>制度/フレームワーク/ガイドライン - offtech.blog</title><meta name="Description" content="制度/フレームワーク/ガイドライン"><meta property="og:url" content="http://localhost:1313/offtech.blog/security-system-framework-guidline/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="制度/フレームワーク/ガイドライン">
+  <meta property="og:description" content="制度/フレームワーク/ガイドライン">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-03-18T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-22T13:54:21+09:00">
+    <meta property="article:tag" content="Security">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="制度/フレームワーク/ガイドライン">
+  <meta name="twitter:description" content="制度/フレームワーク/ガイドライン">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/security-system-framework-guidline/" /><link rel="prev" href="http://localhost:1313/offtech.blog/nas/" /><link rel="next" href="http://localhost:1313/offtech.blog/security-very-basics/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "制度/フレームワーク/ガイドライン",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/security-system-framework-guidline\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Security","wordcount":  1458 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/security-system-framework-guidline\/","datePublished": "2025-03-18T00:00:00+09:00","dateModified": "2025-06-22T13:54:21+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "制度/フレームワーク/ガイドライン"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/security-system-framework-guidline/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/security-system-framework-guidline/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">制度/フレームワーク/ガイドライン</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-03-18">2025-03-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1458 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#0制度-vs-フレームワーク-vs-ガイドライン">0　制度 vs フレームワーク vs ガイドライン</a></li>
+    <li><a href="#1-制度">1 制度</a>
+      <ul>
+        <li><a href="#11isms">1.1　ISMS</a></li>
+        <li><a href="#12jis-q">1.2　JIS Q</a></li>
+        <li><a href="#13isms">1.3　ISMS</a></li>
+        <li><a href="#14soc保証制度">1.4　SOC保証制度</a></li>
+        <li><a href="#15cmmc">1.5　CMMC</a></li>
+        <li><a href="#16cmmi">1.6　CMMI</a></li>
+        <li><a href="#17samm">1.7　SAMM</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-フレームワーク">2 フレームワーク</a>
+      <ul>
+        <li><a href="#21sim3">2.1　SIM3</a></li>
+        <li><a href="#22nist-sp-800-40">2.2　NIST SP 800-40</a></li>
+        <li><a href="#23サイバーキルチェーン">2.3　サイバーキルチェーン</a></li>
+        <li><a href="#miter">MITER</a></li>
+        <li><a href="#nist-サイバーセキュリティフレームワーク">NIST サイバーセキュリティフレームワーク</a></li>
+      </ul>
+    </li>
+    <li><a href="#3ガイドライン">3　ガイドライン</a>
+      <ul>
+        <li><a href="#31金融庁-財務報告に関わる内部統制の評価及び監査に監査する実施基準">3.1　金融庁 財務報告に関わる内部統制の評価及び監査に監査する実施基準</a></li>
+        <li><a href="#32サイバーセキュリティ対策のための統一基準群">3.2　サイバーセキュリティ対策のための統一基準群</a></li>
+        <li><a href="#33scap">3.3　SCAP</a></li>
+        <li><a href="#34コンピュータセキュリティインシデント対応ガイド">3.4　コンピュータセキュリティインシデント対応ガイド</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+
+-->
+<ul>
+<li>制度/フレームワーク/ガイドライン
+<ul>
+<li>ISMS
+<ul>
+<li>27000シリーズ</li>
+<li>27001</li>
+<li>27002</li>
+<li>27017</li>
+<li>27018</li>
+<li>クラウドセキュリティ認証</li>
+</ul>
+</li>
+<li>JIS Q
+<ul>
+<li>27017 20000</li>
+<li>15001</li>
+<li>27014</li>
+</ul>
+</li>
+<li>ISMAP
+<ul>
+<li>ismap liu</li>
+<li>SP800-53を参照</li>
+</ul>
+</li>
+<li>防衛産業サイバーセキュリティ基準
+<ul>
+<li>能動的サイバー防御</li>
+</ul>
+</li>
+<li>ISMS適合性評価制度
+<ul>
+<li>範囲はISMS適用範囲定義書</li>
+</ul>
+</li>
+<li>ISMSクラウドセキュリティ認証</li>
+<li>AI事業者ガイドライン</li>
+<li>NIST ZTA</li>
+<li>ZTNA
+<ul>
+<li>SDPコントローラ</li>
+</ul>
+</li>
+<li>SOC保証制度</li>
+<li>SIM3</li>
+<li>cmmc</li>
+<li>cmmi</li>
+<li>samm</li>
+<li>NIST SP 800-40</li>
+<li>金融庁 財務報告に関わる内部統制の評価及び監査に関する実施基準</li>
+<li>金融庁 サイバーセキュリティ対策のための統一基準群</li>
+<li>SCAP</li>
+<li>SOAR</li>
+<li>サイバーキルチェーン
+<ul>
+<li>偵察</li>
+<li>武器化</li>
+</ul>
+</li>
+<li>MITER</li>
+<li>NIST サイバーセキュリティフレームワーク</li>
+<li>コンピュータセキュリティインシデントガイド</li>
+<li>証拠保全のやつ</li>
+<li>STIX
+<ul>
+<li>サイバー攻撃活動</li>
+<li>攻撃者</li>
+<li>攻撃手口</li>
+<li>検知指標</li>
+<li>観測事象</li>
+<li>インシデント</li>
+<li>対処措置</li>
+<li>攻撃対象</li>
+</ul>
+</li>
+<li>内部不正ガイドライン</li>
+<li>電子商取引及び情報財取引等に関する準則</li>
+<li>JIPDEC</li>
+<li>JCMVP</li>
+<li>ウィーケストリンクモデル
+<ul>
+<li>ドベネックの桶</li>
+</ul>
+</li>
+<li>ISO/IEC 15408</li>
+</ul>
+</li>
+</ul>
+<p>こんにちは、しぶやです。</p>
+<p>今回はセキュリティに関する制度やフレームワーク、ガイドラインについてまとめていこうと思います。
+ストーリーは気にせずに、思いついたものをつらつら書いていこうと思います。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+<h2 id="0制度-vs-フレームワーク-vs-ガイドライン">0　制度 vs フレームワーク vs ガイドライン</h2>
+<p>まとめるにあたり、制度、フレームワーク、ガイドラインの違いとは何なのでしょうか？</p>
+<p>某生成AIに聞いてみました。</p>
+<ul>
+<li>
+<p>意味</p>
+<ul>
+<li>制度<br>
+社会・組織の中の仕組みやルールの体系</li>
+<li>フレームワーク<br>
+何かを進めるための枠組みや構造</li>
+<li>ガイドライン<br>
+指針。参考となる助言や方針</li>
+</ul>
+</li>
+<li>
+<p>目的</p>
+<ul>
+<li>制度<br>
+運用をルールで規定する</li>
+<li>フレームワーク<br>
+設計や考え方を共通化する</li>
+<li>ガイドライン<br>
+迷わないように方向を示す</li>
+</ul>
+</li>
+<li>
+<p>拘束力</p>
+<ul>
+<li>制度<br>
+強い</li>
+<li>フレームワーク<br>
+中〜強</li>
+<li>ガイドライン<br>
+弱い</li>
+</ul>
+</li>
+<li>
+<p>中身</p>
+<ul>
+<li>制度<br>
+法律や社内規定</li>
+<li>フレームワーク<br>
+モデル、考え方、プロセスの流れ</li>
+<li>ガイドライン<br>
+チェックリスト、ノウハウ、推奨策</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-制度">1 制度</h2>
+<h3 id="11isms">1.1　ISMS</h3>
+<p>ISMSとは&quot;Information Security Management System&quot;の略で日本語では情報セキュリティマネジメントシステムです。</p>
+<p>ISMSはISMS-AC（一般社団法人情報マネジメントシステム認定センター）により運用/管理されている制度です。</p>
+<p>ISMS-ACではISMSを以下のように説明しています。</p>
+<blockquote>
+<p>近年、ITシステムやネットワークは社会インフラとして不可欠なものとなっているが、一方で標的型攻撃やランサムウェアなどによる被害・影響も多発している。こうした中、これらの脅威に対して適切にリスクアセスメントを実施して、企業における総合的な情報セキュリティを確保するためには、ISMSの構築・運用が必須事項となっている。</p>
+<p>ISMSとは、個別の問題毎の技術対策の他に、組織のマネジメントとして、自らのリスクアセスメントにより必要なセキュリティレベルを決め、プランを持ち、資源を配分して、システムを運用することである。</p>
+<p>ISMSが達成すべきことは、リスクマネジメントプロセスを適用することによって情報の機密性、完全性及び可用性をバランス良く維持・改善し、リスクを適切に管理しているという信頼を利害関係者に与えることにある。そのためには、ISMSを、組織のプロセス及びマネジメント構造全体の一部とし、かつ、その中に組み込むことが重要である。</p>
+</blockquote>
+<h3 id="12jis-q">1.2　JIS Q</h3>
+<h3 id="13isms">1.3　ISMS</h3>
+<h3 id="14soc保証制度">1.4　SOC保証制度</h3>
+<h3 id="15cmmc">1.5　CMMC</h3>
+<h3 id="16cmmi">1.6　CMMI</h3>
+<h3 id="17samm">1.7　SAMM</h3>
+<h2 id="2-フレームワーク">2 フレームワーク</h2>
+<h3 id="21sim3">2.1　SIM3</h3>
+<h3 id="22nist-sp-800-40">2.2　NIST SP 800-40</h3>
+<h3 id="23サイバーキルチェーン">2.3　サイバーキルチェーン</h3>
+<h3 id="miter">MITER</h3>
+<h3 id="nist-サイバーセキュリティフレームワーク">NIST サイバーセキュリティフレームワーク</h3>
+<h2 id="3ガイドライン">3　ガイドライン</h2>
+<h3 id="31金融庁-財務報告に関わる内部統制の評価及び監査に監査する実施基準">3.1　金融庁 財務報告に関わる内部統制の評価及び監査に監査する実施基準</h3>
+<h3 id="32サイバーセキュリティ対策のための統一基準群">3.2　サイバーセキュリティ対策のための統一基準群</h3>
+<h3 id="33scap">3.3　SCAP</h3>
+<h3 id="34コンピュータセキュリティインシデント対応ガイド">3.4　コンピュータセキュリティインシデント対応ガイド</h3>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="" rel=""></a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-22&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/c03e0cbc9b4b04377aeebe178590bacfe62fcf73" target="_blank" title="commit by root(root@kalis) c03e0cbc9b4b04377aeebe178590bacfe62fcf73: 2025062201">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>c03e0cb</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/security-system-framework-guidline/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/security-system-framework-guidline/" data-title="制度/フレームワーク/ガイドライン" data-hashtags="Security"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/security-system-framework-guidline/" data-title="制度/フレームワーク/ガイドライン"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/security-system-framework-guidline/" data-hashtag="Security"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/security-system-framework-guidline/" data-title="制度/フレームワーク/ガイドライン"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/security-system-framework-guidline/" data-title="制度/フレームワーク/ガイドライン"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/security-system-framework-guidline/" data-title="制度/フレームワーク/ガイドライン"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/security-system-framework-guidline/" data-title="制度/フレームワーク/ガイドライン" data-description="制度/フレームワーク/ガイドライン"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fsecurity-system-framework-guidline%2f&amp;text=%e5%88%b6%e5%ba%a6%2f%e3%83%95%e3%83%ac%e3%83%bc%e3%83%a0%e3%83%af%e3%83%bc%e3%82%af%2f%e3%82%ac%e3%82%a4%e3%83%89%e3%83%a9%e3%82%a4%e3%83%b3" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/security/">Security</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/nas/" class="prev" rel="prev" title="NASを完全に理解する"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>NASを完全に理解する</a>
+            <a href="/offtech.blog/security-very-basics/" class="next" rel="next" title="セキュリティの基本の基本">セキュリティの基本の基本<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

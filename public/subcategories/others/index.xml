@@ -1,0 +1,32 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Others - subcategory - offtech.blog</title>
+        <link>http://localhost:1313/offtech.blog/subcategories/others/</link>
+        <description>Others - subcategory - offtech.blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>ja</language><managingEditor>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</managingEditor>
+            <webMaster>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/offtech.blog/subcategories/others/" rel="self" type="application/rss+xml" /><item>
+    <title>IT入門</title>
+    <link>http://localhost:1313/offtech.blog/welcome-to-it/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/welcome-to-it/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はこれからITの世界へ入門する人向けに、私自身の経験を踏まえ基本的なこと説明していきます。 TL;DR 1 はじめに 1.1 本記事の]]></description>
+</item>
+<item>
+    <title>開発手法をまとめる</title>
+    <link>http://localhost:1313/offtech.blog/development-method/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/development-method/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回ははい初手法をまとめていきます。 TL;DR 1 開発手法 1.1 ウォーターフォールモデル 1.2 アジャイル開発 1.3 スクラム/カンパン 1.4 エク]]></description>
+</item>
+<item>
+    <title>執筆検討メモ</title>
+    <link>http://localhost:1313/offtech.blog/idea-log/</link>
+    <pubDate>Sun, 16 Mar 2025 00:00:00 &#43;0900</pubDate>
+    <author>shibuya</author>
+    <guid>http://localhost:1313/offtech.blog/idea-log/</guid>
+    <description><![CDATA[以下、今後執筆を検討しているものたちです。 <i class="fas fa-brands fa-ubuntu fa-fw" aria-hidden="true"></i>&nbsp;OS パッケージマネージャ <i class="fas fa-solid fa-network-wired fa-fw" aria-hidden="true"></i>&nbsp;Network OSPF RIP STP <i class="fas fa-solid fa-shield-halved fa-fw" aria-hidden="true"></i>&nbsp;Security 堅牢化 ClamAV Suricata <i class="fas fa-solid fa-database fa-fw" aria-hidden="true"></i>&nbsp;Database, Storage NAS Postgres OracleDB <i class="fas fa-chart-column fa-fw" aria-hidden="true"></i>&nbsp;Data Science 古典]]></description>
+</item>
+</channel>
+</rss>

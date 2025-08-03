@@ -1,0 +1,24 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Virtualization - Category - offtech.blog</title>
+        <link>http://localhost:1313/offtech.blog/categories/virtualization/</link>
+        <description>Virtualization - Category - offtech.blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>ja</language><managingEditor>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</managingEditor>
+            <webMaster>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/offtech.blog/categories/virtualization/" rel="self" type="application/rss+xml" /><item>
+    <title>コンテナとDockerを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/virtualization-docker/</link>
+    <pubDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/virtualization-docker/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 学生時代の研究から始まり、社会人になってからも愛用しているDockerとそもそものコンテナについて、気合をいれてまと]]></description>
+</item>
+<item>
+    <title>Kubernetesを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/virtualization-kubernetes/</link>
+    <pubDate>Tue, 18 Mar 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/virtualization-kubernetes/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 学生時代の研究から始まり、社会人になってからも愛用しているDockerについて、気合をいれてまとめようと思います。 TL;DR]]></description>
+</item>
+</channel>
+</rss>

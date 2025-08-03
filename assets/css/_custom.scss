@@ -1,0 +1,13 @@
+// ==============================
+// Custom style
+// ==============================
+
+.image-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* 画像間の間隔 */
+}
+
+.image-row img {
+    max-width: 100%; /* 画像が親要素に収まるように */
+}

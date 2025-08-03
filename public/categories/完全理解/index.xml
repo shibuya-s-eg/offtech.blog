@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>完全理解 - Category - offtech.blog</title>
+        <link>http://localhost:1313/offtech.blog/categories/%E5%AE%8C%E5%85%A8%E7%90%86%E8%A7%A3/</link>
+        <description>完全理解 - Category - offtech.blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>ja</language><managingEditor>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</managingEditor>
+            <webMaster>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/offtech.blog/categories/%E5%AE%8C%E5%85%A8%E7%90%86%E8%A7%A3/" rel="self" type="application/rss+xml" /><item>
+    <title>ACLを完全に理解する</title>
+    <link>http://localhost:1313/offtech.blog/network-acl/</link>
+    <pubDate>Sun, 13 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/network-acl/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 今回はを完全に理解していきます。 TL;DR 1 はじめに 1.1 なぜACLが重要なのか 1.2 本記事の目的と読者層 1.3 ACLの概要と誤解されが]]></description>
+</item>
+</channel>
+</rss>

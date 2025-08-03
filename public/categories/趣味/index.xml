@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>趣味 - Category - offtech.blog</title>
+        <link>http://localhost:1313/offtech.blog/categories/%E8%B6%A3%E5%91%B3/</link>
+        <description>趣味 - Category - offtech.blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>ja</language><managingEditor>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</managingEditor>
+            <webMaster>shibuya.s.eg@gmail.com (shibuya.s.eg@gmail.com)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</lastBuildDate><atom:link href="http://localhost:1313/offtech.blog/categories/%E8%B6%A3%E5%91%B3/" rel="self" type="application/rss+xml" /><item>
+    <title>自作キーボードデビューする</title>
+    <link>http://localhost:1313/offtech.blog/hobby-keyboard/</link>
+    <pubDate>Wed, 30 Apr 2025 00:00:00 &#43;0900</pubDate>
+    <author>しぶや</author>
+    <guid>http://localhost:1313/offtech.blog/hobby-keyboard/</guid>
+    <description><![CDATA[こんにちは、しぶやです。 最近、キーボードの自作を始めたので、その様子を紹介したいと思います。 TL;DR キーボードを初めて自作しました。 初心者でも頑張]]></description>
+</item>
+</channel>
+</rss>

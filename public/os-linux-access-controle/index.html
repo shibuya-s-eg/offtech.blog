@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Linuxのアクセス制御を完全に理解する - offtech.blog</title><meta name="Description" content="Linuxのアクセス制御を完全に理解する。"><meta property="og:url" content="http://localhost:1313/offtech.blog/os-linux-access-controle/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="Linuxのアクセス制御を完全に理解する">
+  <meta property="og:description" content="Linuxのアクセス制御を完全に理解する。">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-03-20T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-22T13:54:21+09:00">
+    <meta property="article:tag" content="OS">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="Linuxのアクセス制御を完全に理解する">
+  <meta name="twitter:description" content="Linuxのアクセス制御を完全に理解する。">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/os-linux-access-controle/" /><link rel="prev" href="http://localhost:1313/offtech.blog/security-clamav/" /><link rel="next" href="http://localhost:1313/offtech.blog/wireless-lan/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Linuxのアクセス制御を完全に理解する",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/os-linux-access-controle\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "OS","wordcount":  10213 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/os-linux-access-controle\/","datePublished": "2025-03-20T00:00:00+09:00","dateModified": "2025-06-22T13:54:21+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "Linuxのアクセス制御を完全に理解する。"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/os-linux-access-controle/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/os-linux-access-controle/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Linuxのアクセス制御を完全に理解する</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-03-20">2025-03-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;10213 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;21 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#0はじめに">0　はじめに</a></li>
+    <li><a href="#1linuxにおけるアクセス制御の基本">1　Linuxにおけるアクセス制御の基本</a>
+      <ul>
+        <li><a href="#11基本のパーミッション">1.1　基本のパーミッション</a></li>
+        <li><a href="#12その他パーミッション">1.2　その他パーミッション</a></li>
+        <li><a href="#14sudo">1.4　sudo</a></li>
+        <li><a href="#15コピー時の動作">1.5　コピー時の動作</a></li>
+      </ul>
+    </li>
+    <li><a href="#2linuxにおけるアクセス制御の深堀">2　Linuxにおけるアクセス制御の深堀</a>
+      <ul>
+        <li><a href="#21ファイルシステム">2.1　ファイルシステム</a></li>
+        <li><a href="#22vfs">2.2　VFS</a></li>
+      </ul>
+    </li>
+    <li><a href="#23カーネルの権限管理">2.3　カーネルの権限管理</a></li>
+    <li><a href="#3その他のアクセス制御">3　その他のアクセス制御</a>
+      <ul>
+        <li><a href="#acl">acl</a></li>
+        <li><a href="#selinux">SELinux</a></li>
+      </ul>
+    </li>
+    <li><a href="#4ユースケース">4　ユースケース</a>
+      <ul>
+        <li><a href="#acl-1">ACL</a></li>
+        <li><a href="#capability">Capability</a></li>
+      </ul>
+    </li>
+    <li><a href="#5まとめ">5　まとめ</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+- ユースケース
+    - nginxをcapabilityで動かす
+- Docker
+    - 結局Dockerが最適じゃね？
+- 参考
+-->
+<p>こんにちは、しぶやです。<br>
+今回はLinuxのアクセス制御を「完全に理解」していきたいと思います。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li>Linuxの権限管理の基本を復習</li>
+<li>capabilityを利用することで最小権限の原則に従える</li>
+<li>SELinuxを利用すれば、権限分掌が可能</li>
+</ul>
+<h2 id="0はじめに">0　はじめに</h2>
+<p>Linuxに限った話ではないですが、ファイルについて理解することは非常に重要だと思います。
+というのも、以下のような有名な考え方があります。</p>
+<blockquote>
+<p>Linuxでは全てをファイルとして扱うようになっています。by <a href="https://lpi.or.jp/lpic_all/linux/intro/intro10.shtml" target="_blank" rel="noopener noreffer ">LPI-JAPAN</a></p>
+</blockquote>
+<p>僕がLinuxを好きである一番の理由です。
+Linuxがかっこ良いからというわけではなく、すべてをファイルとして扱ってくれるLinuxは理解しやすいのです。
+Windows等は複雑すぎて僕にはまだ理解できない部分がほとんどです。(いずれ勉強したい。。)</p>
+<p>話を戻して、本記事ではLinuxにおけるアクセス制御、すなわちファイルのアクセス制御について「完全に理解」していきたいと思います。
+「少し分かる」レベルの人は軽く読み飛ばしてください。</p>
+<p>※ 本記事では以下の環境で動作検証をしています。</p>
+<ul>
+<li>OS：Ubuntu 24.04.1 LTS</li>
+<li>ルートファイルシステム：ext4</li>
+<li>ホスト：AWS EC2</li>
+</ul>
+<h2 id="1linuxにおけるアクセス制御の基本">1　Linuxにおけるアクセス制御の基本</h2>
+<p>まずは、基本の復習からです。</p>
+<h3 id="11基本のパーミッション">1.1　基本のパーミッション</h3>
+<p>Linuxにおけるファイルパーミッションは以下のような形をしています。</p>
+<ul>
+<li>drwxrwxrwx</li>
+</ul>
+<p>これは、以下の4つに分けられます。</p>
+<ul>
+<li>d + rwx + rwx + rwx (= drwxrwxrwx)
+<ul>
+<li>d&mdash;&mdash;&mdash;<br>
+ファイルの種類を表す。
+<ul>
+<li>- &hellip; ファイル</li>
+<li>l &hellip; リンク</li>
+<li>d &hellip; ディレクトリ</li>
+<li>etc.</li>
+</ul>
+</li>
+<li>-rwx&mdash;&mdash;<br>
+所有ユーザの権限を表す。
+<ul>
+<li>- &hellip; 権限なし</li>
+<li>r &hellip; 読み込み権限</li>
+<li>w &hellip; 書き込み権限</li>
+<li>x &hellip; 実行権限</li>
+</ul>
+</li>
+<li>&mdash;-rwx&mdash;<br>
+所有グループの権限を表す。
+読み方は所有ユーザと同様。</li>
+<li>&mdash;&mdash;-rwx<br>
+その他のユーザの権限を表す。
+読み方は所有ユーザと同様。</li>
+</ul>
+</li>
+</ul>
+<p>それでは、実際のファイルを見てみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/ping.png" title="/offtech.blog/os-linux-access-controle/ping.png" data-thumbnail="/offtech.blog/os-linux-access-controle/ping.png" data-sub-html="<h2>pingの権限</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/ping.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/ping.png, /offtech.blog/os-linux-access-controle/ping.png 1.5x, /offtech.blog/os-linux-access-controle/ping.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/ping.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">pingの権限</figcaption>
+    </figure>
+<p>上記から、echoは管理者のみが書き換えも可能、他は読み込みと実行のみが可能です。
+書き換えを行うとどうなるでしょうか？</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/ping_rewrite.png" title="/offtech.blog/os-linux-access-controle/ping_rewrite.png" data-thumbnail="/offtech.blog/os-linux-access-controle/ping_rewrite.png" data-sub-html="<h2>書き込みの権限エラーその1</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/ping_rewrite.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/ping_rewrite.png, /offtech.blog/os-linux-access-controle/ping_rewrite.png 1.5x, /offtech.blog/os-linux-access-controle/ping_rewrite.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/ping_rewrite.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">書き込みの権限エラーその1</figcaption>
+    </figure>
+<p>権限がないと怒られました。</p>
+<p>詳細に見てみましょう。システムコールを追ってみます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/ping_rewrite_syscall.png" title="/offtech.blog/os-linux-access-controle/ping_rewrite_syscall.png" data-thumbnail="/offtech.blog/os-linux-access-controle/ping_rewrite_syscall.png" data-sub-html="<h2>書き込みの権限エラーその2</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/ping_rewrite_syscall.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/ping_rewrite_syscall.png, /offtech.blog/os-linux-access-controle/ping_rewrite_syscall.png 1.5x, /offtech.blog/os-linux-access-controle/ping_rewrite_syscall.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/ping_rewrite_syscall.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">書き込みの権限エラーその2</figcaption>
+    </figure>
+<p>&ldquo;openat(AT_FDCWD, &ldquo;/usr/bin/ping&rdquo;, O_WRONLY|O_CREAT|O_TRUNC, 0666) = -1 EACCES (Permission denied)&rdquo;
+から、書き込み権限でファイルを開こうとしたときに権限エラーが出ていることが分かります。</p>
+<p>ファイル実行の場合はどうでしょうか。
+Linuxにおいて、基本的にはファイルの実行に読み込み権限が必要です。では、「実行権限は読み込み権限を包含しているのでしょうか？」
+「読み込み権限なしに、実行権限だけを持つようなパターンはあるのでしょうか？」
+これについては、次節で見ていきたいと思います。</p>
+<p>ここでは、アクセス権限意外の部分を復習していきましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/ping.png" title="/offtech.blog/os-linux-access-controle/ping.png" data-thumbnail="/offtech.blog/os-linux-access-controle/ping.png" data-sub-html="<h2>（再掲）pingの権限</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/ping.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/ping.png, /offtech.blog/os-linux-access-controle/ping.png 1.5x, /offtech.blog/os-linux-access-controle/ping.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/ping.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">（再掲）pingの権限</figcaption>
+    </figure>
+<p>ファイルの主要な属性には以下のようなものがあります。</p>
+<ul>
+<li>リンク数</li>
+<li>所有者、所有グループ</li>
+<li>最終更新日時</li>
+<li>サイズ</li>
+<li>ファイル名</li>
+</ul>
+<p>アクセス権限の横にある数字はリンク数です。
+Windowsでいうショートカットに近いものです。</p>
+<p>実際にリンクファイルを作成してみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/pinglink.png" title="/offtech.blog/os-linux-access-controle/pinglink.png" data-thumbnail="/offtech.blog/os-linux-access-controle/pinglink.png" data-sub-html="<h2>リンクファイル</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/pinglink.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/pinglink.png, /offtech.blog/os-linux-access-controle/pinglink.png 1.5x, /offtech.blog/os-linux-access-controle/pinglink.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/pinglink.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">リンクファイル</figcaption>
+    </figure>
+<p>ここでは、実際にpinglinkというリンクファイルを作成しています。
+リンクファイルを作成したことにより、&quot;/usr/bin/ping&quot;のリンク数が2になっていることが分かります。
+また、pinglink経由でpingが実行できていることが分かります。<br>
+※ リンクファイルの作成に&quot;sudo&quot;が必要な理由は本記事を最後まで読むと分かるはずです。</p>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>シンボリックリンクとハードリンク<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>Linuxのリンクにはシンボリックリンクとハードリンクがあります。
+Windowsのショートカットに近いものはシンボリックリンクの方です。</p>
+<ul>
+<li>シンボリックリンク
+<ul>
+<li>ファイルやディレクトリへのパス情報</li>
+<li>参照先が消えるとリンクが使えなくなる。</li>
+</ul>
+</li>
+<li>ハードリンク
+<ul>
+<li>元ファイルと同じinodeを指す<br>
+→ もとのファイルが消えても、ハードリンクからはデータにアクセス可能<br>
+→ リンク先の変更は元ファイルにも影響<br>
+※ inodeについては、2.2 VFSで詳しく話します。</li>
+</ul>
+</li>
+</ul></div>
+        </div>
+    </div>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>chmod, chown<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>以下の2つはよく使うコマンドですね。</p>
+<ul>
+<li>chmod
+<ul>
+<li>ファイルのアクセス権限を変更する。</li>
+<li>例：chmod ./hoge.txt 644<br>
+※ &ldquo;hoge.txt&quot;を所有者のみ読み込み書き込みok、所有グループ、その他のユーザは読み込みのみokに変更</li>
+</ul>
+</li>
+<li>chown
+<ul>
+<li>ファイルの所有者を変更する。</li>
+<li>例：chown hoge:ghoge ./hoge.txt<br>
+※ &ldquo;hoge.txt&quot;の所有者を&quot;hoge&quot;に、所有グループを&quot;ghoge&quot;に変更</li>
+</ul>
+</li>
+</ul></div>
+        </div>
+    </div>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>Tip<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>chmodで存在しないユーザを指定したらどうなのでしょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/chmod_error1.png" title="/offtech.blog/os-linux-access-controle/chmod_error1.png" data-thumbnail="/offtech.blog/os-linux-access-controle/chmod_error1.png" data-sub-html="<h2>⇓</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/chmod_error1.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/chmod_error1.png, /offtech.blog/os-linux-access-controle/chmod_error1.png 1.5x, /offtech.blog/os-linux-access-controle/chmod_error1.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/chmod_error1.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">⇓</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/chmod_error2.png" title="/offtech.blog/os-linux-access-controle/chmod_error2.png" data-thumbnail="/offtech.blog/os-linux-access-controle/chmod_error2.png" data-sub-html="<h2>chmodのエラー</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/chmod_error2.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/chmod_error2.png, /offtech.blog/os-linux-access-controle/chmod_error2.png 1.5x, /offtech.blog/os-linux-access-controle/chmod_error2.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/chmod_error2.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">chmodのエラー</figcaption>
+    </figure>
+<p>&ldquo;invalid user: hoge&quot;と怒られました。
+どうやら&quot;systemd&quot;がpasswdとかを利用して管理しているuserdbでユーザのチェックを行っているようです。</p>
+</div>
+        </div>
+    </div>
+<h3 id="12その他パーミッション">1.2　その他パーミッション</h3>
+<p>その他のパーミッションについて見ていきます。</p>
+<ul>
+<li>setuid, setgid</li>
+</ul>
+<p>setuid, setgidは実行時に所有者の権限で実行するためのものです。
+passwdを例に見ていきましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/passwd.png" title="/offtech.blog/os-linux-access-controle/passwd.png" data-thumbnail="/offtech.blog/os-linux-access-controle/passwd.png" data-sub-html="<h2>passwdの権限</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/passwd.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/passwd.png, /offtech.blog/os-linux-access-controle/passwd.png 1.5x, /offtech.blog/os-linux-access-controle/passwd.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/passwd.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">passwdの権限</figcaption>
+    </figure>
+<p>setuidがセットされていると、ファイルの所有者の実行権限が&quot;s&quot;になります。
+これにより、ファイル所有者の権限でファイルを実行でき、ファイル所有者がアクセスできる全てのファイルにアクセスできるようになります。</p>
+<div class="details admonition Note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i><i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>setuidがセットされているファイルを実行した場合、所有者の権限を得られることが分かりました。
+しかし、自分自身が持つ権限はどうなるのでしょうか？
+言い換えると、これまでアクセスできていた自分のファイルにはアクセスできる状態を保ってくれるのでしょうか？</p>
+<p>実際に見てみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/setuid.png" title="/offtech.blog/os-linux-access-controle/setuid.png" data-thumbnail="/offtech.blog/os-linux-access-controle/setuid.png" data-sub-html="<h2>setuid</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/setuid.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/setuid.png, /offtech.blog/os-linux-access-controle/setuid.png 1.5x, /offtech.blog/os-linux-access-controle/setuid.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/setuid.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">setuid</figcaption>
+    </figure>
+<p>ここでは、ユーザ&quot;hoge&quot;がもつ&quot;owned_by_hoge.txt&quot;とユーザ&quot;ubuntu&quot;がもつ&quot;owned_by_ubuntu.txt&quot;をそれぞれ600のパーミッションで用意しています。
+また、&ldquo;cat&quot;のバイナリを用意し、setuidを付与しています。</p>
+<p>&ldquo;cat&quot;経由でそれぞれのファイルを開いた際、&ldquo;ubuntu&quot;が所有する&quot;owned_by_ubuntu.txt&quot;は開けなくなっていることが分かります。
+つまり、setuidで他のユーザ権限で実行した際は、完全に権限が移行され、自分自身の権限はなくなるということです。</p>
+<p>※ この仕組みはシンプルで分かりやすいですね。</p>
+</div>
+        </div>
+    </div>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>RUIDとEUID<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>LinuxのプロセスはプロセスIDの他にRUIDとEUIDというものをもっています。</p>
+<ul>
+<li>RUID &hellip; 実ユーザID</li>
+<li>EUID &hellip; 実効ユーザID</li>
+</ul>
+<p>setuidがセットされたファイルを実行した場合は、RUIDは実行ユーザのユーザID、EUIDは借りた権限の持ち主のユーザIDです。
+EUIDがプロセスの実行ユーザとなり、その権限でプロセスが動きます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/eudid.png" title="/offtech.blog/os-linux-access-controle/eudid.png" data-thumbnail="/offtech.blog/os-linux-access-controle/eudid.png" data-sub-html="<h2>RUIDとEUID</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/eudid.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/eudid.png, /offtech.blog/os-linux-access-controle/eudid.png 1.5x, /offtech.blog/os-linux-access-controle/eudid.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/eudid.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">RUIDとEUID</figcaption>
+    </figure>
+</div>
+        </div>
+    </div>
+<p>setuidは便利な反面、脆弱性があると権限昇格に利用される恐れがあり非常に危険な存在です。
+それでは、なぜsetuidを利用するのでしょうか？実行権限だけ付与すればよいのではないでしょうか？</p>
+<p>この答えは、<strong>実行プロセスに管理者権限が必要だから</strong>です。以下がその例です。</p>
+<ul>
+<li>passwd<br>
+passwdは実行後、&quot;/etc/shadow&quot;や&quot;/etc/passwd&quot;の書き込みが発生します。
+しかし、通常ユーザではこれらのファイルへの書き込み権限がありません。
+そのため、setuidを行った&quot;passwd&quot;コマンドにより、passwdコマンド経由でroot権限を利用してそれらのファイルの書き換えができるようになります。</li>
+</ul>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>uid・gid<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>uid, gidはユーザやグループのための一意の識別子です。
+ユーザの情報は&quot;/etc/passwd&quot;に、グループの情報は&quot;/etc/group&quot;にあります。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/etc_passwd.png" title="/offtech.blog/os-linux-access-controle/etc_passwd.png" data-thumbnail="/offtech.blog/os-linux-access-controle/etc_passwd.png" data-sub-html="<h2>/etc/passwd</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/etc_passwd.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/etc_passwd.png, /offtech.blog/os-linux-access-controle/etc_passwd.png 1.5x, /offtech.blog/os-linux-access-controle/etc_passwd.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/etc_passwd.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">/etc/passwd</figcaption>
+    </figure>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/etc_group.png" title="/offtech.blog/os-linux-access-controle/etc_group.png" data-thumbnail="/offtech.blog/os-linux-access-controle/etc_group.png" data-sub-html="<h2>/etc/group</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/etc_group.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/etc_group.png, /offtech.blog/os-linux-access-controle/etc_group.png 1.5x, /offtech.blog/os-linux-access-controle/etc_group.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/etc_group.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">/etc/group</figcaption>
+    </figure>
+<p>読み方としては、以下です。</p>
+<ul>
+<li>/etc/passwd &hellip; ユーザー名:パスワード(※):UID:GID:コメント:ホームディレクトリ:ログインシェル</li>
+<li>/etc/group &hellip; グループ名:パスワード(※):GID:グループメンバー
+ユーザIDは1000以上が割り当てられます。rootは0です。</li>
+</ul>
+</div>
+        </div>
+    </div>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>shadow<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>先程の&quot;/etc/passwd&quot;には実際のパスワードは入っていませんでした。
+これは、&quot;/etc/passwd&quot;はすべてのユーザから読み込まれてしまうため、パスワードが他のユーザに漏洩してしまうからです。
+実際のパスワードは&quot;/etc/passwd&quot;に保存されています。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/etc_shadow.png" title="/offtech.blog/os-linux-access-controle/etc_shadow.png" data-thumbnail="/offtech.blog/os-linux-access-controle/etc_shadow.png" data-sub-html="<h2>/etc/shadow</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/etc_shadow.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/etc_shadow.png, /offtech.blog/os-linux-access-controle/etc_shadow.png 1.5x, /offtech.blog/os-linux-access-controle/etc_shadow.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/etc_shadow.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">/etc/shadow</figcaption>
+    </figure>
+<p>読み方は以下です。</p>
+<ul>
+<li>ユーザー名:暗号化パスワード:最終変更日:最小日数:最大日数:警告日数:無効日数:有効期限</li>
+</ul>
+</div>
+        </div>
+    </div>
+<ul>
+<li>スティッキービット</li>
+</ul>
+<p>スティッキービットはディレクトリに適用するものです。
+スティッキービットが適用されたディレクトリはすべてのユーザーがファイルの作成・書き込み可能です。
+スティッキービットの特徴は<strong>ファイルの削除は所有者のみが可能</strong>ということです。
+/tmpなどはステッキービットが適用されている例です。
+実際にスティッキービットを試してみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/tmp.png" title="/offtech.blog/os-linux-access-controle/tmp.png" data-thumbnail="/offtech.blog/os-linux-access-controle/tmp.png" data-sub-html="<h2>/tmpのスティッキービット</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/tmp.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/tmp.png, /offtech.blog/os-linux-access-controle/tmp.png 1.5x, /offtech.blog/os-linux-access-controle/tmp.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/tmp.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">/tmpのスティッキービット</figcaption>
+    </figure>
+<p>スティッキービットに作成されたファイルの権限は&quot;&mdash;t&quot;になります。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/tmp_error.png" title="/offtech.blog/os-linux-access-controle/tmp_error.png" data-thumbnail="/offtech.blog/os-linux-access-controle/tmp_error.png" data-sub-html="<h2>スティッキービットの効果</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/tmp_error.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/tmp_error.png, /offtech.blog/os-linux-access-controle/tmp_error.png 1.5x, /offtech.blog/os-linux-access-controle/tmp_error.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/tmp_error.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">スティッキービットの効果</figcaption>
+    </figure>
+<p>また、ファイル所有者以外のユーザはファイルの読み込み、書き込みは可能ですが、削除をしようとすると怒られます。</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>Tip<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>そもそも、ファイルの削除権限とは何なのでしょうか？
+書き込み権限とは異なるのでしょうか？</p>
+<p>ファイルの削除に必要な権限は<strong>ファイルが置かれたディレクトリの書き込み権限と実行権限があるか</strong>です。</p>
+</div>
+        </div>
+    </div>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>Tip<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>スティッキービットはファイルの<strong>削除は不可能ですが、書き込みは可能</strong>です。
+ここで、他のユーザにファイル内容をすべて削除されてしまうと、ファイルを削除されたような状態になります。
+スティッキービットは一体何のためにあるのでしょうか？</p>
+<p>結論、スティッキービットは誤って他人のファイルを削除することを防止するためのものです。
+ファイルの中身を書き換えられてしまうことに変わりはないので、それを防ぐには通常のアクセス権管理が必要です。</p>
+</div>
+        </div>
+    </div>
+<h3 id="14sudo">1.4　sudo</h3>
+<p>1.3でsetuid, setgidを学んだところで、sudoも復習しておきましょう。</p>
+<p>sudoは管理者権限でコマンドを実行するために利用されます。
+sudoの管理を行っているのは&quot;/etc/sudoers&quot;です。実際に見てみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/sudoers.png" title="/offtech.blog/os-linux-access-controle/sudoers.png" data-thumbnail="/offtech.blog/os-linux-access-controle/sudoers.png" data-sub-html="<h2>sudoers</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/sudoers.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/sudoers.png, /offtech.blog/os-linux-access-controle/sudoers.png 1.5x, /offtech.blog/os-linux-access-controle/sudoers.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/sudoers.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">sudoers</figcaption>
+    </figure>
+<p>読み方は以下です。</p>
+<ul>
+<li>alice ALL=(ALL:ALL) ALL
+<ul>
+<li>alice &hellip; 権限を与えるユーザー</li>
+<li>ALL &hellip; すべてのホストでコマンドを実行可能</li>
+<li>(ALL:ALL)
+<ul>
+<li>1つ目の ALL &hellip; sudo 実行時に任意のユーザーに切り替え可能</li>
+<li>2つ目の ALL &hellip; sudo 実行時に任意のグループに切り替え可能</li>
+</ul>
+</li>
+<li>ALL &hellip; すべてのコマンド実行可能</li>
+</ul>
+</li>
+</ul>
+<p>それでは、sudoを試してみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/sudo.png" title="/offtech.blog/os-linux-access-controle/sudo.png" data-thumbnail="/offtech.blog/os-linux-access-controle/sudo.png" data-sub-html="<h2>sudo</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/sudo.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/sudo.png, /offtech.blog/os-linux-access-controle/sudo.png 1.5x, /offtech.blog/os-linux-access-controle/sudo.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/sudo.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">sudo</figcaption>
+    </figure>
+<p>所有者???</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>Tip<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>&ldquo;/etc/sudoers&quot;を編集する際は、&ldquo;visudo&quot;コマンドが推奨されています。
+これには以下のような機能があるからのようです。</p>
+<ul>
+<li>保存時に構文エラーのチェックを行う</li>
+<li>同時編集を禁止する</li>
+<li>（&quot;/etc/sudoers&quot;自体の）パーミッションの自動保護</li>
+<li>&ldquo;/etc/sudoers&quot;の破壊防止（rootに戻れなくなることを防止）</li>
+</ul></div>
+        </div>
+    </div>
+<h3 id="15コピー時の動作">1.5　コピー時の動作</h3>
+<p>1.1~1.3ででファイルのアクセス権限について復習しました。
+では、ファイルをコピーした際はどのような挙動をするのでしょうか。</p>
+<p>デフォルトのcpコマンドの動作は以下です。</p>
+<ul>
+<li>コピー元の読み取り権限が必要</li>
+<li>コピー元のアクセス権の設定をコピー</li>
+<li>所有者、所有グループはコピーを行った人のものに変更</li>
+</ul>
+<p>&ldquo;-p&quot;オプションをつけると、アクセス権に加え、所有者やタイムスタンプなども完全にコピーされます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/cp_ping.png" title="/offtech.blog/os-linux-access-controle/cp_ping.png" data-thumbnail="/offtech.blog/os-linux-access-controle/cp_ping.png" data-sub-html="<h2>copy</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/cp_ping.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/cp_ping.png, /offtech.blog/os-linux-access-controle/cp_ping.png 1.5x, /offtech.blog/os-linux-access-controle/cp_ping.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/cp_ping.png" width="400px" height="300px" />
+    </a><figcaption class="image-caption">copy</figcaption>
+    </figure>
+<p>リンクファイル作成時はどうでしょうか？</p>
+<ul>
+<li>シンボリックリンク<br>
+シンボリックリンク自体は独立したファイルとして扱われます。※ シンボリックリンクはただのパスのようなものであるため。
+<ul>
+<li>所有者はリンク作成者</li>
+<li>パーミッションは&quot;lrwxrwxrwx&rdquo;<br>
+リンク先のファイルを操作する際にそちらに左右されるため、リンクファイル自体にパーミッションをもたせる必要がない。</li>
+</ul>
+</li>
+<li>ハードリンク
+<ul>
+<li>所有者、パーミッション等はコピー元ファイルと同じ</li>
+</ul>
+</li>
+</ul>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/link-permission.png" title="/offtech.blog/os-linux-access-controle/link-permission.png" data-thumbnail="/offtech.blog/os-linux-access-controle/link-permission.png" data-sub-html="<h2>link</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/link-permission.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/link-permission.png, /offtech.blog/os-linux-access-controle/link-permission.png 1.5x, /offtech.blog/os-linux-access-controle/link-permission.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/link-permission.png" width="400px" height="300px" />
+    </a><figcaption class="image-caption">link</figcaption>
+    </figure>
+<h2 id="2linuxにおけるアクセス制御の深堀">2　Linuxにおけるアクセス制御の深堀</h2>
+<p>それではディープダイブしていきましょう。
+そもそもLinuxカーネルくんは、どこでファイルのパミッションを管理し、ファイルアクセスをしているのでしょうか？</p>
+<h3 id="21ファイルシステム">2.1　ファイルシステム</h3>
+<p>まずはファイルシステムです。<a href="https://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0" target="_blank" rel="noopener noreffer ">wiki</a>の定義を見てみましょう。</p>
+<blockquote>
+<p>ファイルシステム（英: file system、filesystem）は、コンピュータのリソースを操作するための、オペレーティングシステム (OS) が持つ機能の一つ</p>
+</blockquote>
+<p>定義の通り、ファイルシステムはOSの機能の一つとして、インストール時に選択できたら、複数のファイルシステムが組み込まれていたりします。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/fstree.png" title="/offtech.blog/os-linux-access-controle/fstree.png" data-thumbnail="/offtech.blog/os-linux-access-controle/fstree.png" data-sub-html="<h2>Linuxカーネルに組み込まれたファイルシステム</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/fstree.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/fstree.png, /offtech.blog/os-linux-access-controle/fstree.png 1.5x, /offtech.blog/os-linux-access-controle/fstree.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/fstree.png" width="400px" height="300px" />
+    </a><figcaption class="image-caption">Linuxカーネルに組み込まれたファイルシステム</figcaption>
+    </figure>
+<p>LPI Japanではファイルシステについて、以下のように解説あります。</p>
+<blockquote>
+<p>そもそもデータを扱うということはどういうことなのでしょうか。
+通常OSを操作する上において、データを操作するということはファイルを操作することとほぼ同等の意味を持つかと思います。
+このため通常はデータが物理的にどのように格納されているかを意識する必要もなく、逆に意識できない作りになっています。
+これはOSの機能であるデータの抽象化によってもたらされる結果です。
+実際に物理的な記憶装置に格納されているデータを素で扱おうとすると、 HDDのどこのセクタのどの部分とどの部分を取り出して、データをメモリ上に読み込み、メモリに格納できないものは後からまた読む・・・といった大変面倒なことをする必要があります。
+現在のHDDの容量を考えてみると、何百ギガバイト（テラになりつつありますが・・・）という巨大なデータを格納できるような物体です。
+その中に入っている何かのデータを自力で探しだし、利用することは人間が行う作業として成立しないものだともいえます。
+このような物体に存在するデータを人間にわかりやすいファイルというものに抽象化、可視化し、データを永続的に管理しやすくするという役目を持つのがファイルシステムの基本的な考え方です。</p>
+</blockquote>
+<p>一言でいうとファイルの管理をしてくれているようです。
+詳細には、ファイルをどのように格納するかや、どのようにアクセスするかなど難しい話が色々あると思います。</p>
+<p>具体的なファイルシステムを見ていきましょう。</p>
+<ul>
+<li>
+<p>Linux</p>
+<ul>
+<li>ext4<br>
+Linuxで最も利用されています。</li>
+<li>ext3<br>
+ext4の前のやつです。</li>
+<li>btreefs<br>
+ファイルシステム自体にスナップショットやraidの機能があります。安定性については議論があるらしい。</li>
+<li>xfs<br>
+大容量のファイルシステムむけに最適化されているらしい。</li>
+</ul>
+</li>
+<li>
+<p>Windows</p>
+<ul>
+<li>NTFS<br>
+現在、Windowsでデフォルトで利用されているファイルシステムです。セキュリティであったり、ロギングであったり非常に高機能なイメージです。</li>
+<li>FAT32<br>
+USBとかで使われていらやつです。ファイルサイズが4GBまでの制約があります。\</li>
+<li>exFat<br>
+FAT32を改良したもので、大きなファイルもサポートしています。</li>
+</ul>
+</li>
+<li>
+<p>MacOS</p>
+<ul>
+<li>APFS<br>
+現在のmacosで利用されているもの。</li>
+<li>HFS<br>
+APFSの前に利用されていたもの。</li>
+</ul>
+</li>
+</ul>
+<p>ファイルシステムごとにデータの格納方法だったり、管理方法が異なります。
+ファイルシステムについては詳しくないですが、どこかで詳しく調べて記事にできたらと思います</p>
+<h3 id="22vfs">2.2　VFS</h3>
+<p>2.1でファイルシステムにはいくつか選択肢があることがわかりました。なんなら人によっては自作している人もいます。</p>
+<p>ここで、ファイルシステムを変えるたびにOSに大きな変更があっては困らないでしょうか？できるだけ疎結合を意識したくなります。ここで登場するのがVFSです。</p>
+<p>VFSとは、Virtual File Systemの略です。</p>
+<p>LPIJapanの説明を見てみましょう。</p>
+<blockquote>
+<p>VFSは下位の物理的な媒体を抽象化し、データ、デバイスを含む全てのコンピュータリソースに対して統一的なファイルアクセスという入出力インターフェイスを提供します。
+これによりリソースの差異を気にすることなく、様々な対象に対して統一のアクセスを行うことができます。
+さらにVFSにはファイルシステムの抽象化という役割もあり、これによってことなる複数のファイルシステムに対して透過的にアクセスすることが可能になっており、ファイルシステムの種類を意識せずに利用することができます</p>
+</blockquote>
+<p>すなわち、カーネルとファイルシステムの間に入り、カーネルからのアクセスを抽象化し、ファイルシステムが異なってもカーネルに統一的なアクセスを提供します。
+ファイルシステム以外にも、様々な入出力を抽象化し、統一的なアクセスを可能としてくれてます。</p>
+<p>実際にVFSではどのように管理されているのでしょうか。</p>
+<p>VFSにおいて、重要な役割を果たしているのが&quot;struct inode&quot;です。
+&ldquo;sturuct inode&quot;にはファイルの所有者やタイムスタンプなどオブジェクトの基本情報が格納されます。
+実際に&quot;struct inode&quot;を見てみましょう。</p>
+<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>/*
+ * Keep mostly read-only and often accessed (especially for
+ * the RCU path lookup and &#39;stat&#39; data) fields at the beginning
+ * of the &#39;struct inode&#39;
+ */
+struct inode {
+	umode_t			i_mode;
+	unsigned short		i_opflags;
+	kuid_t			i_uid;
+	kgid_t			i_gid;
+	unsigned int		i_flags;
+
+#ifdef CONFIG_FS_POSIX_ACL
+	struct posix_acl	*i_acl;
+	struct posix_acl	*i_default_acl;
+#endif
+
+	const struct inode_operations	*i_op;
+	struct super_block	*i_sb;
+	struct address_space	*i_mapping;
+
+#ifdef CONFIG_SECURITY
+	void			*i_security;
+#endif
+
+	/* Stat data, not accessed from path walking */
+	unsigned long		i_ino;
+	/*
+	 * Filesystems may only read i_nlink directly.  They shall use the
+	 * following functions for modification:
+	 *
+	 *    (set|clear|inc|drop)_nlink
+	 *    inode_(inc|dec)_link_count
+	 */
+	union {
+		const unsigned int i_nlink;
+		unsigned int __i_nlink;
+	};
+	dev_t			i_rdev;
+	loff_t			i_size;
+	time64_t		i_atime_sec;
+	time64_t		i_mtime_sec;
+	time64_t		i_ctime_sec;
+	u32			i_atime_nsec;
+	u32			i_mtime_nsec;
+	u32			i_ctime_nsec;
+	u32			i_generation;
+	spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
+	unsigned short          i_bytes;
+	u8			i_blkbits;
+	enum rw_hint		i_write_hint;
+	blkcnt_t		i_blocks;
+
+
+.....(省略).......
+
+
+	void			*i_private; /* fs or device private pointer */
+} __randomize_layout;</code></pre></div>
+<p><a href="https://github.com/torvalds/linux/blob/master/include/linux/fs.h" target="_blank" rel="noopener noreffer ">include/linux/fs.h</a></p>
+<p>&ldquo;i_mode&quot;はファイルの種類とパミッションを、&ldquo;i_uid&quot;や&quot;i_gid&quot;はファイルの所有者などを表しています。
+このように、VFSが提供する&quot;struct inode&quot;はオブジェクトに関する統一的な基本情報を保持しています。</p>
+<p>ここで、ファイルシステムの関係についても説明したいと思います。
+これまで、inodeのことを&quot;struct inode&quot;と呼んでいました。
+これはinodeにはVFSがもつ&quot;struct inode&quot;とファイルシステムがもつinodeがあるからです。
+ファイルシステムが持つinodeの方はデータブロックの位置情報やファイルシステム固有の情報などより詳細な情報を持っています。
+実際にext4のファイルシステムを見てみましょう。</p>
+<div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
+    <div class="code-header language-">
+        <span class="code-title"><i class="arrow fas fa-chevron-right fa-fw" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
+    </div><pre tabindex="0"><code>/*
+ * Structure of an inode on the disk
+ */
+struct ext4_inode {
+	__le16	i_mode;		/* File mode */
+	__le16	i_uid;		/* Low 16 bits of Owner Uid */
+	__le32	i_size_lo;	/* Size in bytes */
+	__le32	i_atime;	/* Access time */
+	__le32	i_ctime;	/* Inode Change time */
+	__le32	i_mtime;	/* Modification time */
+	__le32	i_dtime;	/* Deletion Time */
+	__le16	i_gid;		/* Low 16 bits of Group Id */
+	__le16	i_links_count;	/* Links count */
+	__le32	i_blocks_lo;	/* Blocks count */
+	__le32	i_flags;	/* File flags */
+	union {
+		struct {
+			__le32  l_i_version;
+		} linux1;
+		struct {
+			__u32  h_i_translator;
+		} hurd1;
+		struct {
+			__u32  m_i_reserved1;
+		} masix1;
+	} osd1;				/* OS dependent 1 */
+	__le32	i_block[EXT4_N_BLOCKS];/* Pointers to blocks */
+	__le32	i_generation;	/* File version (for NFS) */
+	__le32	i_file_acl_lo;	/* File ACL */
+	__le32	i_size_high;
+	__le32	i_obso_faddr;	/* Obsoleted fragment address */
+
+... （省略）...
+
+	__le16	i_extra_isize;
+	__le16	i_checksum_hi;	/* crc32c(uuid+inum+inode) BE */
+	__le32  i_ctime_extra;  /* extra Change time      (nsec &lt;&lt; 2 | epoch) */
+	__le32  i_mtime_extra;  /* extra Modification time(nsec &lt;&lt; 2 | epoch) */
+	__le32  i_atime_extra;  /* extra Access time      (nsec &lt;&lt; 2 | epoch) */
+	__le32  i_crtime;       /* File Creation time */
+	__le32  i_crtime_extra; /* extra FileCreationtime (nsec &lt;&lt; 2 | epoch) */
+	__le32  i_version_hi;	/* high 32 bits for 64-bit version */
+	__le32	i_projid;	/* Project ID */
+};</code></pre></div>
+<p><a href="" rel=""></a></p>
+<p>VFSがもつ&quot;struct inode&quot;とファイルシステムのinodeの関係としては、VFSの&quot;struct inode&quot;がファイルシステムのinodeから情報を取得する感じです。
+これにより、カーネルくんはVFSの&quot;struct inode&quot;への統一的なアクセスが可能となります。</p>
+<p>ここで、&ldquo;struct inode&quot;はアクセス権限を&quot;imode&quot;として持っています。
+ファイルへアクセスする際はこの&quot;imode&quot;の情報を利用し、マスクをかけることで権限のチェックを行っているのです！</p>
+<p>他にもスーパーブロックなど様々な話がありますが、ファイルシステムについての別記事で詳しく書こうと思います。</p>
+<h2 id="23カーネルの権限管理">2.3　カーネルの権限管理</h2>
+<p>1.2でsetuidの危険性について説明しました。
+同時に、setuidの必要性についても説明しました。</p>
+<p>最小権限の原則や権限分離を守りつつアクセス制御をしたいところですが、どうやってアクセス制御を行うのが良いのでしょうか？</p>
+<p>本説では<em>capability</em>について説明します。</p>
+<p>2.1, 2.2ではinodeについて説明しました。
+inodeではimodeで権限情報を持っています。
+ここで説明するcapabilityや3章で説明するaclは拡張領域を利用してより細かい権限管理を行います。</p>
+<p>capabilitiesについてマニュアルでは以下のように書かれています。</p>
+<blockquote>
+<p>For the purpose of performing permission checks, traditional UNIX
+implementations distinguish two categories of processes:
+privileged processes (whose effective user ID is 0, referred to as
+superuser or root), and unprivileged processes (whose effective
+UID is nonzero).  Privileged processes bypass all kernel
+permission checks, while unprivileged processes are subject to
+full permission checking based on the process&rsquo;s credentials
+(usually: effective UID, effective GID, and supplementary group
+list).</p>
+<p>Starting with Linux 2.2, Linux divides the privileges
+traditionally associated with superuser into distinct units, known
+as capabilities, which can be independently enabled and disabled.
+Capabilities are a per-thread attribute.</p>
+</blockquote>
+<p><a href="https://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank" rel="noopener noreffer ">capabilities(7) — Linux manual page</a></p>
+<p>capabilityは従来のルート権限を分割したものです。
+ルート権限という強く広い権限を与えるではなく、capabilityによる一部の強い権限を与えることにより、最小権限の原則に従うことができます。</p>
+<p>実際に例を見てみましょう。以下はubuntuにもともと入っている&quot;ping&quot;です。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/ppping.png" title="/offtech.blog/os-linux-access-controle/ppping.png" data-thumbnail="/offtech.blog/os-linux-access-controle/ppping.png" data-sub-html="<h2>pingの権限</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/ppping.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/ppping.png, /offtech.blog/os-linux-access-controle/ppping.png 1.5x, /offtech.blog/os-linux-access-controle/ppping.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/ppping.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">pingの権限</figcaption>
+    </figure>
+<p>特にsetuidが付与されているわけでもなく、一般ユーザとして実行できるように見えます。
+実際に、pingは一般ユーザでも実行できると思います。</p>
+<p>では、このコマンドを自分のものとしてコピーして実行してみましょう。
+一般ユーザとして実行できているファイルなので、コピーができれば問題なく動作するはずです。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/ping_caps_error.png" title="/offtech.blog/os-linux-access-controle/ping_caps_error.png" data-thumbnail="/offtech.blog/os-linux-access-controle/ping_caps_error.png" data-sub-html="<h2>ソケットエラー</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/ping_caps_error.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/ping_caps_error.png, /offtech.blog/os-linux-access-controle/ping_caps_error.png 1.5x, /offtech.blog/os-linux-access-controle/ping_caps_error.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/ping_caps_error.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">ソケットエラー</figcaption>
+    </figure>
+<p>エラーになりました。
+ローソケットの操作が許可されていないと怒られており、&ldquo;capability&quot;か&quot;setuid&quot;がないと言われています。</p>
+<p>これは、&ldquo;ping&quot;がローソケットを利用しており、その権限がないためエラーが出ているのです。
+では、もともと入っていた&quot;ping&quot;を見てみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/ping_caps.png" title="/offtech.blog/os-linux-access-controle/ping_caps.png" data-thumbnail="/offtech.blog/os-linux-access-controle/ping_caps.png" data-sub-html="<h2>pingのcapability</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/ping_caps.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/ping_caps.png, /offtech.blog/os-linux-access-controle/ping_caps.png 1.5x, /offtech.blog/os-linux-access-controle/ping_caps.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/ping_caps.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">pingのcapability</figcaption>
+    </figure>
+<p>&ldquo;cap_net_raw=ep&quot;とあり、ローソケットを利用するためのcapabilityが割り当てられていることが分かります。<br>
+※ e=Effectve, p=Permitted を意味してます。</p>
+<p>これにより、setuidを利用せずにローソケットの利用しており、pingに脆弱性があったとしても権限昇格などの危険性が緩和されます。</p>
+<h2 id="3その他のアクセス制御">3　その他のアクセス制御</h2>
+<h3 id="acl">acl</h3>
+<p>aclはこれまでの1章で復習した標準の権限管理より細かいアクセス制御を実現できます。
+具体的には、「その他のユーザーが」ではなく、「誰が」を設定できます。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/facl.png" title="/offtech.blog/os-linux-access-controle/facl.png" data-thumbnail="/offtech.blog/os-linux-access-controle/facl.png" data-sub-html="<h2>aclのインストール</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/facl.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/facl.png, /offtech.blog/os-linux-access-controle/facl.png 1.5x, /offtech.blog/os-linux-access-controle/facl.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/facl.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">aclのインストール</figcaption>
+    </figure>
+<p>標準ではaclが入っていなかったのでインスールしました。</p>
+<p>実際に使ってみましょう。</p>
+<figure><a class="lightgallery" href="/offtech.blog/os-linux-access-controle/setfacl.png" title="/offtech.blog/os-linux-access-controle/setfacl.png" data-thumbnail="/offtech.blog/os-linux-access-controle/setfacl.png" data-sub-html="<h2>aclの設定</h2>">
+        <img
+            class="lazyload"
+            src="/offtech.blog/svg/loading.min.svg"
+            data-src="/offtech.blog/os-linux-access-controle/setfacl.png"
+            data-srcset="/offtech.blog/os-linux-access-controle/setfacl.png, /offtech.blog/os-linux-access-controle/setfacl.png 1.5x, /offtech.blog/os-linux-access-controle/setfacl.png 2x"
+            data-sizes="auto"
+            alt="/offtech.blog/os-linux-access-controle/setfacl.png" width="800px" height="600px" />
+    </a><figcaption class="image-caption">aclの設定</figcaption>
+    </figure>
+<p>&ldquo;root_secret.txt&quot;にユーザ&quot;hoge&quot;だけ読み込みと書き込みができるように設定しました。</p>
+<h3 id="selinux">SELinux</h3>
+<p>Linuxのアクセス制御は、以下の2種類があります。</p>
+<ul>
+<li>任意アクセス制御</li>
+<li>強制アクセス制御</li>
+</ul>
+<p>これまで紹介してきたものはすべて任意アクセス制御です。
+&ldquo;selinux&quot;は強制アクセス制御に分類されます。</p>
+<blockquote>
+<p>SELinux (Security-Enhanced Linux) は、システムにアクセスできるユーザーを管理者がよりきめ細かく制御するための、Linux® システム向けセキュリティ・アーキテクチャです。もともとは、Linux Security Modules (LSM) を使用した Linux カーネルへの一連のパッチとして、アメリカ国家安全保障局 (NSA) によって開発されました。</p>
+</blockquote>
+<p><a href="https://www.redhat.com/ja/topics/linux/what-is-selinux" target="_blank" rel="noopener noreffer ">SELinux (Security-Enhanced Linux) とは</a></p>
+<p>SELinuxもcapabilityやaclのように標準的な権限管理より細かい設定が可能です。
+任意アクセス制御と最も異なる点は、「rootであっても、すべてを自由に操作できるとは限らない」ことです。
+すなわち、rootという中央集権を排除し、<strong>権限分掌</strong>を行うことができます。</p>
+<p>SELinuxについては、深く学びたいので別の記事で個別に深堀ることとします。</p>
+<h2 id="4ユースケース">4　ユースケース</h2>
+<h3 id="acl-1">ACL</h3>
+<p>その他のユーザを細かく分ける。
+グループとかたくさん作ってやると便利</p>
+<h3 id="capability">Capability</h3>
+<p>Nginxとかを例にsudoとの差を示す
+取られたときの影響範囲をどれだけ抑えられるか
+実際は大変な話。ベストプラクティス集みたいなものをつくれれば</p>
+<h2 id="5まとめ">5　まとめ</h2>
+<p>今回はLinuxのアクセス制御について学習しました。
+capabilityやSELinuxを利用することで、より細かい制御を行うことができ、最小権限の原則を実現できます。
+実際のユースケースまで見えていない部分があるので、追って勉強しようと思います。</p>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="" rel=""></a>
+[2] <a href="" rel=""></a>
+[3] <a href="" rel=""></a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-22&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/c03e0cbc9b4b04377aeebe178590bacfe62fcf73" target="_blank" title="commit by root(root@kalis) c03e0cbc9b4b04377aeebe178590bacfe62fcf73: 2025062201">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>c03e0cb</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/os-linux-access-controle/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/os-linux-access-controle/" data-title="Linuxのアクセス制御を完全に理解する" data-hashtags="OS"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/os-linux-access-controle/" data-title="Linuxのアクセス制御を完全に理解する"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/os-linux-access-controle/" data-hashtag="OS"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/os-linux-access-controle/" data-title="Linuxのアクセス制御を完全に理解する"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/os-linux-access-controle/" data-title="Linuxのアクセス制御を完全に理解する"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/os-linux-access-controle/" data-title="Linuxのアクセス制御を完全に理解する"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/os-linux-access-controle/" data-title="Linuxのアクセス制御を完全に理解する" data-description="Linuxのアクセス制御を完全に理解する。"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fos-linux-access-controle%2f&amp;text=Linux%e3%81%ae%e3%82%a2%e3%82%af%e3%82%bb%e3%82%b9%e5%88%b6%e5%be%a1%e3%82%92%e5%ae%8c%e5%85%a8%e3%81%ab%e7%90%86%e8%a7%a3%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/os/">OS</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/security-clamav/" class="prev" rel="prev" title="ClamAVを完全に理解する"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>ClamAVを完全に理解する</a>
+            <a href="/offtech.blog/wireless-lan/" class="next" rel="next" title="無線LANを完全に理解する">無線LANを完全に理解する<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

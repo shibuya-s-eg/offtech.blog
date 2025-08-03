@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>QoSを完全に理解する - offtech.blog</title><meta name="Description" content="QoSを完全に理解する"><meta property="og:url" content="http://localhost:1313/offtech.blog/qos/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="QoSを完全に理解する">
+  <meta property="og:description" content="QoSを完全に理解する">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-13T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-24T21:43:11+09:00">
+    <meta property="article:tag" content="Network">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="QoSを完全に理解する">
+  <meta name="twitter:description" content="QoSを完全に理解する">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/qos/" /><link rel="prev" href="http://localhost:1313/offtech.blog/rag/" /><link rel="next" href="http://localhost:1313/offtech.blog/ospf/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "QoSを完全に理解する",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/qos\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Network","wordcount":  1369 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/qos\/","datePublished": "2025-04-13T00:00:00+09:00","dateModified": "2025-06-24T21:43:11+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "QoSを完全に理解する"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/qos/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/qos/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">QoSを完全に理解する</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-13">2025-04-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1369 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#1-はじめに">1 はじめに</a></li>
+    <li><a href="#2-qosとは何か基本概念と誤解">2 QoSとは何か？基本概念と誤解</a>
+      <ul>
+        <li><a href="#21-定義">2.1 定義</a></li>
+        <li><a href="#22-qosの目的">2.2 QoSの目的</a></li>
+        <li><a href="#23-誤解されがちな点">2.3 誤解されがちな点</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-qosの基本技術">3 QoSの基本技術</a>
+      <ul>
+        <li><a href="#31-トラフィック分類">3.1 トラフィック分類</a></li>
+        <li><a href="#32-ポリシングとシェーピング">3.2 ポリシングとシェーピング</a></li>
+        <li><a href="#33-マーカーとマーク">3.3 マーカーとマーク</a></li>
+        <li><a href="#34-スケジューリング">3.4 スケジューリング</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-qosを実現するための主要プロトコル">4 QoSを実現するための主要プロトコル</a>
+      <ul>
+        <li><a href="#41-diffservdifferentiated-services">4.1 DiffServ（Differentiated Services）</a></li>
+        <li><a href="#42-intservintegrated-services">4.2 IntServ（Integrated Services）</a></li>
+        <li><a href="#43-mplsmultiprotocol-label-switching">4.3 MPLS（Multiprotocol Label Switching）</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-qos設定と実装方法">5 QoS設定と実装方法</a>
+      <ul>
+        <li><a href="#51-ルータとスイッチでのqos設定">5.1 ルータとスイッチでのQoS設定</a></li>
+        <li><a href="#52-vlanとqosの統合">5.2 VLANとQoSの統合</a></li>
+        <li><a href="#53-エンドツーエンドqosの設計">5.3 エンドツーエンドQoSの設計</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-qosとネットワークパフォーマンスの関係">6 QoSとネットワークパフォーマンスの関係</a>
+      <ul>
+        <li><a href="#61-帯域幅とqos">6.1 帯域幅とQoS</a></li>
+        <li><a href="#62-レイテンシとジッターの制御">6.2 レイテンシとジッターの制御</a></li>
+        <li><a href="#63-パケット損失の最小化">6.3 パケット損失の最小化</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-qosの管理と監視">7 QoSの管理と監視</a>
+      <ul>
+        <li><a href="#71-qosのモニタリングツール">7.1 QoSのモニタリングツール</a></li>
+        <li><a href="#72-パフォーマンス測定とトラブルシューティング">7.2 パフォーマンス測定とトラブルシューティング</a></li>
+      </ul>
+    </li>
+    <li><a href="#8-qosにおけるセキュリティ視点">8 QoSにおけるセキュリティ視点</a>
+      <ul>
+        <li><a href="#81-qos攻撃">8.1 QoS攻撃</a></li>
+        <li><a href="#82-悪意のあるトラフィックの制限">8.2 悪意のあるトラフィックの制限</a></li>
+      </ul>
+    </li>
+    <li><a href="#9-qos設計のベストプラクティス">9 QoS設計のベストプラクティス</a>
+      <ul>
+        <li><a href="#91-トラフィックの優先順位付けとリソース管理">9.1 トラフィックの優先順位付けとリソース管理</a></li>
+        <li><a href="#92-スケーラブルなqos設計">9.2 スケーラブルなQoS設計</a></li>
+        <li><a href="#93-パフォーマンスの最適化">9.3 パフォーマンスの最適化</a></li>
+      </ul>
+    </li>
+    <li><a href="#10-事例で学ぶqosの活用">10 事例で学ぶQoSの活用</a>
+      <ul>
+        <li><a href="#101-音声とビデオのqos設計">10.1 音声とビデオのQoS設計</a></li>
+        <li><a href="#102-クラウドサービスでのqos">10.2 クラウドサービスでのQoS</a></li>
+      </ul>
+    </li>
+    <li><a href="#11-qosを正しく使うための考え方">11 QoSを正しく使うための考え方</a>
+      <ul>
+        <li><a href="#111-qosの限界と現実">11.1 QoSの限界と現実</a></li>
+        <li><a href="#112-組織全体でのqosの理解と協力">11.2 組織全体でのQoSの理解と協力</a></li>
+      </ul>
+    </li>
+    <li><a href="#12-おわりに">12 おわりに</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+- TLDR
+
+-->
+<p>こんにちは、しぶやです。
+今回はを完全に理解していきます。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+<h2 id="1-はじめに">1 はじめに</h2>
+<ul>
+<li>QoSとは何か、なぜ重要か</li>
+<li>記事の目的：「単なる設定」ではなく、<strong>ネットワーク設計とサービス品質向上のための指標としてのQoS</strong>を理解する</li>
+<li>対象読者（ネットワークエンジニア、インフラエンジニア、SREなど）</li>
+</ul>
+<h2 id="2-qosとは何か基本概念と誤解">2 QoSとは何か？基本概念と誤解</h2>
+<h3 id="21-定義">2.1 定義</h3>
+<ul>
+<li>QoSはネットワークの「サービス品質」を管理する技術</li>
+<li>帯域幅、レイテンシ、ジッター、パケット損失などの指標に基づく制御</li>
+</ul>
+<h3 id="22-qosの目的">2.2 QoSの目的</h3>
+<ul>
+<li>トラフィックの優先順位付けと遅延の最小化</li>
+<li>適切な帯域の割り当て、重要なサービスの保護</li>
+</ul>
+<h3 id="23-誤解されがちな点">2.3 誤解されがちな点</h3>
+<ul>
+<li>「QoS設定で全て解決できるわけではない」</li>
+<li>QoSと帯域管理の違い</li>
+</ul>
+<h2 id="3-qosの基本技術">3 QoSの基本技術</h2>
+<h3 id="31-トラフィック分類">3.1 トラフィック分類</h3>
+<ul>
+<li>トラフィックの種類（音声、ビデオ、データなど）による分類</li>
+</ul>
+<h3 id="32-ポリシングとシェーピング">3.2 ポリシングとシェーピング</h3>
+<ul>
+<li>パケットの流れを制限する方法</li>
+</ul>
+<h3 id="33-マーカーとマーク">3.3 マーカーとマーク</h3>
+<ul>
+<li>トラフィックの優先順位を示すマーキング</li>
+</ul>
+<h3 id="34-スケジューリング">3.4 スケジューリング</h3>
+<ul>
+<li>トラフィックのスケジューリング（FIFO、WRR、CBWFQなど）</li>
+</ul>
+<h2 id="4-qosを実現するための主要プロトコル">4 QoSを実現するための主要プロトコル</h2>
+<h3 id="41-diffservdifferentiated-services">4.1 DiffServ（Differentiated Services）</h3>
+<ul>
+<li>DSCP（Differentiated Services Code Point）を使ったサービス品質の管理</li>
+</ul>
+<h3 id="42-intservintegrated-services">4.2 IntServ（Integrated Services）</h3>
+<ul>
+<li>予約ベースのサービス品質提供方法</li>
+</ul>
+<h3 id="43-mplsmultiprotocol-label-switching">4.3 MPLS（Multiprotocol Label Switching）</h3>
+<ul>
+<li>トラフィックのラベル付けとQoS適用</li>
+</ul>
+<h2 id="5-qos設定と実装方法">5 QoS設定と実装方法</h2>
+<h3 id="51-ルータとスイッチでのqos設定">5.1 ルータとスイッチでのQoS設定</h3>
+<ul>
+<li>CiscoルータでのQoS設定方法</li>
+</ul>
+<h3 id="52-vlanとqosの統合">5.2 VLANとQoSの統合</h3>
+<ul>
+<li>VLANを利用したトラフィックの分類と制御</li>
+</ul>
+<h3 id="53-エンドツーエンドqosの設計">5.3 エンドツーエンドQoSの設計</h3>
+<ul>
+<li>クライアントからサーバ、データセンター間でのQoS適用</li>
+</ul>
+<h2 id="6-qosとネットワークパフォーマンスの関係">6 QoSとネットワークパフォーマンスの関係</h2>
+<h3 id="61-帯域幅とqos">6.1 帯域幅とQoS</h3>
+<ul>
+<li>帯域の割り当てと最適化</li>
+</ul>
+<h3 id="62-レイテンシとジッターの制御">6.2 レイテンシとジッターの制御</h3>
+<ul>
+<li>リアルタイム通信とQoS</li>
+</ul>
+<h3 id="63-パケット損失の最小化">6.3 パケット損失の最小化</h3>
+<ul>
+<li>QoSを利用して信頼性を向上させる方法</li>
+</ul>
+<h2 id="7-qosの管理と監視">7 QoSの管理と監視</h2>
+<h3 id="71-qosのモニタリングツール">7.1 QoSのモニタリングツール</h3>
+<ul>
+<li>SNMP、NetFlow、sFlowなどによるQoSの監視</li>
+</ul>
+<h3 id="72-パフォーマンス測定とトラブルシューティング">7.2 パフォーマンス測定とトラブルシューティング</h3>
+<ul>
+<li>QoS設定の効果測定と問題発生時の調査方法</li>
+</ul>
+<h2 id="8-qosにおけるセキュリティ視点">8 QoSにおけるセキュリティ視点</h2>
+<h3 id="81-qos攻撃">8.1 QoS攻撃</h3>
+<ul>
+<li>DoS/DDoS攻撃に対するQoSの防御</li>
+</ul>
+<h3 id="82-悪意のあるトラフィックの制限">8.2 悪意のあるトラフィックの制限</h3>
+<ul>
+<li>ネットワーク攻撃や不正アクセスに対するQoS制御</li>
+</ul>
+<h2 id="9-qos設計のベストプラクティス">9 QoS設計のベストプラクティス</h2>
+<h3 id="91-トラフィックの優先順位付けとリソース管理">9.1 トラフィックの優先順位付けとリソース管理</h3>
+<ul>
+<li>重要なアプリケーションやサービスに対する帯域保証</li>
+</ul>
+<h3 id="92-スケーラブルなqos設計">9.2 スケーラブルなQoS設計</h3>
+<ul>
+<li>ネットワークの拡張に対応するQoS設定</li>
+</ul>
+<h3 id="93-パフォーマンスの最適化">9.3 パフォーマンスの最適化</h3>
+<ul>
+<li>適切なバッファ設定や遅延削減</li>
+</ul>
+<h2 id="10-事例で学ぶqosの活用">10 事例で学ぶQoSの活用</h2>
+<h3 id="101-音声とビデオのqos設計">10.1 音声とビデオのQoS設計</h3>
+<ul>
+<li>VoIPやビデオ会議システムにおけるQoS設定事例</li>
+</ul>
+<h3 id="102-クラウドサービスでのqos">10.2 クラウドサービスでのQoS</h3>
+<ul>
+<li>クラウド環境におけるQoSの適用方法</li>
+</ul>
+<h2 id="11-qosを正しく使うための考え方">11 QoSを正しく使うための考え方</h2>
+<h3 id="111-qosの限界と現実">11.1 QoSの限界と現実</h3>
+<ul>
+<li>QoSは万能ではなく、適切な範囲で使うべき</li>
+</ul>
+<h3 id="112-組織全体でのqosの理解と協力">11.2 組織全体でのQoSの理解と協力</h3>
+<ul>
+<li>ネットワーク全体でのQoS戦略の一貫性</li>
+</ul>
+<h2 id="12-おわりに">12 おわりに</h2>
+<ul>
+<li>QoSの理解は、ネットワーク全体のパフォーマンス向上に繋がる</li>
+<li>今後に向けて：QoS設定の継続的な調整とモニタリングの重要性</li>
+</ul>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="" rel=""></a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-24&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/cdff6142bd227c739dffa3e57981347795afc22b" target="_blank" title="commit by shibuya-s-eg(shibuya.s.eg@gmail.com) cdff6142bd227c739dffa3e57981347795afc22b: Update-20250624-00">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>cdff614</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/qos/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/qos/" data-title="QoSを完全に理解する" data-hashtags="Network"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/qos/" data-title="QoSを完全に理解する"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/qos/" data-hashtag="Network"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/qos/" data-title="QoSを完全に理解する"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/qos/" data-title="QoSを完全に理解する"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/qos/" data-title="QoSを完全に理解する"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/qos/" data-title="QoSを完全に理解する" data-description="QoSを完全に理解する"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fqos%2f&amp;text=QoS%e3%82%92%e5%ae%8c%e5%85%a8%e3%81%ab%e7%90%86%e8%a7%a3%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/network/">Network</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/rag/" class="prev" rel="prev" title="RAGを完全に理解する"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>RAGを完全に理解する</a>
+            <a href="/offtech.blog/ospf/" class="next" rel="next" title="OSPFを完全に理解する">OSPFを完全に理解する<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

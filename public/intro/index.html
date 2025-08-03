@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>はじめに - offtech.blog</title><meta name="Description" content="はじめに"><meta property="og:url" content="http://localhost:1313/offtech.blog/intro/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="はじめに">
+  <meta property="og:description" content="はじめに">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-13T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-22T09:27:08+09:00">
+    <meta property="article:tag" content="English">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="はじめに">
+  <meta name="twitter:description" content="はじめに">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/intro/" /><link rel="prev" href="http://localhost:1313/offtech.blog/cryptography/" /><link rel="next" href="http://localhost:1313/offtech.blog/organization/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "はじめに",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/intro\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "English","wordcount":  2199 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/intro\/","datePublished": "2025-04-13T00:00:00+09:00","dateModified": "2025-06-22T09:27:08+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "はじめに"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/intro/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/intro/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">はじめに</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/english/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>English</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-13">2025-04-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;2199 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#1現状の英語力">1　現状の英語力</a>
+      <ul>
+        <li><a href="#11toeic">1.1　TOEIC</a></li>
+        <li><a href="#12英会話">1.2　英会話</a></li>
+      </ul>
+    </li>
+    <li><a href="#2これまでの英語勉強">2　これまでの英語勉強</a></li>
+    <li><a href="#21英語との出会い">2.1　英語との出会い</a>
+      <ul>
+        <li><a href="#22toeic勉強">2.2　TOEIC勉強</a></li>
+        <li><a href="#23英会話">2.3　英会話</a></li>
+      </ul>
+    </li>
+    <li><a href="#3英語勉強再開の動機と目標">3　英語勉強再開の動機と目標</a></li>
+    <li><a href="#31動機">3.1　動機</a></li>
+    <li><a href="#32目標">3.2　目標</a></li>
+    <li><a href="#4勉強方針">4　勉強方針</a>
+      <ul>
+        <li><a href="#41native-camp">4.1　Native Camp</a></li>
+        <li><a href="#42ielts">4.2　IELTS</a></li>
+      </ul>
+    </li>
+    <li><a href="#5まとめ">5　まとめ？</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+- TLDR
+
+-->
+<p>こんにちは、しぶやです。
+突然ですが、本日（2025年6月22日）から英語の勉強を始め、その記録を記事に残していこうと考えています。
+本記事では、僕自身の現在の英語力や今後の英語勉強の進め方、最終的な目標などを整理していきます。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li>現状、TOEICレベルの問題は解けても、会話ができない。</li>
+<li>Native Campで英会話やる。</li>
+<li>勉強記録を記事に残す。</li>
+</ul>
+<h2 id="1現状の英語力">1　現状の英語力</h2>
+<p>英語力を問われたときにTOEICのスコアを出すあたりが日本人感満載ですが、TOEICしか受けたことがないため、TOEICベースで英語力を記載します。
+また、英会話スキルについても、体感どれくらいかを記載します。</p>
+<h3 id="11toeic">1.1　TOEIC</h3>
+<p>執筆時点でのTOEICのスコアは875点です。
+これは、執筆時から5年前の大学の学部3年のときに受けた結果です。</p>
+<p>当時は何度か試験を受けており、勉強を続ければまだまだ点数を上げられる自信があったと記憶しています。
+しかし、院試の勉強が本格化してきたので勉強をやめました。そこからTOEICは受けていません。</p>
+<h3 id="12英会話">1.2　英会話</h3>
+<p>英会話は日常会話を何とか成立させることができるレベルです。</p>
+<p>具体的なエピソードで言うと、韓国へ旅行に行った際は、店員が英語を話せる場合は、言語で困ることはありませんでした。
+しかし、「聞く」、「伝える」がやっとで、文法はぐちゃぐちゃ、わからない単語はその場で調べるみたいな感じです。</p>
+<p>英会話を行っている際は、なんとなく話せてはいますが、すぐ単語が分からず会話が止まったり、少し内容が難しくなると会話が成立しなくなります。</p>
+<h2 id="2これまでの英語勉強">2　これまでの英語勉強</h2>
+<h2 id="21英語との出会い">2.1　英語との出会い</h2>
+<p>大学入学までは、試験のための英語勉強だけをしてきました。
+特に好きでも嫌いでもなかったと思います。</p>
+<p>大学に入学してすぐ、カリフォルニアに旅行に行きました。
+現地の日本語ペラペラな大学生に1週間程度相手をしてもらい、色々なところへいきました。
+ここで、アメリカでの生活に新鮮さを感じ、異文化を体験することの楽しさを学びました。
+「毎朝、早起きしてカフェに行き、いつも同じ人たちと挨拶をする。」、「待ちゆく人はみんなフレンドリーに話しかけてくれる」、「車の運転も派手で子供のように遊んでいる」。
+シンプルに旅行として楽しかったことがほとんどですが、異文化を体験する楽しさを覚えたのは確かです。</p>
+<p>その後、日本に帰ってきてからは&quot;Hello Talk&quot;というチャットアプリで「様々な国の人と英語と日本語で会話するみたいな」ことをしていました。
+お互いに日々の生活や国の文化を話すことがとても楽しかったです。</p>
+<h3 id="22toeic勉強">2.2　TOEIC勉強</h3>
+<p>大学2年から3年の1, 2年はのんびりTOEICの勉強をしていました。
+このときは、英会話力向上が目標で、ついでに院試や就活で提出するTOEICの点数にも使えるくらいの思い勉強していました。</p>
+<p>最初の頃は単語と文法の勉強だけをしており、点数が伸び悩んでいました。
+その後、模試の実施と音読中心の復習で点数が大きく伸びました。
+ここで、「発音できること」の重要性を学びました。</p>
+<p>大学3年生でTOEIC 875点をとった際、900点とりたいと思うと同時にTOEIC勉強による英会話力向上の限界を感じ始めました。</p>
+<h3 id="23英会話">2.3　英会話</h3>
+<p>大学4年から大学院2年までは英会話力向上のために英会話を行っていました。
+具体的には1週間に一度固定の友達と30分英語、30分日本語で会話をしていました。</p>
+<p>勉強が足りないように思えますが、これは2.1で触れたように、異文化の人と会話をするのが楽しかっただけで本気で英語力を上げようとは思っていなかったのが原因だと思います。
+※ 大学院では自分の専門分野の勉強で忙しかったのもあります。</p>
+<p>就職してからは、忙しいと言い訳をして英会話もやめてしまいました。</p>
+<h2 id="3英語勉強再開の動機と目標">3　英語勉強再開の動機と目標</h2>
+<h2 id="31動機">3.1　動機</h2>
+<p>今回英語勉強を再開しようと思った動機は、やはり「英語が話せるとかっこよいから」です。
+これに限りますね。仕事でも、旅行に行ったときでも、英語が話せるとめちゃくちゃかっこよいです。</p>
+<p>その他の動機は2.1で触れたように「異文化の人と話す機会が増えるから」です。
+正確には「異文化の人と話すうえでの障壁がなくなる」な気がします。
+旅行に行ったときでも、海外の人に話しかけやすくなります。</p>
+<h2 id="32目標">3.2　目標</h2>
+<p>定性的な目標は、「英語をペラペラに話せるようになる」ことです。
+これは、日常会話だけでなく、ニュースの内容や僕自信の専門であるITなどにかんしても話せる状態です。</p>
+<p>定量的な目標はIELTS 7.0とします。
+正直どれくらい難しいのか分かっていませんが、調べている限り、留学ではUCLAなどトップの大学に言語学校を介さずに行けたり、MBAなどでも困らないレベルとあります。
+英検で言うと1級以上であり、YoutubeでIELTS 7.0で試験映像を見ると個人的には「英語がペラペラである」のボーダーくらいに感じます。</p>
+<p>今から2, 3年でこれを目指していこうと思います。</p>
+<h2 id="4勉強方針">4　勉強方針</h2>
+<h3 id="41native-camp">4.1　Native Camp</h3>
+<p>英会話アプリ、Native Campで勉強を行います。
+Native Campは定額で無制限に英会話ができるため、これを選びました。</p>
+<p>具体的な勉強内容はやりながら検討しようと思いますが、質より量を重視したいとは考えています。</p>
+<h3 id="42ielts">4.2　IELTS</h3>
+<p>どこかの節目で受けようと思います。
+もちろんIELTS用の試験勉強も一定は実施しようと思っています。</p>
+<h2 id="5まとめ">5　まとめ？</h2>
+<p>英語やります！
+ぺらぺらになるぞ！</p>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="" rel=""></a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-22&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/41789e47d2d67745db19edd1c3fce7a589919ee3" target="_blank" title="commit by root(root@kalis) 41789e47d2d67745db19edd1c3fce7a589919ee3: 2025062200">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>41789e4</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/intro/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/intro/" data-title="はじめに" data-hashtags="English"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/intro/" data-title="はじめに"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/intro/" data-hashtag="English"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/intro/" data-title="はじめに"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/intro/" data-title="はじめに"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/intro/" data-title="はじめに"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/intro/" data-title="はじめに" data-description="はじめに"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fintro%2f&amp;text=%e3%81%af%e3%81%98%e3%82%81%e3%81%ab" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/english/">English</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/cryptography/" class="prev" rel="prev" title="暗号を完全に理解する"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>暗号を完全に理解する</a>
+            <a href="/offtech.blog/organization/" class="next" rel="next" title="セキュリティ組織をまとめる">セキュリティ組織をまとめる<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>認証/認可を完全に理解する - offtech.blog</title><meta name="Description" content="認証/認可を完全に理解する"><meta property="og:url" content="http://localhost:1313/offtech.blog/security-authentication-and-authorization/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="認証/認可を完全に理解する">
+  <meta property="og:description" content="認証/認可を完全に理解する">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-13T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-22T13:54:21+09:00">
+    <meta property="article:tag" content="Security">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="認証/認可を完全に理解する">
+  <meta name="twitter:description" content="認証/認可を完全に理解する">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/security-authentication-and-authorization/" /><link rel="prev" href="http://localhost:1313/offtech.blog/security-certificate-authority/" /><link rel="next" href="http://localhost:1313/offtech.blog/security-vulnerability/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "認証/認可を完全に理解する",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/security-authentication-and-authorization\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Security","wordcount":  776 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/security-authentication-and-authorization\/","datePublished": "2025-04-13T00:00:00+09:00","dateModified": "2025-06-22T13:54:21+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "認証/認可を完全に理解する"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/security-authentication-and-authorization/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/security-authentication-and-authorization/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">認証/認可を完全に理解する</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-13">2025-04-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;776 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#1-はじめに">1 はじめに</a>
+      <ul>
+        <li><a href="#11-認証と認可の違い">1.1 認証と認可の違い</a></li>
+        <li><a href="#12-なぜ認証認可が重要なのか">1.2 なぜ認証・認可が重要なのか</a></li>
+        <li><a href="#13-本記事の目的と構成">1.3 本記事の目的と構成</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-認証の基礎">2 認証の基礎</a>
+      <ul>
+        <li><a href="#21-認証とは何か">2.1 認証とは何か</a></li>
+        <li><a href="#22-認証の3要素知識所持生体">2.2 認証の3要素（知識・所持・生体）</a></li>
+        <li><a href="#23-パスワード認証とその限界">2.3 パスワード認証とその限界</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-認証方式の種類と仕組み">3 認証方式の種類と仕組み</a>
+      <ul>
+        <li><a href="#31-cookie認証">3.1 Cookie認証</a></li>
+        <li><a href="#32-jwtjson-web-token">3.2 JWT（JSON Web Token）</a></li>
+        <li><a href="#33-skeyワンタイムパスワード">3.3 S/Key（ワンタイムパスワード）</a></li>
+        <li><a href="#34-ハードウェアトークン">3.4 ハードウェアトークン</a></li>
+        <li><a href="#35-生体認証バイオメトリクス">3.5 生体認証（バイオメトリクス）</a>
+          <ul>
+            <li><a href="#351-本人拒否率他人受入率">3.5.1 本人拒否率・他人受入率</a></li>
+            <li><a href="#352-マスターフェイスウルフ攻撃">3.5.2 マスターフェイス・ウルフ攻撃</a></li>
+            <li><a href="#353-代替手段と課題">3.5.3 代替手段と課題</a></li>
+          </ul>
+        </li>
+        <li><a href="#36-sms認証">3.6 SMS認証</a>
+          <ul>
+            <li><a href="#361-課金拒否simスワップ問題">3.6.1 課金・拒否・SIMスワップ問題</a></li>
+          </ul>
+        </li>
+        <li><a href="#37-パスキーとfido">3.7 パスキーとFIDO</a>
+          <ul>
+            <li><a href="#371-fido-uaf--ctap-1--ctap-2">3.7.1 FIDO UAF / CTAP 1 / CTAP 2</a></li>
+          </ul>
+        </li>
+        <li><a href="#38-kerberos認証">3.8 Kerberos認証</a></li>
+        <li><a href="#39-リバースプロキシ型認証">3.9 リバースプロキシ型認証</a></li>
+        <li><a href="#310-csms認証">3.10 CSMS認証</a></li>
+        <li><a href="#311-ekyc電子本人確認">3.11 eKYC（電子本人確認）</a>
+          <ul>
+            <li><a href="#3111-ライブネスチェック">3.11.1 ライブネスチェック</a></li>
+            <li><a href="#3112-犯収法ホ方式ワ方式">3.11.2 犯収法、ホ方式・ワ方式</a></li>
+            <li><a href="#3113-ディープフェイク対策">3.11.3 ディープフェイク対策</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#4-認可プロトコルとid連携">4 認可プロトコルとID連携</a>
+      <ul>
+        <li><a href="#41-oauth-20">4.1 OAuth 2.0</a></li>
+        <li><a href="#42-openid-connectoidc">4.2 OpenID Connect（OIDC）</a>
+          <ul>
+            <li><a href="#421-samlとの違いユーザー同意など">4.2.1 SAMLとの違い（ユーザー同意など）</a></li>
+          </ul>
+        </li>
+        <li><a href="#43-saml">4.3 SAML</a></li>
+        <li><a href="#44-idaasid-as-a-service">4.4 IDaaS（ID as a Service）</a>
+          <ul>
+            <li><a href="#441-パスワードがネットワークに流れない仕組み">4.4.1 パスワードがネットワークに流れない仕組み</a></li>
+          </ul>
+        </li>
+        <li><a href="#45-scimユーザー管理連携">4.5 SCIM（ユーザー管理連携）</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-トークンとセキュリティ">5 トークンとセキュリティ</a>
+      <ul>
+        <li><a href="#51-アクセストークンとリフレッシュトークン">5.1 アクセストークンとリフレッシュトークン</a></li>
+        <li><a href="#52-jwtの構造と検証">5.2 JWTの構造と検証</a></li>
+        <li><a href="#53-トークンの盗難対策">5.3 トークンの盗難対策</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-攻撃手法とその対策">6 攻撃手法とその対策</a>
+      <ul>
+        <li><a href="#61-パスワードスプレー攻撃">6.1 パスワードスプレー攻撃</a></li>
+        <li><a href="#62-パスワードリスト攻撃">6.2 パスワードリスト攻撃</a></li>
+        <li><a href="#63-クレデンシャルスタッフィング攻撃">6.3 クレデンシャルスタッフィング攻撃</a></li>
+        <li><a href="#64-pass-the-hash">6.4 Pass the Hash</a></li>
+        <li><a href="#65-chapのリプレイ攻撃なりすまし">6.5 CHAPのリプレイ攻撃・なりすまし</a></li>
+        <li><a href="#66-レインボーテーブルとソルト">6.6 レインボーテーブルとソルト</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-防御策とベストプラクティス">7 防御策とベストプラクティス</a>
+      <ul>
+        <li><a href="#71-ロックアウトポリシー">7.1 ロックアウトポリシー</a></li>
+        <li><a href="#72-captchaの役割">7.2 CAPTCHAの役割</a></li>
+        <li><a href="#73-リスクベース認証">7.3 リスクベース認証</a></li>
+        <li><a href="#74-マルチファクター認証mfa">7.4 マルチファクター認証（MFA）</a></li>
+      </ul>
+    </li>
+    <li><a href="#8-認証基盤と信頼モデル">8 認証基盤と信頼モデル</a>
+      <ul>
+        <li><a href="#81-認証局caの役割">8.1 認証局（CA）の役割</a></li>
+        <li><a href="#82-pkiとその信頼性">8.2 PKIとその信頼性</a></li>
+        <li><a href="#83-iso-42001と標準化の流れ">8.3 ISO 42001と標準化の流れ</a></li>
+      </ul>
+    </li>
+    <li><a href="#9-よくある落とし穴と設計の注意点">9 よくある落とし穴と設計の注意点</a>
+      <ul>
+        <li><a href="#91-ジョーアカウント問題">9.1 ジョーアカウント問題</a></li>
+        <li><a href="#92-セッション管理の落とし穴">9.2 セッション管理の落とし穴</a></li>
+        <li><a href="#93-ユーザー同意の扱いとプライバシー">9.3 ユーザー同意の扱いとプライバシー</a></li>
+      </ul>
+    </li>
+    <li><a href="#10-おわりに">10 おわりに</a>
+      <ul>
+        <li><a href="#101-今後の展望">10.1 今後の展望</a></li>
+        <li><a href="#102-読者へのメッセージ">10.2 読者へのメッセージ</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+- TLDR
+
+
+
+* 認証基礎
+    * SAML
+    * OAuth
+    * OpenID
+    * Pass The Hash
+    * Cookie認証
+    * Kerberos認証
+    * リバースプロキシ型認証
+    * FIDO
+        * UAF
+        * CATP 1
+        * CATP 2
+    * CAPTHA
+    * ロックアウト
+    * リスクベース
+    * JWT?
+    * CHAPリプレイ攻撃、なりすまし
+    * レインボーテーブル、ソルト
+    * パスワードスプレー
+    * パスワードリスト
+    * クレデンシャルスタッフィング攻撃
+    * pass tha hash
+    * ケルベロス認証
+    * s/key
+    * パスキー
+    * IDaaS
+        * idパスワードはネットワークに流さない。
+    * reflesh token
+    * SCIM
+    * OIDC
+        * samlにはないがodicにはユーザからの同意を得る手順がある
+    * SMS認証
+        * 課金
+        * 拒否
+        * SIMスワップ
+    * バイオメトリクス認証
+        * 本人拒否率
+        * 他人受け入れ率
+        * 代替手段が必要
+        * 問題点
+    * バイオメトリクス認証
+        * 本人拒否率
+        * 他人受け入れ率
+        * マスターフェイス
+        * ウルフ攻撃
+    * ekyc
+        * EKYCのライブネスチェック
+        * 犯収法
+            * 顧客の指名・住所・生年月日などの「本人特定事項」や「取引を行う目的」
+        * ホ方式、ワ方式
+        * ディープフェイク
+    * ハードウェアトークン
+    * JWT
+    * CSMS認証
+    * 認証局のかい総合像
+    * ISO 42001
+    * ジョーアカウント
+
+-->
+<p>こんにちは、しぶやです。
+今回はを完全に理解していきます。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+<h2 id="1-はじめに">1 はじめに</h2>
+<h3 id="11-認証と認可の違い">1.1 認証と認可の違い</h3>
+<h3 id="12-なぜ認証認可が重要なのか">1.2 なぜ認証・認可が重要なのか</h3>
+<h3 id="13-本記事の目的と構成">1.3 本記事の目的と構成</h3>
+<h2 id="2-認証の基礎">2 認証の基礎</h2>
+<h3 id="21-認証とは何か">2.1 認証とは何か</h3>
+<h3 id="22-認証の3要素知識所持生体">2.2 認証の3要素（知識・所持・生体）</h3>
+<h3 id="23-パスワード認証とその限界">2.3 パスワード認証とその限界</h3>
+<h2 id="3-認証方式の種類と仕組み">3 認証方式の種類と仕組み</h2>
+<h3 id="31-cookie認証">3.1 Cookie認証</h3>
+<h3 id="32-jwtjson-web-token">3.2 JWT（JSON Web Token）</h3>
+<h3 id="33-skeyワンタイムパスワード">3.3 S/Key（ワンタイムパスワード）</h3>
+<h3 id="34-ハードウェアトークン">3.4 ハードウェアトークン</h3>
+<h3 id="35-生体認証バイオメトリクス">3.5 生体認証（バイオメトリクス）</h3>
+<h4 id="351-本人拒否率他人受入率">3.5.1 本人拒否率・他人受入率</h4>
+<h4 id="352-マスターフェイスウルフ攻撃">3.5.2 マスターフェイス・ウルフ攻撃</h4>
+<h4 id="353-代替手段と課題">3.5.3 代替手段と課題</h4>
+<h3 id="36-sms認証">3.6 SMS認証</h3>
+<h4 id="361-課金拒否simスワップ問題">3.6.1 課金・拒否・SIMスワップ問題</h4>
+<h3 id="37-パスキーとfido">3.7 パスキーとFIDO</h3>
+<h4 id="371-fido-uaf--ctap-1--ctap-2">3.7.1 FIDO UAF / CTAP 1 / CTAP 2</h4>
+<h3 id="38-kerberos認証">3.8 Kerberos認証</h3>
+<h3 id="39-リバースプロキシ型認証">3.9 リバースプロキシ型認証</h3>
+<h3 id="310-csms認証">3.10 CSMS認証</h3>
+<h3 id="311-ekyc電子本人確認">3.11 eKYC（電子本人確認）</h3>
+<h4 id="3111-ライブネスチェック">3.11.1 ライブネスチェック</h4>
+<h4 id="3112-犯収法ホ方式ワ方式">3.11.2 犯収法、ホ方式・ワ方式</h4>
+<h4 id="3113-ディープフェイク対策">3.11.3 ディープフェイク対策</h4>
+<h2 id="4-認可プロトコルとid連携">4 認可プロトコルとID連携</h2>
+<h3 id="41-oauth-20">4.1 OAuth 2.0</h3>
+<h3 id="42-openid-connectoidc">4.2 OpenID Connect（OIDC）</h3>
+<h4 id="421-samlとの違いユーザー同意など">4.2.1 SAMLとの違い（ユーザー同意など）</h4>
+<h3 id="43-saml">4.3 SAML</h3>
+<h3 id="44-idaasid-as-a-service">4.4 IDaaS（ID as a Service）</h3>
+<h4 id="441-パスワードがネットワークに流れない仕組み">4.4.1 パスワードがネットワークに流れない仕組み</h4>
+<h3 id="45-scimユーザー管理連携">4.5 SCIM（ユーザー管理連携）</h3>
+<h2 id="5-トークンとセキュリティ">5 トークンとセキュリティ</h2>
+<h3 id="51-アクセストークンとリフレッシュトークン">5.1 アクセストークンとリフレッシュトークン</h3>
+<h3 id="52-jwtの構造と検証">5.2 JWTの構造と検証</h3>
+<h3 id="53-トークンの盗難対策">5.3 トークンの盗難対策</h3>
+<h2 id="6-攻撃手法とその対策">6 攻撃手法とその対策</h2>
+<h3 id="61-パスワードスプレー攻撃">6.1 パスワードスプレー攻撃</h3>
+<h3 id="62-パスワードリスト攻撃">6.2 パスワードリスト攻撃</h3>
+<h3 id="63-クレデンシャルスタッフィング攻撃">6.3 クレデンシャルスタッフィング攻撃</h3>
+<h3 id="64-pass-the-hash">6.4 Pass the Hash</h3>
+<h3 id="65-chapのリプレイ攻撃なりすまし">6.5 CHAPのリプレイ攻撃・なりすまし</h3>
+<h3 id="66-レインボーテーブルとソルト">6.6 レインボーテーブルとソルト</h3>
+<h2 id="7-防御策とベストプラクティス">7 防御策とベストプラクティス</h2>
+<h3 id="71-ロックアウトポリシー">7.1 ロックアウトポリシー</h3>
+<h3 id="72-captchaの役割">7.2 CAPTCHAの役割</h3>
+<h3 id="73-リスクベース認証">7.3 リスクベース認証</h3>
+<h3 id="74-マルチファクター認証mfa">7.4 マルチファクター認証（MFA）</h3>
+<h2 id="8-認証基盤と信頼モデル">8 認証基盤と信頼モデル</h2>
+<h3 id="81-認証局caの役割">8.1 認証局（CA）の役割</h3>
+<h3 id="82-pkiとその信頼性">8.2 PKIとその信頼性</h3>
+<h3 id="83-iso-42001と標準化の流れ">8.3 ISO 42001と標準化の流れ</h3>
+<h2 id="9-よくある落とし穴と設計の注意点">9 よくある落とし穴と設計の注意点</h2>
+<h3 id="91-ジョーアカウント問題">9.1 ジョーアカウント問題</h3>
+<h3 id="92-セッション管理の落とし穴">9.2 セッション管理の落とし穴</h3>
+<h3 id="93-ユーザー同意の扱いとプライバシー">9.3 ユーザー同意の扱いとプライバシー</h3>
+<h2 id="10-おわりに">10 おわりに</h2>
+<h3 id="101-今後の展望">10.1 今後の展望</h3>
+<h3 id="102-読者へのメッセージ">10.2 読者へのメッセージ</h3>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="" rel=""></a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-22&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/c03e0cbc9b4b04377aeebe178590bacfe62fcf73" target="_blank" title="commit by root(root@kalis) c03e0cbc9b4b04377aeebe178590bacfe62fcf73: 2025062201">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>c03e0cb</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/security-authentication-and-authorization/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/security-authentication-and-authorization/" data-title="認証/認可を完全に理解する" data-hashtags="Security"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/security-authentication-and-authorization/" data-title="認証/認可を完全に理解する"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/security-authentication-and-authorization/" data-hashtag="Security"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/security-authentication-and-authorization/" data-title="認証/認可を完全に理解する"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/security-authentication-and-authorization/" data-title="認証/認可を完全に理解する"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/security-authentication-and-authorization/" data-title="認証/認可を完全に理解する"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/security-authentication-and-authorization/" data-title="認証/認可を完全に理解する" data-description="認証/認可を完全に理解する"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fsecurity-authentication-and-authorization%2f&amp;text=%e8%aa%8d%e8%a8%bc%2f%e8%aa%8d%e5%8f%af%e3%82%92%e5%ae%8c%e5%85%a8%e3%81%ab%e7%90%86%e8%a7%a3%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/security/">Security</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/security-certificate-authority/" class="prev" rel="prev" title="認証局を完全に理解する"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>認証局を完全に理解する</a>
+            <a href="/offtech.blog/security-vulnerability/" class="next" rel="next" title="脆弱性を完全に理解する">脆弱性を完全に理解する<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>

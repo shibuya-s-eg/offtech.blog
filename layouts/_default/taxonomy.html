@@ -1,0 +1,36 @@
+{{ define "main" }}
+<h1>{{ .Title }} カテゴリ</h1>
+
+{{ $currentCategory := .Title }}
+
+<!-- 全記事の中からこのカテゴリに属する記事だけを選ぶ -->
+{{ $allPages := where .Site.RegularPages "Params.categories" "intersect" (slice $currentCategory) }}
+
+<!-- サブカテゴリごとにグループ化 -->
+{{ $grouped := dict }}
+
+{{ range $allPages }}
+  {{ range .Params.subcategories }}
+    {{ $key := . }}
+    {{ if not (in (keys $grouped) $key) }}
+      {{ $grouped = merge $grouped (dict $key (slice .)) }}
+    {{ else }}
+      {{ $grouped = merge $grouped (dict $key (append (index $grouped $key) .)) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+<!-- 表示部分 -->
+{{ range $subcat, $pages := $grouped }}
+  <h2>{{ $subcat }}</h2>
+  <ul>
+    {{ range $allPages }}
+      {{ if in .Params.subcategories $subcat }}
+        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{ end }}
+    {{ end }}
+  </ul>
+{{ end }}
+
+{{ end }}
+

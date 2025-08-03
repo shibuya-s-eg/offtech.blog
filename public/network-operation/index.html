@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head><script src="/offtech.blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=offtech.blog/livereload" data-no-instant defer></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>NW運用を完全に理解する - offtech.blog</title><meta name="Description" content="NW運用を完全に理解する"><meta property="og:url" content="http://localhost:1313/offtech.blog/network-operation/">
+  <meta property="og:site_name" content="offtech.blog">
+  <meta property="og:title" content="NW運用を完全に理解する">
+  <meta property="og:description" content="NW運用を完全に理解する">
+  <meta property="og:locale" content="ja">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-04-13T00:00:00+09:00">
+    <meta property="article:modified_time" content="2025-06-22T13:54:21+09:00">
+    <meta property="article:tag" content="Network">
+    <meta property="og:image" content="http://localhost:1313/journal-text.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/journal-text.png">
+  <meta name="twitter:title" content="NW運用を完全に理解する">
+  <meta name="twitter:description" content="NW運用を完全に理解する">
+<meta name="application-name" content="駆け出しエンジニアの学習記録">
+<meta name="apple-mobile-web-app-title" content="駆け出しエンジニアの学習記録"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://localhost:1313/offtech.blog/network-operation/" /><link rel="prev" href="http://localhost:1313/offtech.blog/network-ospf/" /><link rel="next" href="http://localhost:1313/offtech.blog/nat/" /><link rel="stylesheet" href="/offtech.blog/css/style.min.css"><link rel="preload" href="/offtech.blog/lib/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/fontawesome-free/css/all.min.css"></noscript><link rel="preload" href="/offtech.blog/lib/animate/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/offtech.blog/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "NW運用を完全に理解する",
+        "inLanguage": "ja",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/offtech.blog\/network-operation\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "http:\/\/localhost:1313\/offtech.blog\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "Network","wordcount":  917 ,
+        "url": "http:\/\/localhost:1313\/offtech.blog\/network-operation\/","datePublished": "2025-04-13T00:00:00+09:00","dateModified": "2025-06-22T13:54:21+09:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "http:\/\/localhost:1313\/offtech.blog\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "しぶや"
+            },"description": "NW運用を完全に理解する"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/offtech.blog/posts/"> Posts </a><a class="menu-item" href="/offtech.blog/tags/"> Tags </a><a class="menu-item" href="/offtech.blog/categories/"> Categories </a><a class="menu-item" href="/offtech.blog/categories/documentation/"> Docs </a><a class="menu-item" href="/offtech.blog/about/"> About </a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a><a href="javascript:void(0);" class="menu-item language" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>                      
+                    <select class="language-select" id="language-select-desktop" onchange="location = this.value;"><option value="/offtech.blog/network-operation/" selected>日本語</option></select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/offtech.blog/" title="offtech.blog"><span class="header-title-pre"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-journal-text' viewBox='0 0 16 16'><path d='M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5'/><path d='M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2'/><path d='M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z'/></svg></span>駆け出しエンジニアの学習記録</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/offtech.blog/posts/" title="">Posts</a><a class="menu-item" href="/offtech.blog/tags/" title="">Tags</a><a class="menu-item" href="/offtech.blog/categories/" title="">Categories</a><a class="menu-item" href="/offtech.blog/categories/documentation/" title="">Docs</a><a class="menu-item" href="/offtech.blog/about/" title="">About</a><a class="menu-item" href="https://github.com/shibuya-s-eg/offtech.blog" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw' aria-hidden='true'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a><a href="javascript:void(0);" class="menu-item" title="Select Language">
+                    <i class="fa fa-globe fa-fw" aria-hidden="true"></i>
+                    <select class="language-select" onchange="location = this.value;"><option value="/offtech.blog/network-operation/" selected>日本語</option></select>
+                </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">NW運用を完全に理解する</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://github.com/shibuya-s-eg" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>しぶや</a></span>&nbsp;<span class="post-category">included in <a href="/offtech.blog/categories/understand-everything/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Understand-Everything</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-04-13">2025-04-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;917 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#1-はじめに">1 はじめに</a></li>
+    <li><a href="#2-qpsとは何か基本概念と誤解">2 QpSとは何か？基本概念と誤解</a>
+      <ul>
+        <li><a href="#21-定義">2.1 定義</a></li>
+        <li><a href="#22-誤解されがちな点">2.2 誤解されがちな点</a></li>
+        <li><a href="#23-対象システムに応じた使い分け">2.3 対象システムに応じた使い分け</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-qpsの計測方法とツール">3 QpSの計測方法とツール</a>
+      <ul>
+        <li><a href="#31-ログベース">3.1 ログベース</a></li>
+        <li><a href="#32-メトリクスベース">3.2 メトリクスベース</a></li>
+        <li><a href="#33-ロードテストツール">3.3 ロードテストツール</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-qpsとパフォーマンス指標の関係性">4 QpSとパフォーマンス指標の関係性</a>
+      <ul>
+        <li><a href="#41-qps-vs-レイテンシ応答時間">4.1 QpS vs レイテンシ（応答時間）</a></li>
+        <li><a href="#42-qps-vs-スループット-vs-キャパシティ">4.2 QpS vs スループット vs キャパシティ</a></li>
+        <li><a href="#43-qpsと同時接続数concurrencyの違い">4.3 QpSと同時接続数（Concurrency）の違い</a></li>
+        <li><a href="#44-qpsとスケールアウト設計">4.4 QpSとスケールアウト設計</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-qpsをボトルネック分析に活用する方法">5 QpSをボトルネック分析に活用する方法</a>
+      <ul>
+        <li><a href="#51-サービスごとのqps上限の見積もり">5.1 サービスごとのQpS上限の見積もり</a></li>
+        <li><a href="#52-ボトルネックの特定">5.2 ボトルネックの特定</a></li>
+        <li><a href="#53-キャッシュの導入によるqpsの改善効果">5.3 キャッシュの導入によるQpSの改善効果</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-qps制限とレートリミットの設計">6 QpS制限とレートリミットの設計</a>
+      <ul>
+        <li><a href="#61-qpsに基づいたレートリミット">6.1 QpSに基づいたレートリミット</a></li>
+        <li><a href="#62-クォータ管理とユーザー単位の制限">6.2 クォータ管理とユーザー単位の制限</a></li>
+        <li><a href="#63-セキュリティ視点">6.3 セキュリティ視点</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-スケーラビリティ設計とqps">7 スケーラビリティ設計とQpS</a>
+      <ul>
+        <li><a href="#71-スケールアップ-vs-スケールアウトの考え方">7.1 スケールアップ vs スケールアウトの考え方</a></li>
+        <li><a href="#72-qpsとクラスタ構成の設計指針">7.2 QpSとクラスタ構成の設計指針</a></li>
+        <li><a href="#73-auto-scalingとqpsモニタリングの連携">7.3 Auto ScalingとQpSモニタリングの連携</a></li>
+      </ul>
+    </li>
+    <li><a href="#8-事例で学ぶqpsの活用">8 事例で学ぶQpSの活用</a>
+      <ul>
+        <li><a href="#81-cdnやdnsの超高qps設計">8.1 CDNやDNSの超高QpS設計</a></li>
+        <li><a href="#82-api基盤のスロットリング実装">8.2 API基盤のスロットリング実装</a></li>
+        <li><a href="#83-rdbmsやnosqlでのqps管理">8.3 RDBMSやNoSQLでのQpS管理</a></li>
+      </ul>
+    </li>
+    <li><a href="#9-qpsを正しく使うための考え方">9 QpSを正しく使うための考え方</a>
+      <ul>
+        <li><a href="#91-一時的なスパイク-vs-持続的な負荷">9.1 一時的なスパイク vs 持続的な負荷</a></li>
+        <li><a href="#92-定常状態のqps-vs-ピークqps">9.2 定常状態のQpS vs ピークQpS</a></li>
+        <li><a href="#93-単一ノード-vs-システム全体でのqpsの扱い">9.3 単一ノード vs システム全体でのQpSの扱い</a></li>
+      </ul>
+    </li>
+    <li><a href="#10-おわりに">10 おわりに</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><!--
+Todo:
+- TLDR
+
+-->
+<p>こんにちは、しぶやです。
+今回はを完全に理解していきます。</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+<h2 id="1-はじめに">1 はじめに</h2>
+<ul>
+<li>QpSとは何か、なぜ重要か</li>
+<li>記事の目的：「単なる数値」ではなく、<strong>システム設計と密接に関わる指標としてのQpS</strong>を理解する</li>
+<li>対象読者（開発者、SRE、アーキテクトなど）</li>
+</ul>
+<h2 id="2-qpsとは何か基本概念と誤解">2 QpSとは何か？基本概念と誤解</h2>
+<h3 id="21-定義">2.1 定義</h3>
+<ul>
+<li>1秒あたりのクエリ数（＝リクエスト数、API呼び出し数、DBクエリなど）</li>
+</ul>
+<h3 id="22-誤解されがちな点">2.2 誤解されがちな点</h3>
+<ul>
+<li>「高ければ良い」わけではない</li>
+<li>RPS（Requests per Second）やTPS（Transactions per Second）との違い・関係</li>
+</ul>
+<h3 id="23-対象システムに応じた使い分け">2.3 対象システムに応じた使い分け</h3>
+<ul>
+<li>APIサーバ、DB、DNS、CDNなど</li>
+</ul>
+<h2 id="3-qpsの計測方法とツール">3 QpSの計測方法とツール</h2>
+<h3 id="31-ログベース">3.1 ログベース</h3>
+<ul>
+<li>nginxログ, DBクエリログ</li>
+</ul>
+<h3 id="32-メトリクスベース">3.2 メトリクスベース</h3>
+<ul>
+<li>Prometheus, Datadog, CloudWatch など</li>
+</ul>
+<h3 id="33-ロードテストツール">3.3 ロードテストツール</h3>
+<ul>
+<li>Apache Bench, JMeter, k6, Vegeta</li>
+</ul>
+<h2 id="4-qpsとパフォーマンス指標の関係性">4 QpSとパフォーマンス指標の関係性</h2>
+<h3 id="41-qps-vs-レイテンシ応答時間">4.1 QpS vs レイテンシ（応答時間）</h3>
+<h3 id="42-qps-vs-スループット-vs-キャパシティ">4.2 QpS vs スループット vs キャパシティ</h3>
+<h3 id="43-qpsと同時接続数concurrencyの違い">4.3 QpSと同時接続数（Concurrency）の違い</h3>
+<h3 id="44-qpsとスケールアウト設計">4.4 QpSとスケールアウト設計</h3>
+<ul>
+<li>水平分散の指標として</li>
+</ul>
+<h2 id="5-qpsをボトルネック分析に活用する方法">5 QpSをボトルネック分析に活用する方法</h2>
+<h3 id="51-サービスごとのqps上限の見積もり">5.1 サービスごとのQpS上限の見積もり</h3>
+<ul>
+<li>例：DBは何QpSまで耐えられるか</li>
+</ul>
+<h3 id="52-ボトルネックの特定">5.2 ボトルネックの特定</h3>
+<ul>
+<li>CPU/IO/ネットワークの飽和</li>
+</ul>
+<h3 id="53-キャッシュの導入によるqpsの改善効果">5.3 キャッシュの導入によるQpSの改善効果</h3>
+<h2 id="6-qps制限とレートリミットの設計">6 QpS制限とレートリミットの設計</h2>
+<h3 id="61-qpsに基づいたレートリミット">6.1 QpSに基づいたレートリミット</h3>
+<ul>
+<li>API Gatewayなど</li>
+</ul>
+<h3 id="62-クォータ管理とユーザー単位の制限">6.2 クォータ管理とユーザー単位の制限</h3>
+<h3 id="63-セキュリティ視点">6.3 セキュリティ視点</h3>
+<ul>
+<li>DoS対策、フェアユースポリシー</li>
+</ul>
+<h2 id="7-スケーラビリティ設計とqps">7 スケーラビリティ設計とQpS</h2>
+<h3 id="71-スケールアップ-vs-スケールアウトの考え方">7.1 スケールアップ vs スケールアウトの考え方</h3>
+<h3 id="72-qpsとクラスタ構成の設計指針">7.2 QpSとクラスタ構成の設計指針</h3>
+<h3 id="73-auto-scalingとqpsモニタリングの連携">7.3 Auto ScalingとQpSモニタリングの連携</h3>
+<h2 id="8-事例で学ぶqpsの活用">8 事例で学ぶQpSの活用</h2>
+<h3 id="81-cdnやdnsの超高qps設計">8.1 CDNやDNSの超高QpS設計</h3>
+<ul>
+<li>Cloudflareなど</li>
+</ul>
+<h3 id="82-api基盤のスロットリング実装">8.2 API基盤のスロットリング実装</h3>
+<h3 id="83-rdbmsやnosqlでのqps管理">8.3 RDBMSやNoSQLでのQpS管理</h3>
+<h2 id="9-qpsを正しく使うための考え方">9 QpSを正しく使うための考え方</h2>
+<h3 id="91-一時的なスパイク-vs-持続的な負荷">9.1 一時的なスパイク vs 持続的な負荷</h3>
+<h3 id="92-定常状態のqps-vs-ピークqps">9.2 定常状態のQpS vs ピークQpS</h3>
+<h3 id="93-単一ノード-vs-システム全体でのqpsの扱い">9.3 単一ノード vs システム全体でのQpSの扱い</h3>
+<h2 id="10-おわりに">10 おわりに</h2>
+<ul>
+<li>QpSの理解は単なる数値の把握ではなく、「システムの健康状態を見抜く力」</li>
+<li>今後に向けて：QpSの継続的モニタリングとチューニングの重要性</li>
+</ul>
+<h2 id="参考">参考</h2>
+<p>[1] <a href="" rel=""></a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2025-06-22&nbsp;<a class="git-hash" href="https://github.com/shibuya-s-eg/offtech.blog/commit/c03e0cbc9b4b04377aeebe178590bacfe62fcf73" target="_blank" title="commit by root(root@kalis) c03e0cbc9b4b04377aeebe178590bacfe62fcf73: 2025062201">
+                                    <i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>c03e0cb</a></span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/offtech.blog/network-operation/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on X" data-sharer="x" data-url="http://localhost:1313/offtech.blog/network-operation/" data-title="NW運用を完全に理解する" data-hashtags="Network"><i class="fab fa-x-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Threads" data-sharer="threads" data-url="http://localhost:1313/offtech.blog/network-operation/" data-title="NW運用を完全に理解する"><i class="fab fa-threads fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="http://localhost:1313/offtech.blog/network-operation/" data-hashtag="Network"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="http://localhost:1313/offtech.blog/network-operation/" data-title="NW運用を完全に理解する"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="http://localhost:1313/offtech.blog/network-operation/" data-title="NW運用を完全に理解する"><i data-svg-src="/offtech.blog/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://localhost:1313/offtech.blog/network-operation/" data-title="NW運用を完全に理解する"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Diaspora" data-sharer="diaspora" data-url="http://localhost:1313/offtech.blog/network-operation/" data-title="NW運用を完全に理解する" data-description="NW運用を完全に理解する"><i class="fab fa-diaspora fa-fw" aria-hidden="true"></i></a><a href="https://t.me/share/url?url=http%3a%2f%2flocalhost%3a1313%2fofftech.blog%2fnetwork-operation%2f&amp;text=NW%e9%81%8b%e7%94%a8%e3%82%92%e5%ae%8c%e5%85%a8%e3%81%ab%e7%90%86%e8%a7%a3%e3%81%99%e3%82%8b" target="_blank" title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/offtech.blog/tags/network/">Network</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/offtech.blog/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/offtech.blog/network-ospf/" class="prev" rel="prev" title="OSPFを完全に理解する"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>OSPFを完全に理解する</a>
+            <a href="/offtech.blog/nat/" class="next" rel="next" title="NATを完全に理解する">NATを完全に理解する<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.131.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://github.com/shibuya-s-eg/offtech.blog" target="_blank">shibuya.s.eg@gmail.com</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <div id="fixed-buttons-hidden"><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="/offtech.blog/lib/lightgallery/css/lightgallery-bundle.min.css"><script src="/offtech.blog/lib/autocomplete/autocomplete.min.js"></script><script src="/offtech.blog/lib/algoliasearch/lite/browser.umd.js"></script><script src="/offtech.blog/lib/lazysizes/lazysizes.min.js"></script><script src="/offtech.blog/lib/lightgallery/lightgallery.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/offtech.blog/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script><script src="/offtech.blog/lib/clipboard/clipboard.min.js"></script><script src="/offtech.blog/lib/sharer/sharer.min.js"></script><script>window.config={"comment":{},"lightgallery":true,"search":{"algoliaAppID":"4D1IDY8JU6","algoliaIndex":"index","algoliaSearchKey":"05332ac5ed76655a511f0da583a9afac","highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"algolia"}};</script><script src="/offtech.blog/js/theme.min.js"></script></body>
+</html>
